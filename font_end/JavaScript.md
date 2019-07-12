@@ -339,5 +339,87 @@ console.log(square.area);   // 100
 
 
 
+## 4、闭包
+例题1
+```
+function f1(){
+　　　　var n=999;
+　　　　nAdd=function(){n+=1}
+
+　　　　function f2(){
+　　　　　　alert(n);
+　　　　}
+　　　　return f2;
+　　}
+
+　　var result=f1();
+　　result(); // 999
+　　nAdd();
+　　result(); // 1000
+```
+
+例题2
+```
+　　var name = "The Window";
+
+　　var object = {
+　　　　name : "My Object",
+　　　　getNameFunc : function(){
+　　　　　　return function(){
+　　　　　　　　return this.name;
+　　　　　　};
+　　　　}
+　　};
+　　alert(object.getNameFunc()());
+```
+
+例题3
+```
+var name = "The Window";
+
+　　var object = {
+　　　　name : "My Object",
+　　　　getNameFunc : function(){
+　　　　　　var that = this;
+　　　　　　return function(){
+　　　　　　　　return that.name;
+　　　　　　};
+　　　　}
+　　};
+　　alert(object.getNameFunc()());
+```
 
 
+## 5、深浅拷贝
+### 5.1 浅拷贝实现
+思想：遍历对象，然后把属性和属性值都放在一个新的对象里。
+```
+var shallowCopy = function(obj) {
+    // 只拷贝对象
+    if (typeof obj !== 'object') return;
+    // 根据obj的类型判断是新建一个数组还是对象
+    var newObj = obj instanceof Array ? [] : {};
+    // 遍历obj，并且判断是obj的属性才拷贝
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            newObj[key] = obj[key];
+        }
+    }
+    return newObj;
+}
+```
+
+### 5.2 深拷贝实现
+思想：拷贝的时候判断一下属性值的类型，如果是对象，递归调用深拷贝函数。
+```
+var deepCopy = function(obj) {
+    if (typeof obj !== 'object') return;
+    var newObj = obj instanceof Array ? [] : {};
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            newObj[key] = typeof obj[key] === 'object' ? deepCopy(obj[key]) : obj[key];
+        }
+    }
+    return newObj;
+}
+```
