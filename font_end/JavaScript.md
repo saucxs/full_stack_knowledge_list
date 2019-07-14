@@ -209,7 +209,7 @@ p2.friends.push("HEIHEI");
 console.log(p2)  
 // name: "LINDA"
 // __proto__:
-//    friends: (4) ["gmw", "cc", "cxs", "ROB", "HEIHEI"]
+//    friends: (5) ["gmw", "cc", "cxs", "ROB", "HEIHEI"]
 //    name: "saucxs"
 
 console.log(person)  
