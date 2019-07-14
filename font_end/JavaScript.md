@@ -197,10 +197,20 @@ var person = {
 var p1 = objcetSame(person)
 p1.name = 'SAUCXS';
 p1.friends.push('ROB');
+console.log(p1)  
+// name: "SAUCXS"
+// __proto__:
+//    friends: (4) ["gmw", "cc", "cxs", "ROB"]
+//    name: "saucxs"
 
 var p2 = objcetSame(person);
 p2.name = 'LINDA';
 p2.friends.push("HEIHEI");
+console.log(p2)  
+// name: "LINDA"
+// __proto__:
+//    friends: (4) ["gmw", "cc", "cxs", "ROB", "HEIHEI"]
+//    name: "saucxs"
 
 console.log(person)  
 // friends: (5) ["gmw", "cc", "cxs", "ROB", "HEIHEI"]
