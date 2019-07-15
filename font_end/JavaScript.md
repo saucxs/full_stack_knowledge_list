@@ -433,3 +433,111 @@ var deepCopy = function(obj) {
     return newObj;
 }
 ```
+
+
+## 6、类型判断
++ 基本类型(null): 使用 String(null)
++ 基本类型(string / number / boolean / undefined) + function: 直接使用 typeof即可
++ 其余引用类型(Array / Date / RegExp Error): 调用toString后根据[object XXX]进行判断
+很稳的判断封装:
+```js
+let class2type = {}
+'Array Date RegExp Object Error'.split(' ').forEach(e => class2type[ '[object ' + e + ']' ] = e.toLowerCase()) 
+
+function type(obj) {
+    if (obj == null) return String(obj)
+    return typeof obj === 'object' ? class2type[ Object.prototype.toString.call(obj) ] || 'object' : typeof obj
+}
+```
+
+
+## 7、模块化
+```js
+//传统CommonJS写法
+module.export = {
+  field1: value1,
+  field2: function(){
+    //implements
+  }
+}
+//ES6写法
+//exportDefault.js
+export default {
+   field1: value1,
+   field2: function(){
+     //implements
+   }
+};
+```
+
+## 8、防抖和节流
+### 8.1 防抖
+防抖就是讲多次高频操作优化为只在最后一次执行，通常的场景是：用户输入完成之后，校验一下。
+```js
+// fn 回调函数， wait是时间间隔
+function debounce(fn, wait, immediate) {
+    /*缓存一个定时器*/
+  let timer = null;
+  return function() {
+    let args = arguments;
+    let context = this;
+    
+    if(immediate && !timer){
+        fn.apply(context, args);
+    }
+    
+    if(timer) clearTimeout(timer);
+    
+    timer = setTimeout(() => {
+        fn.apply(context, args)
+    }, wait)
+    
+  }
+}
+```
+总结一下：
++ 对于按钮防点击来说：（1）如果函数立即执行的，立即调用；（2）如果函数是延迟执行的，就缓存上下文和参数，放到延迟函数中执行，一旦定时器开始了，我每点击一次都会重新计时，等你点累了，定时器时间到了，定时器重置为null，就可以再次点击。
++ 对于延迟执行函数来说：清除定时器，如果是延迟调用就调用函数。
+
+
+### 8.2 节流
+每隔一段时间后执行一次，就是降低频率，将高频操作有华为低频操作，通常使用场景：滚动条事件，或者resize事件，通常每隔100-500ms执行一次。
+```js
+function throttle(fn, wait, immediate) {
+  let timer = null;
+  let callNow = immediate;
+  return function() {
+    let context = this;
+    let args = arguments;
+    
+    if(immediate){
+        fn.apply(context, args);
+        callNow = false;
+    }
+    
+    if(!timer){
+        timer = setTimeout(() => {
+            fn.apply(context, args);
+            timer = null;
+        }, wait)
+    }
+    
+  }
+}
+```
+
+
+## 9、函数柯里化
+在一个函数中，首先填充几个参数，然后再返回一个新的函数的技术，称为函数的柯里化。通常可用于在不侵入函数的前提下，为函数 预置通用参数，供多次重复调用。
+```js
+const add = function add(x) {
+	return function (y) {
+		return x + y
+	}
+}
+
+const add1 = add(1)
+
+add1(2) === 3
+add1(20) === 21
+```
