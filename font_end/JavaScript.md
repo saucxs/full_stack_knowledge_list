@@ -717,6 +717,8 @@ console.log(func(), 'console');
 Node的事件循环和浏览器的事件循环是完全不同的东西。Node是采用v8作为js的解析引擎，而I/O处理也是使用自己设计的libuv库。
 libuv是一个基于事件驱动的跨平台抽象层，封装了不同操作系统的一些底层特性，对外提供统一的接口API，事件循环机制也是libuv里面的实现。
 
+![node的运行机制](../image/font-end-image/node的EventLoop.png)
+
 Node的运行机制：
 + V8引擎解析JavaScript脚本。
 + 解析代码后，调用Node API。
@@ -726,6 +728,8 @@ Node的运行机制：
 #### 2、过程六个阶段
 事件循环分为6个阶段，会按照顺序反复运行。每进入到某一个阶段，都会从对应的回调队列中取出函数去执行。
 当队列为空或者执行的回调函数数量达到系统设定的阈值，就会进入到下一阶段。
+
+![Event Loop的6个阶段](../image/font-end-image/EventLoop的6个阶段.png)
 
 ##### （1）node事件循环的顺序：
 
@@ -785,7 +789,13 @@ Promise.resolve().then(function() {
   console.log('promise3')
 })
 console.log('end')
-// start, end,  promise3,  timer1,  timer2,  promise1,  promise2 
+// start, 
+// end, 
+// promise3,  
+// timer1,  
+// timer2,  
+// promise1,  
+// promise2 
 ```
 分析：
 + 1、一开始执行栈的同步任务（宏任务），执行完毕后，依次打出 start和end，并将2个timer依次放入timers队列。
@@ -799,8 +809,171 @@ Node端事件循环中的异步队列也是这两种：macro（宏任务）队�
 + 1、常见的 macro-task 比如：setTimeout、setInterval、 setImmediate、script（整体代码）、 I/O 操作等。
 + 2、常见的 micro-task 比如: process.nextTick、new Promise().then(回调)等。
 
+#### 4、注意点
+##### （1）setTimeout和setImmediate
+二者比较相似，区别：调用的时机不同。
++ 1、setImmediate：设计在poll阶段完成时执行，也就是在check阶段执行。
++ 2、setTimeout：设计在poll阶段空闲的时候，设定的时间达到后执行，也就是在timer阶段执行。
 
+```js
+setTimeout(function timeout () {
+    console.log('timeout');
+},0);
+setImmediate(function immediate () {
+    console.log('immediate');
+});
+```
+分析上述代码：
++ 执行之后，发现：setTimeout可能执行在前，也有可能执行在后。
++ 源码中，setTimeout(fn, 0) === setTimeout(fn, 1)，进入事件循环也是需要成本的，如果在准备时候花费大于1ms，timer阶段就会直接执行setTimeout回调。
++ 如果准备时间花费小于1ms，那么就setImmediate回调先执行。
+
+但是如果两者在异步I/O callback内部调用，总是先执行setImmediate，再执行setTimeout。
+```js
+const fs = require('fs')
+fs.readFile(__filename, () => {
+    setTimeout(() => {
+        console.log('timeout');
+    }, 0)
+    setImmediate(() => {
+        console.log('immediate');
+    })
+})
+// immediate
+// timeout
+```
+
+
+##### （2）process.nextTick
+process.nextTick这个函数其实是独立于Event Loop之外的，有自己的队列。当每个阶段完成后，如果存在nextTick队列，就会清空队列中的所有回调函数，并且优先于其他microtask执行。
+```js
+Promise.resolve().then(function() {
+    console.log('promise0')
+})
+
+setTimeout(() => {
+    console.log('timer1')
+    Promise.resolve().then(function() {
+        console.log('promise1')
+    })
+}, 100)
+
+process.nextTick(() => {
+    console.log('nextTick')
+    process.nextTick(() => {
+        console.log('nextTick')
+        process.nextTick(() => {
+            console.log('nextTick')
+            process.nextTick(() => {
+                console.log('nextTick')
+            })
+        })
+    })
+})
+
+setTimeout(() => {
+    console.log('timer2')
+    Promise.resolve().then(function() {
+        console.log('promise2')
+    })
+}, 1)
+
+Promise.resolve().then(function() {
+    console.log('promise3')
+})
+
+
+//  nextTick
+//  nextTick
+//  nextTick
+//  nextTick
+//  promise0
+//  promise3
+//  timer2
+//  promise2
+//  timer1
+//  promise1
+```
+
+
+### 12.3 Node的事件循环与浏览器差异
++ 浏览器的Event loop是在HTML5中定义的规范，而node中则由libuv库实现。
++ 浏览器环境中，微任务的任务队列是在每一个宏任务执行完成之后执行。node中，微任务会在事件循环的各个阶段之间执行，也就是一个阶段执行完毕，就会去执行微任务队列的任务。
+
+![node与浏览器的事件循环的差异](../image/font-end-image/浏览器的EventLoop与Node的EventLoop.png)
+
+我们看一个栗子，来说明两者区别：
+```js
+setTimeout(()=>{
+    console.log('timer1')
+    Promise.resolve().then(function() {
+        console.log('promise1')
+    })
+}, 0)
+setTimeout(()=>{
+    console.log('timer2')
+    Promise.resolve().then(function() {
+        console.log('promise2')
+    })
+}, 0)
+```
+
+#### 1、浏览器端运行情况
+输出：
+```js
+// timer1
+// promise1
+// timer2
+// promise2
+```
+浏览器端处理过程
+
+![浏览器处理过程](../image/font-end-image/浏览器的事件循环.gif)
+
+
+#### 2、Node端运行情况
+node端运行需要分为两种情况：
++ 如果node11版本及之后，一旦执行一个阶段里的宏任务(setTimeout,setInterval,setImmediate)就会立刻执行微任务队列，跟浏览器端运行一致。最后结果：
+```js
+// timer1
+// promise1
+// timer2
+// promise2
+```
++ 如果是node10及之前版本，要看第一个定时器执行完，第二定时器是否在完成队列中。
+    - 如果第二个计时器未在完成队列中，结果为：
+    ```js
+    // timer1
+    // promise1
+    // timer2
+    // promise2
+    ```
+     - 如果第二个计时器已经在完成队列中，结果为：
+      ```js
+         // timer1
+         // timer2
+         // promise1
+         // promise2
+      ```
+
+我们来分析一下第二个计时器不在任务队列中的情况：
+
+1、全局脚本main执行，将2个timer依次放入timer队列，main执行完后，调用栈为空闲，任务队列开始执行。
+
+2、首先会进入timers阶段，执行timer1的回调函数，打印timer1，并将promsie1.then回调放入微任务队列。
+同样的步骤执行timer2，打印timer2。
+
+3、至此，timer阶段执行结束，EventLoop进入下一阶段之前，执行微任务队列的所有任务，依次打印promise1，promise2。
+
+node端处理过程：
+
+![NODE端处理过程](../image/font-end-image/node的事件循环过程.gif)
+
+
+### 12.4 看看面试题
 看个栗子
+
+浏览器端和node端执行输出：
 ```js
 console.log('1');
 
@@ -862,3 +1035,252 @@ setTimeout(function() {
 宏任务：输出9；new Promise同步任务，输出11。
 
 微任务队列中：process.nextTick属于微任务，输出10；然后输出12。
+
+
+## 13、使用promise实现串行
+什么是串行？依次有序的执行，应该可以理解成同步执行。
+
+Promise串行队列一般情况下用的不多，因为串行会阻塞，用户交互是并行的。并行发请求，前端按串行顺序接收数据。
+
+本质上：回调的串联。
+
+### 13.1 async/await方案
+```js
+async function runPromiseByAwait(myPromise){
+    for(let item of myPromise){
+        await item();
+    }
+};
+```
+我们测试一下：
+```js
+async function runPromiseByAwait(myPromise){
+    for(let item of myPromise){
+        await item();
+    }
+};
+const createPromise = (time, id) => () => new Promise(solve => setTimeout(() => {
+    console.log('promise',id);
+    solve();
+}, time))
+
+runPromiseByAwait([
+  createPromise(3000, 1),
+  createPromise(2000, 2),
+  createPromise(1000, 3)
+]);
+```
+输出结果：
+```js
+// promise 1
+// promise 2
+// promise 3
+```
+
+总结：async/await利用自身改造成一个异步函数，等待每一个promise执行完毕。
+
+
+
+### 13.2 reduce方案
+原理：每次reduce的返回值会作为下次reduce回调函数的第一个参数，知道队列循环完毕。
+```js
+function runPromiseByReduce(myPromise) {
+  myPromise.reduce(
+      (previousPromise, nextPromise) => previousPromise.then(() => nextPromise()),Promise.resolve()
+  )
+}
+```
+分析一下：当上一个Promise开始执行(previousPromise.then)，当其执行完毕后再调用下一个Promise，并作为一个新的Promise返回，下次迭代会继续这个循环。
+
+```js
+function runPromiseByReduce(myPromise) {
+  myPromise.reduce(
+      (previousPromise, nextPromise) => previousPromise.then(() => nextPromise()),Promise.resolve()
+  )
+}
+
+const createPromise = (time, id) => () => new Promise(solve => setTimeout(() => {
+    console.log('promise',id);
+    solve();
+}, time))
+
+runPromiseByReduce([
+  createPromise(3000, 1),
+  createPromise(2000, 2),
+  createPromise(1000, 3)
+]);
+```
+输出结果：
+```js
+// promise 1
+// promise 2
+// promise 3
+```
+分析：reduce是同步执行，在一个事件循环中就会完成，在内存中快速构建Promise执行队列。
+```js
+new Promise((resolve, reject) => {
+    resolve();
+}).then(result => {
+    return result;
+}).then(result => {
+    return result;
+});
+```
+reduce作用就是在内存中生成上述的队列，这样精简了代码。
+
+总结：reduce函数整体是个同步函数，自己先执行完毕构造Promise队列，然后在内存中异步执行。
+
+
+## 14、如何保证页面运行流畅的情况下处理海量数据
+
+### 14.1 根据可视区域进行渲染（懒加载）
+
+
+### 14.2 documentFragment+requestAnimation+事件委托
+比如：
+```
+10w 条记录的数组，一次性渲染到页面上，如何处理可以不冻结UI？
+```
+具体：页面上有个空的无序列表节点 ul ，其 id 为 list-with-big-data ，现需要往列表插入 10w 个 li ，每个列表项的文本内容可自行定义，且要求当每个 li 被单击时，通过 alert 显示列表项内的文本内容。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>页面加载海量数据</title>
+</head>
+
+<body>
+  <ul id="list-with-big-data">100000 数据</ul>
+  <script>
+    // 此处添加你的代码逻辑
+  </script>
+</body>
+
+</html>
+```
+分析：获取 ul 元素，然后新建 li 元素，并设置好 li 的文本内容和监听器绑定，然后在循环里对 ul 进行 append 操作。
+
+```js
+(function() {
+  const ulBox = document.getElementById("list-width-big-data");
+  if(!ulBox){
+      return ;
+  }
+  for(let i = 0; i < 10000; i++){
+      const liItem = document.createElement("li");
+      liItem.innnerText = i + 1;
+      liItem.addEventListener("click",function() {
+        alert(this.innnerText)
+      });
+      ulBox.appendChild(liItem);
+  }
+})();
+```
+我们发现卡顿严重，原因：每次循环的饿时候，都会修改dom结构，数据量大，导致循环时间过长，浏览器渲染帧过低。
+
+优化方向：
+
++ 减少dom操作次数。
++ 缩短循环时间，减少主线程阻塞的时间。
+
+方案：
+
++ documentFragment，减少dom操作次数，降低回流对性能的影响。
++ requestAnimationFrame，分治的思想，分批插入到页面中，通过requestAnimationFrame在页面重绘前插入新的节点。
++ 时间绑定，使用时间委托，而不是使用事件监听，从而减少dom事件注册数量。
+
+```js
+(function() {
+  const ulBox = document.getElementById("list-width-big-data");
+  if(!ulBox) return ;
+  const total = 100000;  // 数据总数
+  const batchNum = 10;   // 每次插入节点数，数越小，页面卡顿感下降
+  const batchCount = total/batchNum;   //批处理的次数
+  let batchDone = 0;
+  function appendItems() {
+    const fragment = document.createDocumentFragment();
+    for(let i = 0; i < batchNum; i++){
+        const liItem = document.createElement("li");
+        liItem.innerText = batchDone * batchNum + i + 1;
+        fragment.appendChild(liItem);
+    }
+    /*每次批处理只修改一次dom*/
+    ulBox.appendChild(fragment);
+    batchDone++;
+    doAppendBatch();
+  };
+  function doAppendBatch() {
+    if(batchDone < batchCount){
+        /*重绘之前。分批插入新节点*/
+        window.requestAnimationFrame(appendItems)
+    }
+  };
+  doAppendBatch();
+  /*使用事件委托*/
+  ulBox.addEventListener("click",function(e) {
+    const target = e.target;
+    if(target.tagName === "LI"){
+        alert(target.innerText);
+    }
+  })
+})
+```
+
+## 14、正则
+
+### 1、邮箱
+```
+邮箱由英文字母，数字，英文句号，下划线，中划线组成，若干个
+邮件名称：[a-zA-Z0-9_-]+
+域名规则：【N级域名】【三级域名.】二级域名.顶级域名。等同于**.**.**.**
+邮箱规则：名称@域名
+最终 /^[\w+-]+@[\w+-]+(\.[\w+-]+)+$/
+
+如果允许汉字，汉字在正则：[\u4e00-\u9fa5]
+```
+
+
+### 2、url解析
+```
+1、协议匹配(http://和https://): 
+^(https|https):\/\/
+2、主机名匹配(xxx.xxx.xxx 或 xxx.xxx 2种形式 由字母或数字组成。如：www.baidu.com  baidu.com  127.0.0.1)：
+([0-9a-zA-Z.]+)
+3、端口匹配（冒号开头+数值或者不显示，如：127.0.0.1:8080  127.0.0.0）：
+(:[0-9]+)?
+4、路径匹配（路径由字母，数字，斜杆，点，组成。但是首页是没有路径的。如：/xxx/xxxx/xxx.html 、 /xxx/xxx）：
+([/0-9a-zA-Z.]+)?
+5、查询字符串匹配（格式为：?xxx=1&ddd=2或者?xx=2）。这个不是必须项。
+(\?[0-9a-zA-Z&=]+)?
+6、信息片断匹配（信息片段由#，字母，数值组成，也不是必须项）
+(#[0-9a-zA-Z]+)?
+最终：/^(http|https):\/\/([0-9a-zA-Z.]+)(:[0-9]+)?([/0-9a-zA-Z.]+)?(\?[0-9a-zA-Z&=]+)?(#[0-9a-zA-Z]+)?/i
+```
+
+### 3、千分号
+```
+1、最后一个逗号：(?=\d{3}$)
+2、多个逗号：(?=(\d{3})+$)
+3、匹配的位置不能是开头：(?!^)(?=(\d{3})+$)
+4、支持其他开头的，把^和结尾$，修改成\b：(?!\b)(?=(\d{3})+\b)
+最终：/(?!\b)(?=(\d{3})+\b)/g
+```
+
+
+### 4、去重
+主要是对字符串去重
+```
+/(.).*\1/g
+```
+```js
+var demo="ababbba";
+demo = demo.split(''); //把字符串转换为数组
+demo = demo.sort().join(''); //首先进行排序，这样结果会把相同的字符放在一起，然后再转换为字符串
+demo.replace(/(.).*\1/g,"$1")
+```
+
