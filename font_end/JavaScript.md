@@ -1284,3 +1284,234 @@ demo = demo.sort().join(''); //首先进行排序，这样结果会把相同的�
 demo.replace(/(.).*\1/g,"$1")
 ```
 
+## 15、ES6的数组方法
+### 15.1 Array.from()
+将set，map，array，字符串，类数组等转换为数组的功能。
+语法：`Array.from(arrayLike[, mapFn[, thisArg]])``
+#### 1、Map转换数组
+```js
+let map1 = new Map();
+map1.set('a','程');
+map1.set('b','新');
+map1.set('c','松');
+console.log(Array.from(map1));
+//[["a","程"],["b","新"],["c","松"]]
+```
+#### 2、Set转换数组
+```js
+let set1 = new Set();
+set1.add(1).add(2).add(3);
+console.log(Array.from(set1));
+// [1,2,3]
+```
+### 3、字符串转换数组
+```js
+console.log('%s', Array.from('hello world'));
+// ["h", "e", "l", "l", "o", " ", "w", "o", "r", "l", "d"]
+```
+### 4、类数组对象转换
+一个类数组对象必须有length属性，且它的属性名必须是数值或者可以转换成数值的字符。
+```js
+let obj = {
+              0: '0',
+              1: '1',
+              3: '3',
+              length:4
+          };
+console.log(Array.from(obj));
+// ["0", "1", undefined, "3"]
+```
+1、属性名为数组的索引号，没有的话，就转成undefined
+
+```js
+let obj = {
+              0: '0',
+              1: '1',
+              3: '3',
+          };
+console.log(Array.from(obj));
+// []
+```
+2、不带length属性，数组为空
+
+```js
+let obj = {
+              a: '0',
+              b: '1',
+              d: '3',
+          };
+console.log(Array.from(obj));
+// []
+```
+3、对象书香门不能转换成索引，为空
+
+### 5、mapFn函数转换
+
+```js
+function double(arr) {
+    return Array.from(arguments, function(elem) {
+        return elem * 2;
+    });
+}
+const result = double(1, 2, 3, 4);
+console.log(result);
+// [2, 4, 6, 8]
+```
+### 6、处理dom对象的应用
+处理Dom对象，针对对象进行循环迭代处理.dom对象是类数组，而非真实数组，我们通过Array.from转成数组处理。
+```js
+const arr = document.querySelectorAll('div');
+/* arr.forEach( item => console.log(item.tagName) ) */ // => wrong
+Array.from(arr).forEach( item => console.log(item.tagName) );
+// correct”
+```
+
+### 15.2 Array.of()
+在ES6之前，我们使用 Array(...)方法声明一个数组，此方法接收一个参数，即此参数代表数组的长度而不是一个包含此值的数组，声明后会构建一个此长度的空数组，有时候会产生难以发现的错误。
+
+因此ES6推出了Array.of()用于解决此问题，成为数组的**推荐函数构造器**
+```js
+let arr1 = Array(2);
+console.log(arr1.length);  //  2
+console.log(arr1);         // [ <2 empty items> ]
+
+let arr2 = Array.of(1,2,3);  
+console.log(arr2.length);  // 3 
+console.log(arr2);         // [1,2,3]
+```
+
+### 15.3 Array.fill()
+将数值填充到指定数组的开始位置和结束位置，改变原数组。
+
+语法：`Array.prototype.fill(value[, start[, end]])``
+
++ value：要填充的数值，必填
++ start：填充的开始位置，选填
++ end：填充的结束位置，不包含此项，选填
+
+注意：
++ 1、如果只有value参数，数组中多有内容为此项
++ 2、没有end，默认长度是数组长度
++ 3、start或者end为负数，对应值为 当前数值+ 数组长度
+```js
+let arr1 = [1,2,3,4,5]
+console.log(arr1.fill(6));   // [6,6,6,6,6]
+
+let arr2 = [1,2,3,4,5]
+console.log(arr2.fill(6, 3));   //[1,2,3,6,6]
+
+let arr3 = [1,2,3,4,5]
+console.log(arr3.fill(6, 3, 4));   //[1,2,3,6,5]
+
+let arr4 = [1,2,3,4,5]
+console.log(arr4.fill(6, -3, -1));   //[1,2,6,6,5]
+
+let arr5 = [1,2,3,4,5]
+console.log(arr5.fill(6, -3, -4));   //[1,2,3,4,5]
+```
+
+
+### 15.4 Array.inclues()
+用来判断数组中是否含有某元素，如果存在返回true，否则false。
+```js
+const arr = [0, 1, 1, 2, 3, 5, 8, 13];
+arr.includes(0); // true
+arr.includes(13); // true
+arr.includes(21); // false
+```
+这个与indexOf()方法的区别？
+
++ indexOf()如果存在返回的是数组的索引位置，如果不存在就返回-1。
++ indeOf()使用严格匹配(===)判断
+
+```js
+const arr = ['Some elements I like', NaN, 1337, true, false, 0017];
+console.log(arr.includes(NaN));
+// true
+console.log(arr.indexOf(NaN) >= 0);
+// false
+```
+我们看一下NaN
+```js
+console.log(NaN == NaN);   // false
+console.log(NaN === NaN);  //false
+
+```
+
+### 15.5 Array.find() && Array.findIndex()
+#### 1、Array.find()
+只要找到一项内容就返回。数组中查找目标元素，找到就返回该元素，找到一个就返回，找不到返回undefined。
+
+语法： `arr.find(callback[,thisArg]);`
++ callback：回调函数。
++ thisArg：执行回调时候的this指向，可选。
+在callback回调函数上一共有三个参数：
++ element：每一次迭代查找的数组元素
++ index：每一次迭代查找的数组元素的索引
++ array： 数组本身
+
+```js
+const arr = [1, 2, 3, 4];
+const result = arr.find(function(elem) { return elem > 2; });
+console.log(result);
+// 3
+```
+
+
+#### 2、Array.findIndex()
+和find很类似，findIndex返回的是元素在数组中的索引。
+```js
+const arr = [1,2,3,4,5,6];
+let index = arr.findIndex(item => item>=3);
+console.log(index);  // 3的索引为2
+// 2
+```
+
+### 15.6 Array.copyWithin()
+浅复制数组的一部分到同一个数组的其他位置，覆盖原来位置的值。返回这个新数组，不会改变原数组长度。
+语法：``arr.copyWithin(target[,start[,end]])`
++ 1、target：定义从什么位置开始复制的索引。数组大于数组长度，不会复制。
++ 2、start：选择要复制数组内动的起始索引。为负值，当前值+数组长度。
++ 3、end：选取要复制数组的结束索引，不包含此项内容。负值也是当前值+数组长度，可选，默认数组的长度。
+
+![Array.copyWithin()方法](../image/font-end-image/copyWithin.png)
+```js
+const arr1 = [1,2,3,4,5];
+console.log(arr1.copyWithin(1,3,4)); //[1,4,3,4,5]
+
+const arr2 = [1,2,3,4,5];
+console.log(arr2.copyWithin(1, -2, -3)); //[1,2,3,4,5]
+
+const arr3 = [1,2,3,4,5];
+console.log(arr3.copyWithin(1, -3, -2)); //[1,3,3,4,5]
+```
+
+### 15.6 Array.entries(),Array.keys(),Array.values()
++ Array.entries()返回一个Array Iterator对象，包含所有数组中每个索引的键值对，类似[key1,value1,key2,value2,key3,value3.....]
++ Array..keys()返回一个Array Iterator对象，包含所有的键。
++ Array.values()返回一个Array Iterator对象，包含所有的值。
+
+```js
+const arr = ['a', 'b', 'c'];
+console.log(...arr.entries());   // [0, "a"] [1, "b"] [2, "c"]
+
+console.log(...arr.keys());  // 0 1 2
+
+console.log(...arr.values());  // a b c
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
