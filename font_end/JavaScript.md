@@ -2320,7 +2320,7 @@ location / {
  location ^~/apis/ {
     # 这里重写了请求，将正则匹配中的第一个()中$1的path，拼接到真正的请求后面，并用break停止后续匹配
     rewrite ^/apis/(.*)$ /$1 break;
-    proxy_pass https://www.kaola.com/;
+    proxy_pass http://www.chengxinsong.cn/;
  }  
 ```
 
