@@ -2392,22 +2392,322 @@ commit下面还有作者和邮箱，可以咋子三个地方配置：
 
 #### 5、分支相关
 + git branch 查看分支列表
++ git branch -a 查看所有分支，包括远程分支
++ git status 查看当前在哪个分支
 + git branch 分支名 创建新的分支
 + git checkout 分支名 切换分支
 + git branch -d 分支名 删除分支
 + git merge 分支名 将该分支合并到当前分支
 + git branch -m 原分支名 新分支名
 
-#### 6、回退
+#### 6、工作区相关
++ git stash 将工作区保存
++ git stash list 列出所有的保存
+
+#### 7、回退
 + git reset --hard HEAD^ 回退到**上一次**的提交
 + git reset --hard HEAD^^ 回退到**上上一次**的提交
 + git reset --hard HEAD~n 回退到当前分钟至上的前n次提交
-+ git reset --hard commit 信息的前几位 回退到指定commit
++ git reset --hard commit-id 信息的前几位 回退到指定commit
 + git reflog 查看我们执行了回退，但是我们又想回到该版本之后的commit id，reflog记录着Head指针的改变历史
 
-#### 7、裁减掉当前远程分支
+#### 8、裁减掉当前远程分支
 + git remote prune origin 把远程被删的分支删掉
 
-#### 8、git checkout commit-id与git reset --hard commit-id区别
+#### 9、git checkout commit-id与git reset --hard commit-id区别
 两个都是可以回到对应的commit点，但是checkout的是处于游离状态，任何修改不提交的话会有警告，所以我们一般是创建新的分支。
 
+#### 10、仓库
++ git remote rename 仓库名 仓库名2 把远程仓库名从origin重命名为origin2
++ git remote rm 仓库名 删除远程仓库名
+
+#### 11、git pull会多一个merge commmit的情况，为什么？
+git pull，会先执行git fetch，接着执行git merge，因为合并产生额外的commit，这时候就可以使用git pull --rebase来解决问题。
+
+#### 12、git rebase
+直接使用根基分支的修改：当我们执行rebase时，当遇到冲突时，我们除了可以手动的去解决冲突外，还可以通过执行git rebase --skip直接的使用根基分支的修改。
+
+与git merge区别：git rebase会将两条分支变成同一条commit链，而merge依然可以看到分叉的commit信息，原理：rebase修改了git的提交历史，把之前分支上的commit一个个接到另外一条分支上。
+
+执行git reset commit-id --hard就可以回到rebase前的状态了。
+另外在每次做rebase前，git都会为我们创建一个ORIG_HEAD记录rebase前的状态让我们不需要reflog就可以快速切回去，所以就可以直接执行git reset ORIG_HEAD --hard
+
+#### 13、开发中有个线上bug，功能写了一半，不能提交，怎么处置？
+使用git stash将工作区的内容存储起来，然后切换新分支完成bug修复，在切换到未完成的分支，执行git stash pop将未完成的工作区还原到工作区。
+
+![git](../image/font-end-image/git.png)
+
+
+## 22、Vue
+Vue框架的入口就是vue实例，其实是框架中的View Model ，他包含了页面中的业务处理逻辑，数据模型，生命周期中多个事件钩子。
+
+Vue实例虽然没有完全遵循MVVM模型，但是收到MVVM的启发。
+
+![vue没有完全遵循MVVM模型](../image/font-end-image/vue的MVVM模型.png)
+从图中知道：vue实际就是MVVM中的VM，就是ViewModel，所以看到文档中的vm这个变量其实就是Vue实例。
+```js
+let app = new Vue({
+    el: '#app',
+    date() {
+        return {
+            name: 'saucxs',
+            count: 0
+        }
+    },
+    method: {
+        addNumber: function() {
+          this.count++
+        }
+    }
+})
+```
+上面代码中el: '#app'牵着View，data:{}牵着Model，而methods充当controller，可以修改Model的值。
+
+### 22.1 全局API
+#### 1、Vue.extend 扩展实例的构造器
+Vue.extend(对象)返回的是一个**扩展实例的构造器**。作用：服务于Vue.component，用来生成组件。
+可以理解成：
+> 在模板中遇到该组件名称作为自定义的元素标签时，会自动调用扩展实例构造器来生产组件实例，并挂载到自定元素上。
++ data 选项是特例，需要注意 - 在 Vue.extend() 中data必须是函数
+```html
+<div id="mount-place"></div>
+```
+```js
+var ExtendPlace = Vue.extend({
+    template: '<p>welcome {{firstName}} {{lastName}} to {{place}}</p>',
+    data: function() {
+      return {
+          firstName: 'Cheng',
+          lastName: 'Xinsong',
+          place: 'sau交流学习社区'
+      }
+    }
+})
+// 创建ExtendPlace实例，并挂载到一个元素上，不挂载没有效果
+new ExtendPlace().$mount('#mount-place')   // 用自定义标签<extendplace></extendplace>的使用：  new Profile().$mount('extendplace')
+```
+运行结果：<p>welcome Cheng Xinsong to sau交流学习社区</p>
+
+注意：还有一种写法
+```html
+<div id="mount-place">
+    <mountplace></mountplace>
+</div>
+```
+```js
+var ExtendPlace = Vue.extend({
+    template: '<p>welcome {{firstName}} {{lastName}} to {{place}}</p>',
+    data(){
+        return {
+           firstName: 'Cheng',
+           lastName: 'Xinsong',
+           place: 'sau交流学习社区'
+        }
+    }
+})
+Vue.component('mountplace', ExtendPlace);
+var vm = new Vue({
+    el: '#mount-place'
+})
+```
+
+
+（1）使用propsData
+```js
+var ExtendPlace = Vue.extend({
+    template: '<p>welcome {{firstName}} {{lastName}} to {{place}}</p>',
+    data: function() {
+      return{
+        firstName: 'Cheng',
+        lastName: 'Xinsong',
+      }
+    },
+    props : ['place']
+})
+new ExtendPlace({
+    propsData: {
+       place: 'sau交流学习社区'
+    }
+}).$mount('#mount-place')
+```
+运行结果：<p>welcome Cheng Xinsong to sau交流学习社区</p>
+
+综上所述：extend创建的是Vue构造器，并不是我们平时写的组件实例，所以不可以直接new Vue({component: ExtendPlace})直接使用，
+需要使用new ExtendPlace().$mount('#mount-place')指定挂载元素。
+
+为什么要使用extend？
+vue中页面基本上，可以使用import来进行组件的局部注册，但是import注册的组件有缺点：
++ （1）组件模板都是提前定义好的，如果接口动态渲染组件怎么处理。
++ （2）如何实现一个全局调用组件
+
+#### 2、Vue.nextTick  DOM的异步更新
+下次更新DOM更新循环结束之后执行延迟回调，在修改数据之后立即使用这个方法，获取**更新后的DOM**。
+我们看个栗子
+```html
+  <div class="app">
+        <div ref="msgDiv">{{msg}}</div>
+        <div v-if="msg1">outside $nextTick: {{msg1}}</div>
+        <div v-if="msg2">inside $nextTick: {{msg2}}</div>
+        <div v-if="msg3">outside $nextTick: {{msg3}}</div>
+        <button @click="changeMsg">改变</button>
+  </div>
+```
+```js
+ new Vue({
+        el: '.app',
+        data: {
+            msg: 'Hello Vue.',
+            msg1: '',
+            msg2: '',
+            msg3: ''
+        },
+        methods: {
+            changeMsg() {
+                this.msg = "Hello world."
+                this.msg1 = this.$refs.msgDiv.innerHTML
+                this.$nextTick(() => {
+                    this.msg2 = this.$refs.msgDiv.innerHTML
+                })
+                this.msg3 = this.$refs.msgDiv.innerHTML
+            }
+        }
+    })
+```
+![vue.nextTick](../image/font-end-image/nextTick.png)
+
+##### 应用场景
++ Vue生命周期的created()钩子函数进行DOM操作一定要放在Vue.nextTick()回调函数中。
+created函数执行的时候，DOM并没有进行任何渲染，mounted()函数，此时DOM挂载和渲染已经完成，此时操作DOM没有问题。
++ 数据变化后要执行某个操作，这个操作需要使用随数据变化而变化的DOM结构，这个操作需要放进Vue.nextTick()回调函数中。
+Vue异步执行DOM更新，只要观察数据变化，Vue会开启一个队列，并缓冲在同一个事件循环中发生的所有数据变化，如果多个watcher被多次
+触发，只会被推入到队列中一次，这种缓冲时去除重复数据对于避免不必要的计算和DOM操作非常重要。然后在下一个事件循环“tick”中，
+Vue刷新队列并执行实际工作。Vue在内部尝试对异步队列使用原生的Promise.then和MessageChannel，如果环境不支持，会采用setTimeout代替。
+
+
+##### 源码浅析
+Vue.nextTick用于延迟执行一段代码，他接受2个参数（回调函数和执行回调的上下文环境），如果没有提供回调函数，那将返回promise对象。
+```js
+/**
+ * Defer a task to execute it asynchronously.
+ */
+export const nextTick = (function () {
+  const callbacks = []
+  let pending = false
+  let timerFunc
+
+  function nextTickHandler () {
+    pending = false
+    const copies = callbacks.slice(0)
+    callbacks.length = 0
+    for (let i = 0; i < copies.length; i++) {
+      copies[i]()
+    }
+  }
+
+  // the nextTick behavior leverages the microtask queue, which can be accessed
+  // via either native Promise.then or MutationObserver.
+  // MutationObserver has wider support, however it is seriously bugged in
+  // UIWebView in iOS >= 9.3.3 when triggered in touch event handlers. It
+  // completely stops working after triggering a few times... so, if native
+  // Promise is available, we will use it:
+  /* istanbul ignore if */
+  if (typeof Promise !== 'undefined' && isNative(Promise)) {
+    var p = Promise.resolve()
+    var logError = err => { console.error(err) }
+    timerFunc = () => {
+      p.then(nextTickHandler).catch(logError)
+      // in problematic UIWebViews, Promise.then doesn't completely break, but
+      // it can get stuck in a weird state where callbacks are pushed into the
+      // microtask queue but the queue isn't being flushed, until the browser
+      // needs to do some other work, e.g. handle a timer. Therefore we can
+      // "force" the microtask queue to be flushed by adding an empty timer.
+      if (isIOS) setTimeout(noop)
+    }
+  } else if (!isIE && typeof MutationObserver !== 'undefined' && (
+    isNative(MutationObserver) ||
+    // PhantomJS and iOS 7.x
+    MutationObserver.toString() === '[object MutationObserverConstructor]'
+  )) {
+    // use MutationObserver where native Promise is not available,
+    // e.g. PhantomJS, iOS7, Android 4.4
+    var counter = 1
+    var observer = new MutationObserver(nextTickHandler)
+    var textNode = document.createTextNode(String(counter))
+    observer.observe(textNode, {
+      characterData: true
+    })
+    timerFunc = () => {
+      counter = (counter + 1) % 2
+      textNode.data = String(counter)
+    }
+  } else {
+    // fallback to setTimeout
+    /* istanbul ignore next */
+    timerFunc = () => {
+      setTimeout(nextTickHandler, 0)
+    }
+  }
+
+  return function queueNextTick (cb?: Function, ctx?: Object) {
+    let _resolve
+    callbacks.push(() => {
+      if (cb) {
+        try {
+          cb.call(ctx)
+        } catch (e) {
+          handleError(e, ctx, 'nextTick')
+        }
+      } else if (_resolve) {
+        _resolve(ctx)
+      }
+    })
+    if (!pending) {
+      pending = true
+      timerFunc()
+    }
+    if (!cb && typeof Promise !== 'undefined') {
+      return new Promise((resolve, reject) => {
+        _resolve = resolve
+      })
+    }
+  }
+})()
+```
+1、三个重要变量：
++ callbacks 存储所有需要执行的回调函数
++ pending 标志是否正在执行回调函数
++ timeDunc 用来触发回调函数
+
+2、nextTickHandle()函数
++ 作用：用来执行callbacks里存储的所有回调函数。
+
+3、触发方式赋值给timerFunc
++ 先判断是原生支持promise，支持就用promise来触发执行回调函数
++ 否则，是否支持MutationObserver，则实例化一个观察者对象，观察文本节点发生改变，触发所有回调函数。
++ 如果上述都不支持，则利用setTimeout设置延迟为0
+
+4、queueNextTick函数
+nextTick是一个即时函数，所以queueNextTick函数返回的函数，接受用户传入的参数，用来往callbacks存入回调函数。
+
+![nextTick-源码](../image/font-end-image/nextTick-源码.png)
+整个执行流程，关键在于timeFunc()，该函数起到延迟执行的作用。
+
+timeFunc一共3种实现方式：
++ promise
++ MutationObserver
++ setTimeout
+promise和setTimeout很好理解是一个异步任务，会在同步执行，以及更新DOM，异步才执行的具体函数。
+
+然而MutationObserver是HTML5中新API，用来监听DOM变动的接口。能监听到DOM对象的发生子节点删除，属性修改，文本内容修改等。
+```js
+var mo = new MutationObserver(callback)
+```
+通过给MutationObserver的构造函数传入一个回调，得到一个MutationObserver实例，回调就会在实例监听到变动时触发。
+
+具体监听哪个DOM、监听节点删除还是监听属性修改，还没有设置。而调用他的observer方法就可以完成这一步:
+```js
+var domTarget = 你想要监听的dom节点
+mo.observe(domTarget, {
+      characterData: true //说明监听文本内容的修改。
+})
+```
