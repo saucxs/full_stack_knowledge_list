@@ -2540,7 +2540,7 @@ vue中页面基本上，可以使用import来进行组件的局部注册，但�
 + （1）组件模板都是提前定义好的，如果接口动态渲染组件怎么处理。
 + （2）如何实现一个全局调用组件
 
-#### 2、Vue.nextTick  DOM的异步更新
+#### 2、Vue.nextTick DOM的异步更新
 下次更新DOM更新循环结束之后执行延迟回调，在修改数据之后立即使用这个方法，获取**更新后的DOM**。
 我们看个栗子
 ```html
@@ -2711,3 +2711,175 @@ mo.observe(domTarget, {
       characterData: true //说明监听文本内容的修改。
 })
 ```
+
+#### 3、Vue.set 对象新增属性
+遇到这种情况，vue的data声明或者已经赋值过的对象或者数组（数组里的值是对象），向对象中添加新的属性，更新属性值，视图确没有更新。
+官方文档定义：如果在实例创建之后添加新的属性到实例上，它不会触发视图更新。
+
+看个栗子：
+```html
+ <div class="app">
+    <div>
+      <p style="border:1px solid #5579ee" @click="add_d(obj)">{{obj.d}}</p>
+      <p style="border:1px solid #5579ee" @click="add_e(obj)"> {{obj.e}}</p>
+    </div>
+ </div>
+```
+```js
+ new Vue({
+        el: '.app',
+        data: {
+           obj: {}
+        },
+        mounted() {
+            this.obj = {d: 0};  
+            this.obj.e = 0;
+            console.log('新增e属性的set方法', this.obj)
+        },
+        methods: {
+            add_d(item){
+                item.d = item.d + 1;
+                console.log('d属性的值改变', item)
+            },
+            add_e(item){
+                item.e = item.e + 1;
+                console.log('e属性的值改变', item)
+            }
+        }
+    })
+```
+![vue_set](../image/font-end-image/vue_set.png)
+看图可知d属性是有get和set方法，新增的e属性是没有的。
+
+点击三次add_d方法，值跟着变了，视图跟着变了。
+![vue_set_add_d](../image/font-end-image/vue_set_add_d.png)
+
+点击三次add_e方法，值跟着变，视图没有变。
+![vue_set_add_e](../image/font-end-image/vue_set_add_e.png)
+
+##### 解决方案
+vue的官方定义：vue不允许在已经创建实例上动态添加新的根级响应式属性，然而可以使用Vue.set(object, key, value)方法将响应式属性添加到嵌套的对象中。
+
+比如上面的e属性的添加，可以这样写
+```js
+Vue.set(vm.obj, 'e',0)
+```
+还可以使用 vm.$set 实例方法，这也是全局 Vue.set 方法的别名：
+```js
+this.$set(this.obj, 'e', 0)
+```
+然后mounted方法中修改后
+![vue_set_update](../image/font-end-image/vue_set_update.png)
+
+
+#### 4、Vue.delete 对象删除属性
+删除对象的属性。如果对象是响应式的，确保删除能触发更新视图。这个方法主要用于避开 Vue 不能检测到属性被删除的限制。
+
+为什么要用delete？
+> 因为ES6之前，js没有提供方法来侦测一个属性被删除，如果我们通过delete删除一个属性，vue是检测不到，因此不会触发数据响应式。
+
+```html
+<div class="app">
+        <div>
+            名字: {{ user.name }} 年纪: {{ user.age }}
+            <button @click="addUserAgeField">删除一个年纪字段</button>
+        </div>
+    </div>
+```
+```js
+const app = new Vue({
+        el: ".app",
+        data: {
+            user: {
+                name: "test",
+                age: 10
+            }
+        },
+        mounted() { },
+        methods: {
+            addUserAgeField() {
+                // delete this.user.age; // js方法 这样是不起作用, 不会触发数据响应式更新
+                this.$delete(this.user, 'age') // vue方法 响应式起作用
+            }
+        }
+    });
+```
+
+#### 5、Vue.directive 自定义vue指令
+vue提供了很多指令，比如：v-model， v-on， v-show等。而且还提供了四定义directive属性来自定义指定。
++ 本质：vue.directive是一种特殊的html元素属性
+
+提供两种注册方法：
++ 全局注册
++ 局部注册
+
+#### 为什么要用VueDirective
+我们在vue中也是可以操作dom，为啥要用vue的directive来封装dom操作。
++ 因为vue已经实现了MVVM的架构，实现了view和viewModel分离，我们必须封装dom操作，vue是数据驱动的，属于vieModel层，不应该出现view层上的dom操作。
++ vue的directive是dom元素创建，销毁绑定的，vue的directive能让我们更优雅的进行dom操作。
+
+
+#### 全局注册
+在Vue.directive中定义组件的名字和相关指令操作
+```js
+Vue.directive('my-directive', {
+    // 一些option，提供hook function定义具体操作，比如inserted，bind等
+    bind: function() {
+        
+    },
+    inserted: function(el) {
+    //  指令插入元素后的操作
+    },
+    update: function() {
+      
+    },
+    componentUpdates: function() {
+      
+    },
+    unbild: function() {
+      
+    }
+})
+```
+我们来实现一个简单的指令：实现页面加载时，input元素获取焦点。
+```js
+Vue.directive('focus', {
+    // 被绑定的元素插入到DOM中
+    inserted: function(el) {
+      // 聚焦元素
+      el.focus()
+    }
+})
+```
+我们再来实现一个简单的指令：用户滚动到页面底部请求更多数据。
+ 1、将dom操作封装到指定的option中
+ ```js
+let scrollCallback = function(callback) {
+  if(document.body.scrollHeight < 1000) {
+      return ;
+  }
+  if(document.body.scrollHeight - window.scrollY - 100 <= document.body.clientHeight){
+      callback();
+  }
+}
+let callBackWarpped;
+export default {
+    bind: function(el, binding, vnode) {
+      callBackWarpped = scrollCallback.bind({}, binding.value);
+      window.addEventListener("scroll", callBackWarpped)
+    },
+    unbind: function() {
+      window.removeEventListener("scroll", callBackWarpped)
+    }
+}
+```
+首先需要监听页面的滚动，如果触发了scroll事件就要执行回调函数，由于接触绑定的时候也要将监听事件从window上移除，所以必须给回调函数取一个名字，
+比如例子的scrollCallback，在unbind函数中将监听移除，因此scrollCallback的具体定义在对象外执行。
+
+并且回调函数应该在页面滑动到底端才执行，也就是说不是马上执行binding.value，如何实现bind.value作为函数的参数传进scrollCallback，先判断，满足条件的时候调用
+
+
+
+
+
+
