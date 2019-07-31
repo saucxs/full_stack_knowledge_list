@@ -2806,7 +2806,7 @@ const app = new Vue({
 ```
 
 #### 5、Vue.directive 自定义vue指令
-vue提供了很多指令，比如：v-model， v-on， v-show等。而且还提供了四定义directive属性来自定义指定。
+vue提供了很多指令，比如：v-model， v-on， v-show等。而且还提供了自定义directive属性来自定义指令。
 + 本质：vue.directive是一种特殊的html元素属性
 
 提供两种注册方法：
@@ -2816,7 +2816,7 @@ vue提供了很多指令，比如：v-model， v-on， v-show等。而且还提�
 #### 为什么要用VueDirective
 我们在vue中也是可以操作dom，为啥要用vue的directive来封装dom操作。
 + 因为vue已经实现了MVVM的架构，实现了view和viewModel分离，我们必须封装dom操作，vue是数据驱动的，属于vieModel层，不应该出现view层上的dom操作。
-+ vue的directive是dom元素创建，销毁绑定的，vue的directive能让我们更优雅的进行dom操作。
++ vue的directive是在dom元素创建，销毁绑定的，vue的directive能让我们更优雅的进行dom操作。
 
 
 #### 全局注册
@@ -2866,20 +2866,403 @@ let callBackWarpped;
 export default {
     bind: function(el, binding, vnode) {
       callBackWarpped = scrollCallback.bind({}, binding.value);
-      window.addEventListener("scroll", callBackWarpped)
+      window.addEventListener("scroll", callBackWarpped, true)
     },
     unbind: function() {
-      window.removeEventListener("scroll", callBackWarpped)
+      window.removeEventListener("scroll", callBackWarpped, true)
     }
 }
 ```
-首先需要监听页面的滚动，如果触发了scroll事件就要执行回调函数，由于接触绑定的时候也要将监听事件从window上移除，所以必须给回调函数取一个名字，
+首先需要监听页面的滚动，如果触发了scroll事件就要执行回调函数，由于解除绑定的时候也要将监听事件从window上移除，所以必须给回调函数取一个名字，
 比如例子的scrollCallback，在unbind函数中将监听移除，因此scrollCallback的具体定义在对象外执行。
 
 并且回调函数应该在页面滑动到底端才执行，也就是说不是马上执行binding.value，如何实现bind.value作为函数的参数传进scrollCallback，先判断，满足条件的时候调用
 
+ 2、导入directive的option，并且注册vue指令
+ 在入口文件main.js中
+ ```js
+/* scroll全局置顶scroll */
+import scrollDirective from '../src/utils/scroll';
+Vue.directive('scroll', scrollDirective)
+```
+
+3、在相应的dom上加上指令
+```html
+<ul v-scroll = "onScroll"></ul>
+```
+
+
+#### 6、Vue.filter 自定义过滤器
+过滤器可以用在两个地方：双花括号插值和 v-bind 表达式。
+```html
+<!-- 在双花括号中 -->
+{{ message | capitalize }}
+
+<!-- 在 `v-bind` 中 -->
+<div v-bind:id="rawId | formatId"></div>
+```
+有两种定义方式：
++ 组件选项中通过filters定义本地的过滤器
++ Vue.filter定义全局的过滤器
+
+**1、局部过滤**
+```js
+filters: {
+  capitalize: function (value) {
+    if (!value) return ''
+    value = value.toString()
+    return value.charAt(0).toUpperCase() + value.slice(1)
+  }
+}
+```
+
+
+**2、全局过滤**
+```js
+// 首字母大写的过滤器
+Vue.filter('capitalize', function (value) {
+        if (!value) return ''
+        value = value.toString()
+        return value.charAt(0).toUpperCase() + value.slice(1)
+})
+```
+
+**3、过滤器串联**
+```js
+{{ message | filterA | filterB }}
+```
+filterA 被定义为接收单个参数的过滤器函数，表达式 message 的值将作为参数传入到函数中。然后继续调用同样被定义为接收单个参数的过滤器函数 filterB，将 filterA 的结果传递到 filterB 中。
+
+**4、接收多个参数**
+```js
+{{ message | filterA('arg1', arg2) }}
+```
+注意：filterA 被定义为接收三个参数的过滤器函数。其中 message 的值作为第一个参数，普通字符串 'arg1' 作为第二个参数，表达式 arg2 的值作为第三个参数。
+
+#### 7、Vue.component 注册或者获取全局组件
+官方定义：注册或获取全局组件。注册还会自动使用给定的id设置组件的名称。
+
+```js
+// 注册组件，传入一个扩展过的构造器
+Vue.component('my-component', Vue.extend({ /* content */ }));
+
+// 注册组件，传入一个选项对象（自动调用Vue.extend）
+Vue.component('my-component', { /* content */})
+
+// 获取注册的组件（始终返回构造器）
+var MyComponent = Vue.component('my-component')
+```
+写一个组件实例：
+```js
+// 定义一个名为 button-counter 的新组件
+Vue.component('button-counter', {
+  data: function () {
+    return {
+      count: 0
+    }
+  },
+  template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+})
+```
+组件是可复用的vue实例，且带有一个名字，我们可以通过创建vue跟实例，把这个组件作为自定义元素来使用。
+```html
+<div id="components-demo">
+  <button-counter></button-counter>
+</div>
+```
+```js
+new Vue({
+    el: '#components-demo'
+})
+```
+因为**组件是可复用的Vue实例**，所以组件与new Vue接收相同的选项，例如：
+data，computed，watch，methods以及生命周期钩子等。区别**el这样的跟市里特有的选项**。
+
+总的来说：
++ 通过Vue.extend生成的扩展实例构造器是一个**全局组件**，参数可以是扩展实例，也可以是一个对象（自动调用extend方法）。
++ 两个参数，一个组件名，一个extend构造器或者对象。
+```js
+var obj = {
+    props: [],
+    tempalte: '<div><p>{{}extendData}}</p></div>',
+    data: function() {
+      return {
+          extendData: 'Vue.component传入vue.extend注册的组件'
+      }
+    }
+}
+
+var bigObj = Vue.extend(obj);
+
+// 2、注册组件方法1：传入Vue.extend扩展过的构造器
+Vue.component('component-one', bigObj);
+
+// 3、注册组件方法2：直接传入
+Vue.component('component-two', obj);
+
+// 3、挂载
+new Vue({
+    el: '#app'
+})
+
+// 获取注册的组件（始终返回构造器）
+var oneComponent = Vue.component('component-one');
+oneComponent === bigObj   //true，返回bigObj构造器
+```
+
+
+#### 8、Vue.use 安装vue插件
+官方解释：安装vue插件。本质上是执行了install方法，install方法由开发者定义。
++ 如果插件是一个对象，必须使用install方法
++ 如果插件是一个函数，会被作为install方法
+install方法调用，会将vue作为参数传入
+
+install必须用在new Vue()之前被调用
+
+install方法被同一个插件多次调用，插件只会安装一次。
+
+vue插件应该暴露一个install方法，方法的第一个参数是vue构造器，第二个是可选的选项对象。
+```js
+const MyPlugin = {
+    install: function(Vue, options){
+         // 1. 添加全局方法或属性
+          Vue.myGlobalMethod = function () {
+            // 逻辑...
+          }
+          
+            // 2. 添加全局资源
+            Vue.directive('my-directive', {
+              bind (el, binding, vnode, oldVnode) {
+                // 逻辑...
+              }
+            })
+            
+             // 3. 注入组件选项
+              Vue.mixin({
+                created: function () {
+                  // 逻辑...
+                }
+                ...
+              })
+            
+              // 4. 添加实例方法
+              Vue.prototype.$myMethod = function (methodOptions) {
+                // 比如
+                hide: () => {
+                   // 逻辑...
+                  }
+              }
+          
+    }
+}
+
+export default { MyPlugin }
+```
+在new Vue之前使用
+```js
+import MyPlugin from 'MyPlugin';
+Vue.use(MyPlugin)
+```
+在具体页面的使用实例方法：
+```js
+this.$myMethod.hide()
+```
+
+总结：
++ vue插件是一个对象
++ 插件对象必须有install字段
++ install字段是一个函数
++ 初始化插件对象需要使用Vue.use()
+
+vue官方提供一些插件，比如vue-router，在检测vue是可访问全局变量时会自动调用Vue.use()
+```js
+// 用 Browserify 或 webpack 提供的 CommonJS 模块环境时
+var Vue = require('vue')
+var VueRouter = require('vue-router')
+
+// 不要忘了调用此方法
+Vue.use(VueRouter)
+```
+
+
+
+#### 9、Vue.mixin 全局注册实例，但是会影响后边每一个实例
+官方介绍：全局注册一个混入，影响注册之后所有创建的每一个vue实例。
+**注意**：插件开发可以混入，向组件注入自定义行为，不推荐在应用代码中使用。
+
+值可以是一个混合对象数组，混合实例包括选项，将在extend将相同的选项合并mixin代码：
+```js
+  var mixin = {
+    data: {mixinData:'我是mixin的data'},
+    created: function(){
+      console.log('这是mixin的created');
+    },
+    methods: {
+      getSum: function(){
+        console.log('这是mixin的getSum里面的方法');
+      }
+    }
+  }
+
+  var mixinTwo = {
+    data: {mixinData:'我是mixinTwo的data'},
+    created: function(){
+      console.log('这是mixinTwo的created');
+    },
+    methods: {
+      getSum: function(){
+        console.log('这是mixinTwo的getSum里面的方法');
+      }
+    }
+  } 
+
+  var vm = new Vue({
+    el: '#app',
+    data: {mixinData:'我是vue实例的data'},
+    created: function(){
+      console.log('这是vue实例的created');
+    },
+    methods: {
+      getSum: function(){
+        console.log('这是vue实例里面getSum的方法');
+      }
+    },
+    mixins: [mixin,mixinTwo]
+  })
+  
+// 打印结果为:
+// 这是mixin的created
+// 这是mixinTwo的created
+// 这是vue实例的created
+// 这是vue实例里面getSum的方法
+```
+总结：
++ mixins执行顺序mixins > mixinTwo > created（实例的）。
++ 选项中的data，methods，后面的执行会覆盖前面的，而生命周期钩子都会执行。
+
+
+#### 10、Vue.compile 将模板转换为一个render函数
+官方解释：在render函数中编译模板字符串
+
+我的理解：将模板转换为render函数。
+
+vue大多数情况下，使用模板来创建你的html，然而在一些场景中，可以使用渲染函数，他比模板更接近编译器。
+
+##### 例子
+比如我们要生成一些带描点的标题
+```js
+<div id="app">
+  <header>
+    <h1>I am a template!</h1>
+  </header>
+  <p v-if="message">
+    {{ message }}
+  </p>
+  <p v-else>
+    No message.
+  </p>
+</div>
+```
+方法会返回一个对象，对象中有 render 和 staticRenderFns 两个值。看一下生成的 render函数
+```js
+// render
+(function() {
+  with(this){
+    return _c('div',{   //创建一个 div 元素
+      attrs:{"id":"app"}  //div 添加属性 id
+      },[
+        _m(0),  //静态节点 header，此处对应 staticRenderFns 数组索引为 0 的 render 函数
+        _v(" "), //空的文本节点
+        (message) //三元表达式，判断 message 是否存在
+         //如果存在，创建 p 元素，元素里面有文本，值为 toString(message)
+        ?_c('p',[_v("\n    "+_s(message)+"\n  ")])
+        //如果不存在，创建 p 元素，元素里面有文本，值为 No message. 
+        :_c('p',[_v("\n    No message.\n  ")])
+      ]
+    )
+  }
+})
+```
+要看懂上面的 render函数，只需要了解 _c，_m，_v，_s 这几个函数的定义，其中 _c 是 createElement（创建元素），_m 是 renderStatic（渲染静态节点），_v 是 createTextVNode（创建文本dom），_s 是 toString （转换为字符串）
+
+除了 render 函数，还有一个 staticRenderFns 数组，这个数组中的函数与 VDOM 中的 diff 算法优化相关，我们会在编译阶段给后面不会发生变化的 VNode 节点打上 static 为 true 的标签，那些被标记为静态节点的 VNode 就会单独生成 staticRenderFns 函数
+
+![模板渲染过程](../image/font-end-image/vue-template.png)
+
+解释：
++ mount函数：主要是获取template，然后进入compileToFunctions函数
++ compileToFunction函数：主要是将template编译成render函数。首先读取缓存，没有缓存就调用compile
+方法拿到render函数的字符串形式，在通过new Function的方式生成render函数。
++ compile函数：将templaye编译成render函数的字符串形式。
+
+完成render方法后，会进入到mount进行DOM更新。
+```js
+// 触发 beforeMount 生命周期钩子
+callHook(vm, 'beforeMount')
+// 重点：新建一个 Watcher 并赋值给 vm._watcher
+vm._watcher = new Watcher(vm, function updateComponent () {
+  vm._update(vm._render(), hydrating)
+}, noop)
+hydrating = false
+// manually mounted instance, call mounted on self
+// mounted is called for render-created child components in its inserted hook
+if (vm.$vnode == null) {
+  vm._isMounted = true
+  callHook(vm, 'mounted')
+}
+return vm
+```
+首先会new一个watcher对象（主要是将模板与数据建立联系），在watcher对象创建后，会运行传入的方法 vm._update(vm._render(), hydrating) 。其中的vm._render()主要作用就是运行前面compiler生成的render方法，并返回一个vNode对象。vm.update() 则会对比新的 vdom 和当前 vdom，并把差异的部分渲染到真正的 DOM 树上。
+
++ compile函数
+
+```js
+export function compile (
+  template: string,
+  options: CompilerOptions
+): CompiledResult {
+  const AST = parse(template.trim(), options) //1. parse
+  optimize(AST, options)  //2.optimize
+  const code = generate(AST, options) //3.generate
+  return {
+    AST,
+    render: code.render,
+    staticRenderFns: code.staticRenderFns
+  }
+}
+```
+
+这个函数主要有三个步骤组成：parse，optimize 和 generate，分别输出一个包含 AST，staticRenderFns 的对象和 render函数 的字符串。
 
 
 
 
 
+
+
+
+
+原来没有和数据绑定的 dom 会放到 staticRenderFns 中，然后在 render 中以_m(0)来调用。但是并不尽然，比如上述模板去掉<h1>，staticRenderFns 长度为 0，header 直接放到了 render 函数中。
+```js
+(function() { //上面 render 函数 中的 _m(0) 会调用这个方法
+  with(this){
+    return _c('header',[_c('h1',[_v("I'm a template!")])])
+  }
+})
+```
+Vue.compile 对应的源码比较复杂，上述渲染 <header> 没有放到 staticRenderFns 对应源码的核心判断如下：
+```js
+ // For a node to qualify as a static root, it should have children that
+ // are not just static text. Otherwise the cost of hoisting out will
+ // outweigh the benefits and it's better off to just always render it fresh.
+ if (node.static && node.children.length && !(
+         node.children.length === 1 &&
+         node.children[0].type === 3
+     )) {
+     node.staticRoot = true;
+     return
+ } else {
+     node.staticRoot = false;
+ }
+```
+<header> 不符判断条件 !(node.children.length === 1 && node.children[0].type === 3)， <header> 有一个子节点 TextNode（nodeType=3）。 注释也说明了一个 node 符合静态根节点的条件。
