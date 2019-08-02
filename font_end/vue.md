@@ -1,16 +1,15 @@
-
-
 ## 22、Vue
 Vue框架的入口就是vue实例，其实是框架中的View Model ，他包含了页面中的业务处理逻辑，数据模型，生命周期中多个事件钩子。
 
 Vue实例虽然没有完全遵循MVVM模型，但是收到MVVM的启发。
 
 ![vue没有完全遵循MVVM模型](../image/font-end-image/vue的MVVM模型.png)
+
 从图中知道：vue实际就是MVVM中的VM，就是ViewModel，所以看到文档中的vm这个变量其实就是Vue实例。
 ```js
 let app = new Vue({
     el: '#app',
-    date() {
+    data() {
         return {
             name: 'saucxs',
             count: 0
@@ -311,12 +310,15 @@ mo.observe(domTarget, {
     })
 ```
 ![vue_set](../image/font-end-image/vue_set.png)
+
 看图可知d属性是有get和set方法，新增的e属性是没有的。
 
 点击三次add_d方法，值跟着变了，视图跟着变了。
+
 ![vue_set_add_d](../image/font-end-image/vue_set_add_d.png)
 
 点击三次add_e方法，值跟着变，视图没有变。
+
 ![vue_set_add_e](../image/font-end-image/vue_set_add_e.png)
 
 ##### 解决方案
@@ -331,6 +333,7 @@ Vue.set(vm.obj, 'e',0)
 this.$set(this.obj, 'e', 0)
 ```
 然后mounted方法中修改后
+
 ![vue_set_update](../image/font-end-image/vue_set_update.png)
 
 
@@ -878,15 +881,17 @@ diff算法来源于snabbdom，是VDOM思想的核心。snabbdom的算法是为�
 
 现在如何说出生命周期的亮点：
 
-#### 1、init初始化
+#### 1、init各种初始化
+首先，我们需要创建一个实例，也就是new Vue()的对象的过程中，首先执行init（init是vue组件中默认去执行的）
 
-+ 首先，我们需要创建一个实例，也就是new Vue()的对象的过程中，首先执行init（init是vue组件中默认去执行的）
-+ 在init过程中，首先生命周期（init lifeCycle）和初始化事件（init Events），模板变量初始化（initRender）
-+ 执行beforeCreate方法
-+ 父组件的依赖初始化（initInjections）
-+ 初始化数据（initState）
-+ 子组件的依赖初始化（initProvide）
-+ 执行created方法
++ （1）首先生命周期（init lifeCycle）：初始化vm实例上的一些参数
++ （2）事件监听的初始化（init Events）
++ （3）模板解析变量的初始化（initRender）
++ （4）执行beforeCreate方法
++ （5）父组件初始化注入（initInjections）：数据初始化之前
++ （6）初始化数据（initState） vm上的prop/data/computed/method/watch状态在初始化。初始化initData方法
++ （7）子组件初始化注入（initProvide）：数据初始化之后
++ （8）执行created方法
 
 > 不要在beforeCreate中去修改data，因为数据还没有初始化，所以最早也要在created中修改data。
 
@@ -907,18 +912,9 @@ diff算法来源于snabbdom，是VDOM思想的核心。snabbdom的算法是为�
        vm.$mount(vm.$options.el)   // 模板编译入口
     }
 ```
-##### （1）initLifeCycle主要是初始化vm实例上的一些参数。
-##### （2）initEvents是事件监听的初始化。
-##### （3）initRender是模板解析变量初始化
 
 >vue1.0使用[documentFragment](https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment)进行模板解析，
 vue2.0使用的是[HTML Parser](https://github.com/vuejs/vue/blob/dev/src/compiler/parser/html-parser.js)将模板解析成都直接执行的render函数，模板预编译是服务端SSR前提。
-
-##### （4）callHook(vm, 'beforeCreate')是执行钩子，是你在vue实例写的beforeCreate方法。
-
-##### （5）initInjections(vm) 数据初始化之前，父组件初始化注入
-
-##### （6）initState  vm的prop/data/computed/method/watch状态都在初始化
 
 源码地址[initState](https://github.com/vuejs/vue/blob/dev/src/core/instance/state.js#L48)
 ```js
@@ -972,46 +968,42 @@ function initData (vm: Component) {
   observe(data, true /* asRootData */)    // 关键，来对data做监听
 }
 ```
-这个函数作用：
+initData这个函数作用：
 + 保证data是纯对象
 + 判断与methods里的属性是否有重复，有就报错
 + 进行数据代理，方便数据读取，代理后我们可以使用vm.key，而不需要vm._data.key
 + 调用observe方法，这是响应式的关键
-
 
 observe 方法会为传进来的 value 值创建一个 Observer 对象，
 observe 方法主要就是判断 value 是否已经是 Observer 对象，
 如果是直接返回；否则，若干个判断条件成立则将这个对象转化为 Observer 对象。
 
 
-##### （7）initProvide  数据初始化之后，子组件初始化注入
+#### 2、beforeMount和mounted
 
-##### （8）callHook(vm, 'Created')是执行钩子，是你在vue实例写的Created方法。
-
-
-#### 2、created之后，经历beforeMount，经历mounted
-
-+ 判断是否有el的option选项
++ （1）判断是否有el的option选项
 
 created完成之后，会去判断实例（instance）是否包含el的option选项，
-如果没有，就会调用vm.$mount(el)这个方法，然后执行下一步，
-如果有直接执行下一步。
+如果没有，就会调用**vm.$mount(el)**这个方法挂载模板，然后执行下一步，
+如果有，直接执行下一步。
 
-+ 判断是否有template选项
++ （2）判断是否有template选项
 
 判断玩el的options选项之后，会去判断是否含有实例内部template选项
 如果有，将实例内部template解析成一个render function（渲染函数），是template编译过程，结果是解析成render函数的字符串形式。
 如果没有，将调用外部html。
-内部template属性比外部的优先级高
 
-render函数发生在beforeMount和mounted之间，beforeMount的时候，$el还只是我们html里面写的节点，
-然后mounted的时候，他就把渲染出来的内容挂载到DOM节点上，中间过程其实是执行render function（渲染函数）的内容。
++ （3）beforeMount钩子函数：将已经完成的html挂载到对应的虚拟DOM上，$el还只是我们html里面写的节点。
+
++ （4）虚拟DOM替换真实DOM：也就是将编译好的html替换el属性指向的DOM。编译过程是render function（渲染函数）
+
++ （5）mounted钩子函数：完成真实DOM的挂载，做一些异步请求数据，mounted在实例中只执行一次。
 
 我们在写.vue开发中，写template模板，经过vue-loader处理之后，变成render function（渲染函数），
 最终放到vue-loader解析过的文件里。为啥要这样做，因为解析template变成render function过程，
 非常耗时，vue-loader帮我们提前做了，这样页面执行vue代码，效率会变得更好。
 
-执行完render function（渲染函数）执行完毕，，就会走到mounted这里，mounted挂载完毕，这个实例算走完流程了。
+mounted挂载完毕，这个实例算走完流程了。
 
 **疑问**：
 + 1、为什么el属性判断在判断template之前？因为el属性是一个选择器，vue实例需要用这个选择器el去template中寻找对应的。
@@ -1020,10 +1012,13 @@ render函数发生在beforeMount和mounted之间，beforeMount的时候，$el还
 + 4、vue的编译过程：将template编译成render函数过程
 + beforeMount到mounted过程：vue实例的$el去代替渲染函数中html内的el属性
 
-#### 3、beforeUpdate和updated
-外部触发比如：数据变化，会调用beforeUpdate，经过Virtual DOM，最后Updated更新完毕。
-
+#### 3、数据变化，更新DOM
 这个更新过程：数据变化-->导致虚拟DOM改变-->调用这个两个钩子改变视图
+
++ （1）监听数据变化
++ （2）beforeUpdate钩子函数：数据更新之前
++ （3）渲染新的虚拟DOM，拿新的虚拟DOM与之前虚拟DOM比较，使用diff算法，然后更新视图
++ （4）updated钩子函数：更新视图之后
 
 > 这个数据只有和模板中数据绑定了才会发生更新
 
@@ -1057,7 +1052,7 @@ obj.a = 'saucxs'    //set val
 
 vue的响应式原理设计三个重要对象：Observer，Watcher，Dep。
 + Observer对象：vue中的数据对象在初始化过程中转换为Observer对象。
-+ Watcher对象：将模板和Observer对象结合在一起纽带，Watcher是订阅者中的订阅者。
++ Watcher对象：将模板和Observer对象结合在一起生成Watcher实例，Watcher是订阅者中的订阅者。
 + Dep对象：Watcher对象和Observer对象之间纽带，每一个Observer都有一个Dep实例，用来存储订阅者Watcher。
 
 当属性变化会执行主题对象Observer的dep.notify方法，
@@ -1065,16 +1060,20 @@ vue的响应式原理设计三个重要对象：Observer，Watcher，Dep。
 Watcher会执行run方法去更新视图。
 
 依赖关系图：
+
 ![vue的依赖关系图](../image/font-end-image/vue-reactive.jpg)
+
 模板编译过程中的指令和数据绑定都会生成Watcher实例，实例中的watch属性也会生成Watcher实例。
 
 **总结响应式原理**
+
 ![vue的数据更新](../image/font-end-image/vue_data.png)
+
 + 在生命周期的initState方法中将data，prop，method，computed，watch中的数据劫持，
 通过observe方法与Object.defineProperty方法将相关对象转为换Observer对象。
 + 然后在initRender方法中解析模板，通过Watcher对象，Dep对象与观察者模式将模板中的
 指令与对象的数据建立依赖关系，使用全局对象Dep.target实现依赖收集。
-+ 当数据变化时，触发Object.defineProperty方法中的dep.notify方法，
++ 当数据变化时，setter被调用，触发Object.defineProperty方法中的dep.notify方法，
 遍历该数据依赖列表，执行器update方法通知Watcher进行视图更新。
 + vue是无法检测到对象属性的添加和删除，但是可以使用全局Vue.set方法（或vm.$set实例方法）。
 + vue无法检测利用索引设置数组，但是可以使用全局Vue.set方法（或vm.$set实例方法）。
@@ -1087,12 +1086,13 @@ Watcher会执行run方法去更新视图。
 + created：结束loading，初始化数据获取
 
 
-#### 3、beforeDestroy和destroyed
-当组件被销毁的时候，会调用beforeDestroy和destroyed。
+#### 4、实例销毁
++ （1）beforeDestroy钩子函数：实例销毁之前
++ （2）拆除数据监听，子组件，事件监听
++ （3）destroyed钩子函数：实例销毁完成后
 
 
-
-#### 4、不常用的生命钩子
+#### 5、不常用的生命周期钩子
 + activated：当组件激活的时候调用
 + deactivated：组件停用的时候调用
 + errorCaptured：vue2.5之后出现，捕获子孙组件错误被调用
@@ -1100,6 +1100,10 @@ Watcher会执行run方法去更新视图。
 
 
 
+### 22.3 vue的核心
+http://www.chengxinsong.cn/post/25
 
 
+### 22.4 Diff算法的内部实现
 
+http://www.chengxinsong.cn/post/27
