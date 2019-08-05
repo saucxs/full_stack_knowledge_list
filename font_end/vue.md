@@ -1104,6 +1104,6 @@ Watcher会执行run方法去更新视图。
 http://www.chengxinsong.cn/post/25
 
 
-### 22.4 Diff算法的内部实现
+### 22.4 虚拟DOM和Diff算法的内部实现
 
 http://www.chengxinsong.cn/post/27
