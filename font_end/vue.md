@@ -1124,10 +1124,35 @@ vuex是专门为vue的框架而设计的，用于对vue的状态管理的库，�
 
 ![vuex](../image/font-end-image/vuex.png)
 
-分析上图：vuex实现的是一个单向数据流，在全局拥有一个State对象存放数据，所有的修改State操作必须通过Mutation进行，
-Mutation的同时提供
+分析上图：vuex实现的是一个单向数据流，
+在全局拥有一个State对象存放数据，所有的修改State操作必须通过Mutation进行，
+Mutation的同时提供订阅者模式供外部插件调用获取State数据的更新。
+所有异步接口需要走Action，常见于调用后端接口异步获取更新数据。
+而Action无法直接修改State，还需要通过Mutation来修改State的数据。
+最后更具State的变化，渲染视图上。
+总的来说：vuex运行依赖于vue内部数据的双向绑定机制，需要new一个vue对象来实现响应式机制。
 
 
+### 23.1 Vuex是怎样把store注入到Vue实例中去的呢？
+Vue.js提供了Vue.use方法用来给Vue.js安装插件，内部通过调用插件的install方法(当插件是一个对象的时候)来进行插件的安装。
 
-
-
+我们来看一下Vuex的install实现。
+```js
+/*暴露给外部的插件install方法，供Vue.use调用安装插件*/
+export function install (_Vue) {
+  if (Vue) {
+    /*避免重复安装（Vue.use内部也会检测一次是否重复安装同一个插件）*/
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(
+        '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+      )
+    }
+    return
+  }
+  /*保存Vue，同时用于检测是否重复安装*/
+  Vue = _Vue
+  /*将vuexInit混淆进Vue的beforeCreate(Vue2.0)或_init方法(Vue1.0)*/
+  applyMixin(Vue)
+}
+```
+这段install代码做了两件事情，一件是防止Vuex被重复安装，另一件是执行applyMixin，目的是执行vuexInit方法初始化Vuex。Vuex针对Vue1.0与2.0分别进行了不同的处理，如果是Vue1.0，Vuex会将vuexInit方法放入Vue的_init方法中，而对于Vue2.0，则会将vuexinit混淆进Vue的beforeCreate钩子中。
