@@ -1116,7 +1116,7 @@ vue在开发复杂的应用的时候，经常会遇到多个组件共享一个�
 但是随着系统庞大，代码变得难以维护，从父组件开始通过prop传递多层嵌套的数据由于层级过深显得异常脆弱，
 而事件总线也会组件的增多，代码量增加变得交错复杂，难以滤清数据传递关系。
 
-我们可以将数据层与组件层抽离出来，吧数据层放到全局形成单一的Store，组件变得更薄，专门用来进行数据展示和操作。
+我们可以将数据层与组件层抽离出来，把数据层放到全局形成单一的Store，组件变得更薄，专门用来进行数据展示和操作。
 所有数据变更都需要经过全局Store来进行，从而形成一个单向数据流，使数据变化变得可预测。
 
 vuex是专门为vue的框架而设计的，用于对vue的状态管理的库，借鉴了redux的基本思想，将共享数据抽离到全局，
@@ -1129,12 +1129,12 @@ vuex是专门为vue的框架而设计的，用于对vue的状态管理的库，�
 Mutation的同时提供订阅者模式供外部插件调用获取State数据的更新。
 所有异步接口需要走Action，常见于调用后端接口异步获取更新数据。
 而Action无法直接修改State，还需要通过Mutation来修改State的数据。
-最后更具State的变化，渲染视图上。
+最后根据State的变化，渲染视图上。
 总的来说：vuex运行依赖于vue内部数据的双向绑定机制，需要new一个vue对象来实现响应式机制。
 
 
 ### 23.1 Vuex是怎样把store注入到Vue实例中去的呢？
-Vue.js提供了Vue.use方法用来给Vue.js安装插件，内部通过调用插件的install方法(当插件是一个对象的时候)来进行插件的安装。
+Vue.js提供了**Vue.use**方法用来给Vue.js安装插件，内部通过调用插件的install方法(当插件是一个对象的时候)来进行插件的安装。
 
 我们来看一下Vuex的install实现。
 ```js
@@ -1155,4 +1155,415 @@ export function install (_Vue) {
   applyMixin(Vue)
 }
 ```
-这段install代码做了两件事情，一件是防止Vuex被重复安装，另一件是执行applyMixin，目的是执行vuexInit方法初始化Vuex。Vuex针对Vue1.0与2.0分别进行了不同的处理，如果是Vue1.0，Vuex会将vuexInit方法放入Vue的_init方法中，而对于Vue2.0，则会将vuexinit混淆进Vue的beforeCreate钩子中。
+这段install代码做了两件事情，一件是防止Vuex被重复安装，另一件是执行applyMixin，目的是执行vuexInit方法初始化Vuex。
+Vuex针对Vue1.0与2.0分别进行了不同的处理，如果是Vue1.0，Vuex会将vuexInit方法放入Vue的_init方法中，
+而对于Vue2.0，则会将vuexinit混淆进Vue的beforeCreate钩子中。
+
+我们来看一下vueInit代码：
+```js
+ /*Vuex的init钩子，会存入每一个Vue实例等钩子列表*/
+  function vuexInit () {
+    const options = this.$options
+    // store injection
+    if (options.store) {
+      /*存在store其实代表的就是Root节点，直接执行store（function时）或者使用store（非function）*/
+      this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store
+    } else if (options.parent && options.parent.$store) {
+      /*子组件直接从父组件中获取$store，这样就保证了所有组件都公用了全局的同一份store*/
+      this.$store = options.parent.$store
+    }
+  }
+```
+vueInit会尝试options中获取store，
+如果当前组件是根组件（Root节点），则options中会存在store，直接赋值给$store。
+如果当前组件不是根组件，则通过options中的parent获取父组件的$store引用。
+这样所有的组件都获取到同一份内存地址的Store实例，于是我们在每一个组件中通过
+**this.$store**访问全局Store实例。
+
+
+### 23.2 什么是Store实例？
+我们传入到根组件的store，就是Store实例。
+用Vuex提供的Store方法构造：
+```js
+export default new Vuex.Store({
+    strict: true,
+    modules: {
+        moduleA,
+        moduleB
+    }
+});
+```
+我们来看一下Store的实现。首先是构造函数：
+```js
+constructor (options = {}) {
+    // Auto install if it is not done yet and `window` has `Vue`.
+    // To allow users to avoid auto-installation in some cases,
+    // this code should be placed here. See #731
+    /*
+      在浏览器环境下，如果插件还未安装（!Vue即判断是否未安装），则它会自动安装。
+      它允许用户在某些情况下避免自动安装。
+    */
+    if (!Vue && typeof window !== 'undefined' && window.Vue) {
+      install(window.Vue)
+    }
+
+    if (process.env.NODE_ENV !== 'production') {
+      assert(Vue, `must call Vue.use(Vuex) before creating a store instance.`)
+      assert(typeof Promise !== 'undefined', `vuex requires a Promise polyfill in this browser.`)
+      assert(this instanceof Store, `Store must be called with the new operator.`)
+    }
+
+    const {
+      /*一个数组，包含应用在 store 上的插件方法。这些插件直接接收 store 作为唯一参数，可以监听 mutation（用于外部地数据持久化、记录或调试）或者提交 mutation （用于内部数据，例如 websocket 或 某些观察者）*/
+      plugins = [],
+      /*使 Vuex store 进入严格模式，在严格模式下，任何 mutation 处理函数以外修改 Vuex state 都会抛出错误。*/
+      strict = false
+    } = options
+
+    /*从option中取出state，如果state是function则执行，最终得到一个对象*/
+    let {
+      state = {}
+    } = options
+    if (typeof state === 'function') {
+      state = state()
+    }
+
+    // store internal state
+    /* 用来判断严格模式下是否是用mutation修改state的 */
+    this._committing = false
+    /* 存放action */
+    this._actions = Object.create(null)
+    /* 存放mutation */
+    this._mutations = Object.create(null)
+    /* 存放getter */
+    this._wrappedGetters = Object.create(null)
+    /* module收集器 */
+    this._modules = new ModuleCollection(options)
+    /* 根据namespace存放module */
+    this._modulesNamespaceMap = Object.create(null)
+    /* 存放订阅者 */
+    this._subscribers = []
+    /* 用以实现Watch的Vue实例 */
+    this._watcherVM = new Vue()
+
+    // bind commit and dispatch to self
+    /*将dispatch与commit调用的this绑定为store对象本身，否则在组件内部this.dispatch时的this会指向组件的vm*/
+    const store = this
+    const { dispatch, commit } = this
+    /* 为dispatch与commit绑定this（Store实例本身） */
+    this.dispatch = function boundDispatch (type, payload) {
+      return dispatch.call(store, type, payload)
+    }
+    this.commit = function boundCommit (type, payload, options) {
+      return commit.call(store, type, payload, options)
+    }
+
+    // strict mode
+    /*严格模式(使 Vuex store 进入严格模式，在严格模式下，任何 mutation 处理函数以外修改 Vuex state 都会抛出错误)*/
+    this.strict = strict
+
+    // init root module.
+    // this also recursively registers all sub-modules
+    // and collects all module getters inside this._wrappedGetters
+    /*初始化根module，这也同时递归注册了所有子module，收集所有module的getter到_wrappedGetters中去，this._modules.root代表根module才独有保存的Module对象*/
+    installModule(this, state, [], this._modules.root)
+
+    // initialize the store vm, which is responsible for the reactivity
+    // (also registers _wrappedGetters as computed properties)
+    /* 通过vm重设store，新建Vue对象使用Vue内部的响应式实现注册state以及computed */
+    resetStoreVM(this, state)
+
+    // apply plugins
+    /* 调用插件 */
+    plugins.forEach(plugin => plugin(this))
+
+    /* devtool插件 */
+    if (Vue.config.devtools) {
+      devtoolPlugin(this)
+    }
+  }
+```
+Store的构造类除了初始化一些内部变量外，主要是执行了**installModule(初始化module)**以及**resetStoreVM(通过VM使Store响应式)**
+
+
+#### 1、installModule方法
+installModule方法主要是module加上namespace名字空间后，注册mutation，action以及getter，同时递归安装所有的子module。
+```js
+/*初始化module*/
+function installModule (store, rootState, path, module, hot) {
+  /* 是否是根module */
+  const isRoot = !path.length
+  /* 获取module的namespace */
+  const namespace = store._modules.getNamespace(path)
+
+  // register in namespace map
+  /* 如果有namespace则在_modulesNamespaceMap中注册 */
+  if (module.namespaced) {
+    store._modulesNamespaceMap[namespace] = module
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    /* 获取父级的state */
+    const parentState = getNestedState(rootState, path.slice(0, -1))
+    /* module的name */
+    const moduleName = path[path.length - 1]
+    store.`_withCommit`(() => {
+      /* 将子module设成响应式的 */
+      Vue.set(parentState, moduleName, module.state)
+    })
+  }
+
+  const local = module.context = makeLocalContext(store, namespace, path)
+
+  /* 遍历注册mutation */
+  module.forEachMutation((mutation, key) => {
+    const namespacedType = namespace + key
+    registerMutation(store, namespacedType, mutation, local)
+  })
+
+  /* 遍历注册action */
+  module.forEachAction((action, key) => {
+    const namespacedType = namespace + key
+    registerAction(store, namespacedType, action, local)
+  })
+
+  /* 遍历注册getter */
+  module.forEachGetter((getter, key) => {
+    const namespacedType = namespace + key
+    registerGetter(store, namespacedType, getter, local)
+  })
+
+  /* 递归安装mudule */
+  module.forEachChild((child, key) => {
+    installModule(store, rootState, path.concat(key), child, hot)
+  })
+}
+```
+
+#### 2、resetStoreVM方法
+我们看个小栗子：
+```js
+let globalData = {
+    d: 'hello world'
+};
+new Vue({
+    data () {
+        return {
+            $$state: {
+                globalData
+            }
+        }
+    }
+});
+
+/* modify */
+setTimeout(() => {
+    globalData.d = 'hi~';
+}, 1000);
+
+Vue.prototype.globalData = globalData;
+
+/* 任意模板中 */
+<div>{{globalData.d}}</div>
+```
+上述代码中全局有一个globalData，被传入一个Vue对象的data中，之后任意Vue模板中对该变量进行展示，
+因为此时globalData已经在Vue的prototype上所以直接通过this.prototype访问，也就是模板中的
+{{prototype.d}}。此时，setTimeout在1s后将globalData.d进行修改，我们会发现globalData发生改变。
+
+接下来看源码：
+```js
+/* 通过vm重设store，新建Vue对象使用Vue内部的响应式实现注册state以及computed */
+function resetStoreVM (store, state, hot) {
+  /* 存放之前的vm对象 */
+  const oldVm = store._vm 
+
+  // bind store public getters
+  store.getters = {}
+  const wrappedGetters = store._wrappedGetters
+  const computed = {}
+
+  /* 通过Object.defineProperty为每一个getter方法设置get方法，比如获取this.$store.getters.test的时候获取的是store._vm.test，也就是Vue对象的computed属性 */
+  forEachValue(wrappedGetters, (fn, key) => {
+    // use computed to leverage its lazy-caching mechanism
+    computed[key] = () => fn(store)
+    Object.defineProperty(store.getters, key, {
+      get: () => store._vm[key],
+      enumerable: true // for local getters
+    })
+  })
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  const silent = Vue.config.silent
+  /* Vue.config.silent暂时设置为true的目的是在new一个Vue实例的过程中不会报出一切警告 */
+  Vue.config.silent = true
+  /*  这里new了一个Vue对象，运用Vue内部的响应式实现注册state以及computed*/
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed
+  })
+  Vue.config.silent = silent
+
+  // enable strict mode for new vm
+  /* 使能严格模式，保证修改store只能通过mutation */
+  if (store.strict) {
+    enableStrictMode(store)
+  }
+
+  if (oldVm) {
+    /* 解除旧vm的state的引用，以及销毁旧的Vue对象 */
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(() => {
+        oldVm._data.$$state = null
+      })
+    }
+    Vue.nextTick(() => oldVm.$destroy())
+  }
+}
+```
+分析：resetStoreVM首先会遍历wrappedGetters，使用Object.defineProperty方法为每一个getter绑定上get方法，
+这样就可以在组件里访问this.$store.getters.test等同于访问store._vm.test。
+```js
+forEachValue(wrappedGetters, (fn, key) => {
+  // use computed to leverage its lazy-caching mechanism
+  computed[key] = () => fn(store)
+  Object.defineProperty(store.getters, key, {
+    get: () => store._vm[key],
+    enumerable: true // for local getters
+  })
+})
+```
+然后Vuex采用了new一个Vue对象来实现数据的“响应式化”，
+运用vue内部提供的响应式实现注册state以及computed
+store的数据与视图的同步更新。
+```js
+store._vm = new Vue({
+  data: {
+    $$state: state
+  },
+  computed
+})
+```
+这时候我们访问store._vm.test就是访问Vue实例中的属性。
+
+经过上面的forEachValue和new Vue，就可以通过this.$store.getter.test访问vm中的test属性。
+
+#### 3、严格模式
+Vuex的Store构造类的option有一个strict的参数，可以控制Vuex执行严格模式，严格模式下，所有的修改state的操作
+必须通过Mutation实现，否则会抛出错误。
+```js
+/* 使能严格模式 */
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, () => {
+    if (process.env.NODE_ENV !== 'production') {
+      /* 检测store中的_committing的值，如果是false代表不是通过mutation的方法修改的 */
+      assert(store._committing, `Do not mutate vuex store state outside mutation handlers.`)
+    }
+  }, { deep: true, sync: true })
+}
+```
+首先严格模式下，Vuex会利用vm的$watch方法来观察$$state，也就是Store的state，它被修改的时候进入回调。
+回调中只有一行，用assert断言来检测store._committing，当store._committing为false时候会触发断言，抛出异常。
+
+我们发现，Store的commit方法中，执行mutation的语句是这样的。
+```js
+this._withCommit(() => {
+  entry.forEach(function commitIterator (handler) {
+    handler(payload)
+  })
+})
+```
+来看看_withCommit的实现:
+```js
+_withCommit (fn) {
+  /* 调用withCommit修改state的值时会将store的committing值置为true，内部会有断言检查该值，在严格模式下只允许使用mutation来修改store中的值，而不允许直接修改store的数值 */
+  const committing = this._committing
+  this._committing = true
+  fn()
+  this._committing = committing
+}
+```
+我们发现，通过commit(mutation)修改state数据的时候，会在调用mutation方法之前将committing置为true，
+接下来再通过mutation函数修改state中的数据，这时候触发$watch中的回调断言committing是不会抛出异常的。
+而我们直接修改state的数据，触发$watch的回调执行断言，这时候committing为false，会抛出异常，这就是vuex的严格模式的实现。
+
+
+
+### 23.3 Store提供API：commit(mutation)
+```js
+/* 调用mutation的commit方法 */
+commit (_type, _payload, _options) {
+  // check object-style commit
+  /* 校验参数 */
+  const {
+    type,
+    payload,
+    options
+  } = unifyObjectStyle(_type, _payload, _options)
+
+  const mutation = { type, payload }
+  /* 取出type对应的mutation的方法 */
+  const entry = this._mutations[type]
+  if (!entry) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(`[vuex] unknown mutation type: ${type}`)
+    }
+    return
+  }
+  /* 执行mutation中的所有方法 */
+  this._withCommit(() => {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload)
+    })
+  })
+  /* 通知所有订阅者 */
+  this._subscribers.forEach(sub => sub(mutation, this.state))
+
+  if (
+    process.env.NODE_ENV !== 'production' &&
+    options && options.silent
+  ) {
+    console.warn(
+      `[vuex] mutation type: ${type}. Silent option has been removed. ` +
+      'Use the filter functionality in the vue-devtools'
+    )
+  }
+}
+```
+分析：commit方法会根据type找到并调用_mutation中的所有的type对应的mutation方法，所以没有namespace的时候，
+commit方法会触发所有module中的mutation方法。再执行完所有的mutation之后会执行_subscribers中的所有订阅者。
+
+看一下_subscribers是什么？
+Store给外部提供一个subscribe方法，用以注册一个订阅者函数，会push到Store实例的_subscribers中，
+同时返回一个从_subscribers中注销该订阅者的方法。
+```js
+/* 注册一个订阅函数，返回取消订阅的函数 */
+subscribe (fn) {
+  const subs = this._subscribers
+  if (subs.indexOf(fn) < 0) {
+    subs.push(fn)
+  }
+  return () => {
+    const i = subs.indexOf(fn)
+    if (i > -1) {
+      subs.splice(i, 1)
+    }
+  }
+}
+```
+在commit结束之后会调用这些_subscribers中的订阅者，这个订阅者模式提供给外部一个坚实state变化可能。state通过mutation改变，可以有效补充这些变化。
+
+
+
+
+
+
+
