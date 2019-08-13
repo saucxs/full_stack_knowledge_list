@@ -1192,7 +1192,7 @@ reduce作用就是在内存中生成上述的队列，这样精简了代码。
 
 + documentFragment，减少dom操作次数，降低回流对性能的影响。
 + requestAnimationFrame，分治的思想，分批插入到页面中，通过requestAnimationFrame在页面重绘前插入新的节点。
-+ 时间绑定，使用时间委托，而不是使用事件监听，从而减少dom事件注册数量。
++ 时间绑定，使用事件委托，而不是使用事件监听，从而减少dom事件注册数量。
 
 ```js
 (function() {
