@@ -153,3 +153,8 @@ redis单线程为啥这么快？
 
 
 ### 9、nginx处理静态文件优势？
+nginx相当于大自然搬运工，把网络路径和本地路径做了映射，比如：访问http://www.chengxinsong.cn 其实访问本地的\root\home\songEagle。
+
+通过url路径访问静态资源时，nginx根据映射地址找到资源文件位置，然后就去拿静态资源，返回给客户端。
+
+同时nginx支持压缩，和open_file_cache减少重复打开文件进行优化。加上nginx的高效的事件处理机制。
