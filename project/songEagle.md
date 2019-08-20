@@ -51,10 +51,43 @@ JWT（JSON WEB Token）本质就是一个token，在前后端进行传递进行�
 threejs是一个webGL为基础的库，对webGL的3D渲染工具方法与渲染循环封装的js库，省去繁琐的底层接口的交互，
 通过threejs可以快速生成三维模型。
 
-要创建模型，需要场景（scene），相机（camera）和渲染器（render）。
+要创建模型，需要场景（scene）：3D对象的容器；相机（camera）：透视相机和非透视相机；和渲染器（render）：渲染3D场景并转换给网页可视化模块输出。
 
 传统的三维图像制作，开发人员需要使用openGL图像程序接口进行开发，
 从而实现了高性能，极具冲击力的高视觉表现力图形处理软件开发。
 openGL不适合浏览器运行，在openGL为基础上，webGL统一标准，跨平台的openGL接口。
 webGL可以为HTML5 canvas提供硬件三维加速渲染，web开发人员借助显卡在浏览器里更流畅展示三维场景和模型，
 还能创建复杂的导航和数据可视化。
+
+**进阶**：
++ 材质相关，有哪几种材质，区别
+    > (1)meshBasicMaterial：为几何体赋予一种简单的颜色，或者显示几何体的线框。不考虑光照影响，
+    参数有color(颜色)，wireframe(是否开启控制线框)，wireframeLinewidth(线段宽度),shading(着色模式，可选值)，fog：全局雾化效果
+    设置的方式：
+    + 构造函数：var meshMaterial = new THREE.MeshBasicMaterial({color:0xffccff});
+    + 属性：meshMaterial.visible = false;
+    > (2)MeshDeptMaterial：外观不由光照或者某种材质属性决定，而是物体到照相机距离决定。
+    > (3)联合材质
++ 相机相关：4种相机（PerspectiveCamera透视相机:接近自然视图，符合近大远小的规律， OrthographicCamera正交相机，cubeCamera立体相机或者全景相机，StereoCamera3D相机
+    > var camera = new THREE.PerspectiveCamera(80,window.innerWidth/window.innerHeight,0.1,1000);
+    fov视场，人有180视场，推荐默认值45，可以使用60-90的视场。aspect长宽比，默认值上面，near近面，见上，far远面，默认值见上。
++ 对灯光的感应程度
++ 面相关，如何镂空一个面，镂空面加uv
++ uv相关，
++ 几何变化
++ webgl和canvas的坐标转换
++ 模型围绕一个点运动
++ 波浪的实现：是一个MAth.sin实现的。planeGeometry平面体和网格mesh
++ 四面体（三菱锥）：TetrahedronGeometry 四面体和网格mesh
++ 渲染：使用requestAnimationFrame，重绘前插入节点
++ 避免内存泄露
+
+
+### 5、markdown的原理？
+项目中使用的是marked，自定义为解析markdown的低级编译器，轻量，
++ markdown原理：语法解析器。
++ nakdown语法解析最基本：正则和exec方法。
++ exec方法：用来检索字符串中的与正则匹配的内容，返回的是匹配的数组，否则返回null，
+精准的去修改或者拼接字符串。rgExp.exec(str)
++ 基本正则方法，比如匹配html标签，自动字段 headers,list,代码块，图片等。 \n换行，\r回车，\r\n回车换行
++ 配置了1、sanitize对输出过滤，忽略已经输入的html代码（标签）。2、支持配置xhtml

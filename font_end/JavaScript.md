@@ -132,7 +132,7 @@ console.log(s2.colors); //'red,blue,green'
 
 缺点：
 
-1、方法都定义在构造函数中，函数复用不可用。。
+1、方法都定义在构造函数中，函数复用不可用。
 
 
 ### 3.3 组合继承 (最常用的继承模式)
@@ -501,7 +501,7 @@ function debounce(fn, wait, immediate) {
 
 
 ### 8.2 节流
-每隔一段时间后执行一次，就是降低频率，将高频操作有华为低频操作，通常使用场景：滚动条事件，或者resize事件，通常每隔100-500ms执行一次。
+每隔一段时间后执行一次，就是降低频率，将高频操作降为低频操作，通常使用场景：滚动条事件，或者resize事件，通常每隔100-500ms执行一次。
 ```js
 function throttle(fn, wait, immediate) {
   let timer = null;
