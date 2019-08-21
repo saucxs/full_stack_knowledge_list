@@ -88,7 +88,7 @@ IE浏览器URL最大限制是2083个字符，等等，所以URL长度不要超�
 ##### http首部
 ###### 通用字段
 + Cache-Control：控制缓存行为
-+ Connection：浏览器想要优先使用的连接类型
++ Connection：浏览器想要优先使用的连接类型，比如keep-alive，服务器配置和客户端支持
 + Data：创建报文时间
 + Pragma：报文指令
 + Via：代理服务器相关信息
@@ -99,7 +99,7 @@ IE浏览器URL最大限制是2083个字符，等等，所以URL长度不要超�
 ###### 请求字段
 + Accept：能正确接收的媒体类型
 + Accept-Charset：能正确接收的字符集
-+ Accept-Encoding：能正确接收的编码格式列表
++ Accept-Encoding：能正确接收的编码格式列表，比如gzip
 + Host：服务器域名
 + If-Match：两端资源标记比较
 + If-Modified-Since：本地资源未修改返回304（比较时间）
