@@ -1,3 +1,2 @@
 # full_stack_knowledge_list
 full_stack_knowledge_list
-
