@@ -576,17 +576,146 @@ console.log(square.area);   // 100
     + 按照路由拆分代码，实现按需加载
     + 给打包出来的文件名添加哈希，实现浏览器缓存文件
 
-##### 十三、代码习惯
+##### 十三、异步编程
+核心目的：降低异步编程的复杂性。
+###### 1、Promise
++ 原理：promise内部有一个状态管理器，只有三种状态：等待中（pending），已完成（resolved），拒绝（refected）。
++ 特点：1、一旦从等待中状态变成其他状态就永远不能更改状态；2、Promise解决回调地狱的问题；
+3、实现链式调用；4、Promise的then方法的参数期望是函数，传入非函数则会发生值穿透
+5、 Promise 构造函数只执行一次。
++ 缺点：无法取消Promise，错误需要通过回调函数捕获。
++ Promise构造函数和then函数区别：构造函数内部是宏任务中的同步任务，then函数是微任务。
++ Promise实现链式调用的原理：每一个调用then函数之后都会返回一个全新的Promise，如果你在then中使用return，return的值会被Promise.resolve()包装。
++ 方法：1、then方法是回调函数，2、catch方法捕获then中发生的异常，3、resolve方法返回resolved状态的promise，reject方法返回rejected状态的promise；
+4、all方法，一旦有一个状态为rejected，返回值为rejected，当所有状态都resolved时，返回一个数组。
+5、race方法，一旦有一个状态改变，就会返回该状态的值
++ 错误捕获问题：1、reject后一定会进入then中的第二个回调，如果没有第二回调，会进入到catch中。
+2、resolve后一定会进入到第一个回调中，肯定不会进入到catch中。
+3、网络异常（比如断网），会直接进入到catch中，而不会进入到then的第二个回调。
+4、catch捕获不了异常：1、异步异常，2、未手动调用resolve或者reject
+
+```js
+new Promise((resolve, reject) => {
+    reject('fail')
+}).then(item => {
+    console.log(item,'1')
+},(err) => {
+    console.log(err, '2')
+})
+```
+链式调用
+```js
+var fn = new Promise(function (resolve, reject) {
+  let num = Math.ceil(Math.random() * 10)
+  if (num > 5) {
+    resolve(num)
+  } else {
+    reject(num)
+  }
+})
+// 第一次回调
+fn.then((res)=>{
+  console.log(`res==>${res}`)
+  return new Promise((resolve,reject)=>{
+    if(2*res>15){
+      resolve(2*res)
+    }else{
+      reject(2*res)
+    }
+  })
+},(err)=>{
+  console.log(`err==>${err}`)
+}).then((res)=>{ // 第二次回调
+  console.log(res)
+},(err)=>{
+  console.log(`err==>${err}`)
+})
+```
+
++ 实现简单promise
+```js
+function Promise(fn){
+  var status = 'pending'
+  function successNotify(){
+      status = 'fulfilled'//状态变为fulfilled
+      toDoThen.apply(undefined, arguments)//执行回调
+  }
+  function failNotify(){
+      status = 'rejected'//状态变为rejected
+      toDoThen.apply(undefined, arguments)//执行回调
+  }
+  function toDoThen(){
+      setTimeout(()=>{ // 保证回调是异步执行的
+          if(status === 'fulfilled'){
+              for(let i =0; i< successArray.length;i ++)    {
+                  successArray[i].apply(undefined, arguments)//执行then里面的回掉函数
+              }
+          }else if(status === 'rejected'){
+              for(let i =0; i< failArray.length;i ++)    {
+                  failArray[i].apply(undefined, arguments)//执行then里面的回掉函数
+              }
+          }
+      })
+  }
+  var successArray = []
+  var failArray = []
+  fn.call(undefined, successNotify, failNotify)
+  return {
+      then: function(successFn, failFn){
+          successArray.push(successFn)
+          failArray.push(failFn)
+          return undefined // 此处应该返回一个Promise
+      }
+  }
+}
+```
+
+###### 2、async和await
+js的异步的终极解决方案。
++ 基本原理：async的parrllel和waterfall实现
++ 本质：async函数返回值使用Promise。resolve()包裹，跟then处理返回值一样。
+
+async函数是Generator函数的语法糖，函数内部使用await表示异步。
+
+对比async和Generator？
++ Generator函数必须依赖执行器，async函数自带执行器
++ async和await比* yield更语义化
++ async返回的是promise对象，使用then更方便，Generator返回是Iterator对象
+
+对比async和Promise？
++ 优势：在于处理then的调用链写一堆then也很烦。
++ 缺点：await将异步代码变成同步代码，会导致性能下降。
+
+
+```js
+fn = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(1)
+    }, 2000)
+  })
+}
+const Fn = async () => {
+  await fn().then((res) => {
+    console.log(res)
+  })
+}
+Fn()
+console.log(2)
+```
+先输出2,2秒后输出1
+
+##### 十四、代码习惯
 + codeView：阅读别人代码，以别人代码为镜，更好提高自己，同时提醒自己如何写好代码让别人读。
 + 项目直觉：根据项目的需求这块，希望自己的东西得到认可，不是一味的去做，而是去思考，产品经理的这样设计的是否合理并且提出自己的解决方案。
 + 代码精致简单：过渡封装，黑盒子都是调试的杀手
 + 编码之前先设计一下思路再写
 
-##### 十四、反问问题
+##### 十五、反问问题
 + 我比较在意自己的技术方向和职业发展，能够简单介绍下如果我面试上贵公司职位，我以后的工作内容和在团队的价值么？
 + 了解下公司对于前端的重视程度以及在大前端时代，团队对于技术的思考。
 
-##### 十五、为啥换工作
+##### 十六、为啥换工作
 + 知道职业发展重要性，寻找更好更大的平台，将自己的能力发挥出来。
 
 
