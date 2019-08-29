@@ -340,7 +340,7 @@ js是动态解释型语言。给函数动态添加职责。
 ###### webpack
 1、什么是webpack
 
-打包模块化的工具，一切文件都是模块，通过loader转换文件，通过plugin注入钩子，最终输出多个模块组合的文件。
+打包模块化的工具，通过loader转换文件，通过plugin扩展功能，最终输出多个模块组合的文件。
 
 2、webpack入口文件配置，多个入口怎么配置？
 
@@ -365,7 +365,7 @@ js是动态解释型语言。给函数动态添加职责。
 浏览器和webpack服务的双向通信，根据新旧模块的hash值来进行模块热替换，然后通过jsonp请求获取
 最新模块代码，然后浏览器进行热更新模块。如果热更新失败，会回退，进行浏览器刷新获取最新打包代码。。
 
-5、webpack构建流程？
+5、webpack构建流程？（webpack原理）
 
 webpack运行流程时一个串行过程。
 + (1)初始化参数：从配置文件和shell中读取合并参数，得到最终参数。
@@ -395,8 +395,83 @@ webpack运行流程时一个串行过程。
 + (4)使用webpack-uglify-parallel提升uglifyPlugin压缩速度，因为uglify-parallel采用多核并行压缩提升速度。
 + (5)使用tree-shaking提出多余代码
 
+8、webpack的loader的原理，plugin的原理？对比分析一下？
++ loader原理：
+其实是一个nodejs的模块，导出一个函数，主要是使用正则进行转换。
+功能：传入内容，转换内容，返回内容。webpack还提供了一些API给loader调用。
+loader只能处理一个个单独的文件而不能处理代码块
+```js
+const sass = require('node-sass');
+module.exports = function(source) {
+  // source 为 compiler 传递给 Loader 的一个文件的原内容
+  return sass(source);
+};
+```
++ plugin原理：
+plugin在webpack的运行的生命周期中，监听事件，通过webpack提供API改变输出结果。
+涉及到两个方法：（1）compiler存放webpack的配置。
+（2）compilation：webpack监听文件变化自动编译机制。
 
-8、babel的plugin里的transform-runtime以及stage-0，stage-1，stage-2的作用？
++ 不同：
+（1）作用不同
+（2）用法不同：loader在rule中配置，类型是数组，每一项是Object；
+plugin是单独配置，类型是数组，每一项都是plugin实例。
+
+9、webpack的plugin里的UglifyJsPlugin的作用？
+
+压缩js，减少体积，但是会拖慢webpack编译速度，开发的时候关闭，部署时候再打开。
+
+10、webpack中的webpack-bundle-analyzer插件作用？
+
+查看项目打包后每一个包的体积，以及一些包里面的情况，然后从而找到需要优化的地方。
+
+11、webpack-merge插件作用？
+
+当项目变大的时候，需要进行配置分离，webpack-merge是用来合并配置分离的部分，连接数组，合并对象。
+
+12、extract-text-webpack-plugin插件作用？
+
+抽离css样式，防止样式打包在js中。
+
+13、optimize-css-assets-webpack-plugin插件作用？
+
+用于压缩优化css资源。
+
+###### babel
+1、babel中将ES6转成ES5的原理是什么？
+如果是转换新语法，主要是babel-preset-es2015。
+如果是转换新API，新增原型方法，原生对象等，主要是babel-polyfill。
+
+babel的工作原理：
+
+babel的转译过程分为三个阶段：parsing（解析），transforming（转译），generating（生成）。
+
+比如 ES6的转换为ES5：
+
+ES6代码输入-->babylon进行词法解析，得到AST-->plugin用babel-traverse对AST进行遍历转译
+-->得到新的AST-->用babel-generator通过AST生成ES5代码
+
++ plugins
+所以这些plugin插件主要是咋子babel的第二阶段生效。
+
++ presets
+自行配置转译麻烦，presets是babel官方预设的插件集。
+
++ polyfill
+针对ES2015+环境的shim模拟。实际babel-polyfill把core-js和regenerator runtime包装。
+
++ babel核心包
+
+(1)babel-core：babel转译器本身，提供babel的转译API，比如babel.transform。
+
+(2)babylon：js的词法解析器
+
+(3)babel-traverse：用于对AST的遍历，主要给plugin
+
+(4)babel-generator：根据AST生成代码
+
+
+2、babel的plugins里的transform-runtime以及stage-0，stage-1，stage-2的作用？
 
 这个写在根目录的.babelrc文件里。
 
@@ -407,30 +482,12 @@ babel提供单独的包babel-runtime**供编译模块复用工具函数**。
 + stage-2作用：包含stage-3的所有功能，还支持一些插件，比如ES6的解构赋值扩展。尾逗号函数功能。
 + stage-3作用：支持async、await，支持**进行幂运算
 
-9、babel的plugin里的babel-polyfill的作用？
+3、babel的plugin里的babel-polyfill的作用？
 
 babel默认只转新的js语法，不转新API。比如：Iterator，Generator，Set，Maps，Proxy，Reflect，Symbol，Promise等
 全局对象和比如Object.assign等全局方法都不会转译。如果想用，可以使用babel-polyfill。
 
-10、babel的plugin里的UglifyJsPlugin的作用？
 
-压缩js，减少体积，但是会拖慢webpack编译速度，开发的时候关闭，部署时候再打开。
-
-11、babel中的webpack-bundle-analyzer插件作用？
-
-查看项目打包后每一个包的体积，以及一些包里面的情况，然后从而找到需要优化的地方。
-
-12、webpack-merge插件作用？
-
-当项目变大的时候，需要进行配置分离，webpack-merge是用来合并配置分离的部分，连接数组，合并对象。
-
-13、extract-text-webpack-plugin插件作用？
-
-抽离css样式，防止样式打包在js中。
-
-14、optimize-css-assets-webpack-plugin插件作用？
-
-用于压缩优化css资源。
 
 
 ##### js
@@ -449,8 +506,93 @@ babel默认只转新的js语法，不转新API。比如：Iterator，Generator�
 + 1、nginx的代理跨域：add_header 为Access-Control-Allow-Origin *。同源策略是浏览器安全策略，不是htttp协议。服务端使用http协议，不会执行js脚本。
 + 2、跨域资源共享CORS：服务端设置Access-Control-Allow-Origin，如果需要cookie请求，前后端都需要设置。
 + 3、node中间件代理跨域：原理和nginx的相同，启动一个代理服务器，实现数据的转发。
-+ 4、jsonp跨域：只能用get请求，利用js标签的跨域特性
++ 4、jsonp跨域：核心是动态添加，利用js标签的src这个属性有跨域特性，只能用get请求，
 + 5、postMessage跨域：H5中新增的API，postMessage(data,origin)方法接受两个参数
 + 6、webSocket协议跨域：H5的新协议，实现浏览器和服务器双向通信，允许跨域通讯，
 websocket API使用不方便，使用socketio，很好封装webSocket，简单灵活的接口，提供了浏览器向下兼容。
 + iframe跨域，可以document.domain，以及location.hash，以及window.name。
+
+######  5、深浅拷贝
+###### 5.1 浅拷贝实现
+思想：遍历对象，然后把属性和属性值都放在一个新的对象里。
+```
+var shallowCopy = function(obj) {
+    // 只拷贝对象
+    if (typeof obj !== 'object') return;
+    // 根据obj的类型判断是新建一个数组还是对象
+    var newObj = obj instanceof Array ? [] : {};
+    // 遍历obj，并且判断是obj的属性才拷贝
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            newObj[key] = obj[key];
+        }
+    }
+    return newObj;
+}
+```
+
+######  5.2 深拷贝实现
+思想：拷贝的时候判断一下属性值的类型，如果是对象，递归调用深拷贝函数。
+```
+var deepCopy = function(obj) {
+    if (typeof obj !== 'object') return;
+    var newObj = obj instanceof Array ? [] : {};
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            newObj[key] = typeof obj[key] === 'object' ? deepCopy(obj[key]) : obj[key];
+        }
+    }
+    return newObj;
+}
+```
+
+######  6、什么是函数柯里化？JS的api哪些用到了函数柯里化的实现？
+通俗的说：在一个函数中，首先传入一部分参数，然后再返回一个新的函数去处理剩下的参数的技术。
+
+实际的应用：
+
++ 延迟计算
++ bind函数，promise实现。bind函数用来改变函数的执行上下文，本身不执行，本质还是延迟计算。
++ 动态创建函数。每次调用函数都需要进行一次判断，第一次判断之后，后续调用就不需要再次判断，实现：
+第一次判断之后，动态创建一个新函数处理后续传入的参数，并返回这个新函数。
++ 参数复用。比如类型判断中Object.prototype.toString.call(obj)来判断，参数复用之后：
+```js
+const toStr = Function.prototype.call.bind(Object.prototype.toString);
+toStr([1,2,3]) // "[Object Array]"
+```
+
+###### 7、ES6的箭头函数this问题，以及拓展运算符。
+箭头函数this指向：在定义时执行器上下文的this的指向，忽略块级作用域中的this。
+
+this指向的固化，并不是因为箭头函数内部又绑定this的机制，实际是箭头函数没有自己的this。
+导致内部的this就是外层代码块的this，所以不能作为构造函数。
+
+注意的问题：
++ 箭头函数不会在其作用域生成this。
++ 箭头函数没有prototype。
++ 箭头函数补发作为构造器（new构造）或者生成器（但是可以被async修饰）。
++ 箭头函数作用域内不会生成arguments
+
+扩展运算符（...）
++ 化参数为数组
++ 化数组为参数
++ 化可迭代对象为数组
+```js
+//字符串转化为数组
+[..."ABCDEFG"] //["A", "B", "C", "D", "E", "F", "G"]
+//解构赋值也可以这么用
+var [a,b,c] = [...'123']//a = 1;b = 2;c = 3
+//一行去重数组ver2:
+[...new Set([1,1,2,3,3,4,4,4])] //1 , 2 , 3 ,4
+//倒序参数
+function reverseArgs(){
+  return [...arguments].reverse()//现在可以调用数组方法了
+}
+reverseArgs(1,2,3,4,5)//[5, 4, 3, 2, 1]
+```
++ 扩展对象
+```js
+var o = {a:1,b:2}
+var p = Object.assign({},o)
+console.log(o === p) //false
+```
