@@ -513,6 +513,9 @@ websocket API使用不方便，使用socketio，很好封装webSocket，简单�
 + iframe跨域，可以document.domain，以及location.hash，以及window.name。
 
 ######  5、深浅拷贝
+浅拷贝方法：Object.assign()，展开语法Spread，Array.prototype.alice()，array.prototype.concat()。
+
+深拷贝方法：JSON.parse(JSON.stringify(object))，对于undefined，symbol和函数的会直接忽略。
 ###### 5.1 浅拷贝实现
 思想：遍历对象，然后把属性和属性值都放在一个新的对象里。
 ```
