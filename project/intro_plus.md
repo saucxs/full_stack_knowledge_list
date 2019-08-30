@@ -56,8 +56,10 @@ fn.then((res)=>{
 
 + 实现简单promise
 ```js
-function Promise(fn){
-  var status = 'pending'
+function PromiseA(fn){
+  var status = 'pending';
+  var successArray = []
+  var failArray = []
   function successNotify(){
       status = 'fulfilled'//状态变为fulfilled
       toDoThen.apply(undefined, arguments)//执行回调
@@ -66,6 +68,7 @@ function Promise(fn){
       status = 'rejected'//状态变为rejected
       toDoThen.apply(undefined, arguments)//执行回调
   }
+  fn.call(undefined, successNotify, failNotify)
   function toDoThen(){
       setTimeout(()=>{ // 保证回调是异步执行的
           if(status === 'fulfilled'){
@@ -79,9 +82,6 @@ function Promise(fn){
           }
       })
   }
-  var successArray = []
-  var failArray = []
-  fn.call(undefined, successNotify, failNotify)
   return {
       then: function(successFn, failFn){
           successArray.push(successFn)
