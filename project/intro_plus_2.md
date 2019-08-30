@@ -1,4 +1,4 @@
-##### 二十二、js
+##### 二十四、js
 ###### 8、JS模块化Commonjs,AMD,CMD,UMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义。
 模块化的历史：原始开发方式-->commonjs-->AMD-->CMD-->UMD-->ES6Module
 
@@ -127,7 +127,7 @@ demo.replace(/(.).*\1/g,"$1")
 ```
 
 
-##### 二十三、你怎么怎么权衡这vue react两个框架,分析一下。
+##### 二十五、你怎么怎么权衡这vue react两个框架,分析一下。
 (1)react是facebook开源js UI框架，推广了虚拟DOM，**新语法JSX**。
 (2)vue是尤雨溪开源js UI框架，**使用模板系统**。
 

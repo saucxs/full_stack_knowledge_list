@@ -929,8 +929,7 @@ js是动态解释型语言。给函数动态添加职责。
 
 
 
-##### webpack，babel，
-###### webpack
+##### 二十二、webpack
 1、什么是webpack
 
 打包模块化的工具，通过loader转换文件，通过plugin扩展功能，最终输出多个模块组合的文件。
@@ -1030,7 +1029,7 @@ plugin是单独配置，类型是数组，每一项都是plugin实例。
 
 用于压缩优化css资源。
 
-###### babel
+##### 二十三、babel
 1、babel中将ES6转成ES5的原理是什么？
 如果是转换新语法，主要是babel-preset-es2015。
 如果是转换新API，新增原型方法，原生对象等，主要是babel-polyfill。
@@ -1083,7 +1082,7 @@ babel默认只转新的js语法，不转新API。比如：Iterator，Generator�
 
 
 
-##### js
+##### 二十四、js
 ###### 1、DOM事件的绑定的几种方式
 事件捕获，目标事件，事件冒泡
 
@@ -1193,7 +1192,7 @@ var p = Object.assign({},o)
 console.log(o === p) //false
 ```
 
-##### 二十二、js
+##### 二十四、js
 ###### 8、JS模块化Commonjs,AMD,CMD,UMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义。
 模块化的历史：原始开发方式-->commonjs-->AMD-->CMD-->UMD-->ES6Module
 
@@ -1322,7 +1321,7 @@ demo.replace(/(.).*\1/g,"$1")
 ```
 
 
-##### 二十三、你怎么怎么权衡这vue react两个框架,分析一下。
+##### 二十五、你怎么怎么权衡这vue react两个框架,分析一下。
 (1)react是facebook开源js UI框架，推广了虚拟DOM，**新语法JSX**。
 (2)vue是尤雨溪开源js UI框架，**使用模板系统**。
 

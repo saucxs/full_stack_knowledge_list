@@ -336,8 +336,7 @@ js是动态解释型语言。给函数动态添加职责。
 
 
 
-##### webpack，babel，
-###### webpack
+##### 二十二、webpack
 1、什么是webpack
 
 打包模块化的工具，通过loader转换文件，通过plugin扩展功能，最终输出多个模块组合的文件。
@@ -437,7 +436,7 @@ plugin是单独配置，类型是数组，每一项都是plugin实例。
 
 用于压缩优化css资源。
 
-###### babel
+##### 二十三、babel
 1、babel中将ES6转成ES5的原理是什么？
 如果是转换新语法，主要是babel-preset-es2015。
 如果是转换新API，新增原型方法，原生对象等，主要是babel-polyfill。
@@ -490,7 +489,7 @@ babel默认只转新的js语法，不转新API。比如：Iterator，Generator�
 
 
 
-##### js
+##### 二十四、js
 ###### 1、DOM事件的绑定的几种方式
 事件捕获，目标事件，事件冒泡
 
