@@ -106,7 +106,7 @@ unique(array);
 ###### 3、数组中最大值和最小值
 思路：sort排序，
 
-###### 3、数组中最大差值
+###### 4、数组中最大差值
 思路：sort排序，
 ```js
 function getMaxVal(arr) {
@@ -123,7 +123,7 @@ function getMaxVal(arr) {
 }
 ```
 
-###### 4、斐波那契数列
+###### 5、斐波那契数列
 ```js
 function fib(n) {
   let fibArr = [];
@@ -140,7 +140,7 @@ function fib(n) {
 }
 ```
 
-###### 5、数组扁平化
+###### 6、数组扁平化
 + 递归调用
 + toString，数组内只能都是数字
 + reduce
@@ -165,7 +165,7 @@ function flatten(arr) {
 arr.flat(Infinity);
 ```
 
-###### 6、删除数组中所有的假值
+###### 7、删除数组中所有的假值
 js中的假值：false,null,0,"",undefined,NaN
 ```js
 function bouncer(arr) {
@@ -179,7 +179,77 @@ function bouncer(arr) {
 }
 ```
 
+###### 8、判断数组是否存在重复
+```js
+var containsDuplicate = function(nums) {
+    let hashMap = new Map();
+    for(let i = 0; i < nums.length; i++) {
+        if( hashMap.has(nums[i]) ) {
+           return true;
+        }
+        hashMap.set(nums[i], 1);
+    }
+    return false;
+};
+```
 
+
+###### 9、两个升序的数组合并成一个升序数组
+```js
+// 时间复杂度O(M+N)，空间复杂度O(M+N)
+function merge(left, right){
+    let result  = [],
+        il      = 0,
+        ir      = 0;
+    while (il < left.length && ir < right.length) {
+        result.push(left[il] < right[ir] ? left[il++] : right[ir++]);
+    }
+    return result.concat(left.slice(il)).concat(right.slice(ir));
+}
+```
+
+```js
+// 时间复杂度O(M+N)，空间复杂度O(1)
+function merge(left, m, right,  n) {
+    var i = m - 1, j = n - 1, writeIdx = m + n - 1;
+    while (i >= 0 && j >= 0)
+    left[writeIdx--] = left[i] > right[j]? left[i--] : right[j--];
+    while (j >= 0)
+    left[writeIdx--] = right[j--];
+    return left;
+}
+```
+
+###### 10、数组交集
+```js
+var intersect = function(nums1, nums2) {
+    var map1 = new Map();
+    var number = [];
+    for(var i = 0; i < nums1.length; i++) {
+        var map1Value = map1.get(nums1[i]);
+        map1.set( nums1[i], ( map1Value ? map1Value : 0 ) + 1 );
+    }
+    for(var i = 0; i < nums2.length; i++) {
+        if( map1.has(nums2[i]) && map1.get(nums2[i]) != 0 ) {
+            number.push(nums2[i]);
+            map1.set( nums2[i], map1.get(nums2[i]) - 1 );
+        }
+    }
+    return number;
+};
+```
+
+###### 11、找出一个数组中只出现一次的数字
+```js
+var singleNumber = function(nums) {
+    
+    let number = 0;
+    for(let i = 0; i < nums.length; i++) {
+        number ^= nums[i];
+    }
+    return number;
+};
+```
 
 ###### 算法题（字符串）
 ###### 1、统计字符串中出现最多的和次数

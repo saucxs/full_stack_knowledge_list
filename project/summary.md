@@ -591,6 +591,7 @@ console.log(square.area);   // 100
 + 知道职业发展重要性，寻找更好更大的平台，将自己的能力发挥出来。
 
 
+
 ##### 十六、异步编程
 核心目的：降低异步编程的复杂性。
 ###### 1、Promise
@@ -1102,10 +1103,158 @@ babel默认只转新的js语法，不转新API。比如：Iterator，Generator�
 + 5、postMessage跨域：H5中新增的API，postMessage(data,origin)方法接受两个参数
 + 6、webSocket协议跨域：H5的新协议，实现浏览器和服务器双向通信，允许跨域通讯，
 websocket API使用不方便，使用socketio，很好封装webSocket，简单灵活的接口，提供了浏览器向下兼容。
-+ iframe跨域，可以document.domain，以及location.hash，以及window.name。
++ 7、iframe跨域，可以document.domain，以及location.hash，以及window.name。
+
+###### 4、类型判断
+基本类型（**存储在栈中，按值访问**）：String、Number、Boolean、Symbol、Undefined、Null 
+
+引用类型（**存储在堆中，按址访问**）：Object，还包括 Function 、Array、RegExp、Date 
+
+(1)typeof
+```js
+typeof('saucxs')    //'string'
+typeof 'saucxs'   //'string'
+typeof function(){console.log('saucxs')}   //'function'
+typeof ['saucxs','songEagle',1,2,'a']    //'object'
+typeof {name: 'saucxs'}    //'object'
+typeof 1   //'number'
+typeof undefined     //'undefined'
+typeof null    //'object'
+typeof /^\d/   //'object'
+typeof Symbol   // 'function'
+typeof new Date()  // 'object'
+typeof new Error()  // 'object'
+```
+(2)instanceof检测原型
+
+用来检测对象类型。A instanceof B用来判断A是否为B的实例
+```js
+[] instanceof Array    //true
+[] instanceof Object    //true
+new Array([1,43,6]) instanceof Array    // true
+new Array([1,43,6]) instanceof Object   // true
+
+{} instanceof Object   // 原型上没有定义  Uncaught SyntaxError: Unexpected token instanceof
+({})  instanceof Object;   //true
+Object.create({'name': 'saucxs'}) instanceof  Object   //true
+Object.create(null) instanceof  Object    //false  一种创建对象的方法，这种方法创建的对象不是Object的一个实例
+
+new Date() instanceof Date   //true
+new Date() instanceof Object   //true
+
+'saucxs' instanceof Object   //false
+'saucxs' instanceof String  //false
+new String("saucxs") instanceof Object  //true
+new String("saucxs") instanceof String  //true
+
+1 instanceof Object   //false
+1 instanceof Number   //false
+new Number(1) instanceof Object  //true
+new Number(1) instanceof Number  //true
+
+true instanceof Object   //false
+true instanceof Boolean   //false
+new Boolean(true) instanceof Object  //true
+new Boolean(true) instanceof Boolean   //true
+
+null instanceof Object    //false
+undefined instanceof Object  //false
+Symbol() instanceof Symbol   //false
+```
+(3)数组检测
+
+ES5 提供了 Array.isArray() 方法
+
+(4)Object.prototype.toString
+
+至少识别11种类型
+```js
+var number = 1;          // [object Number]
+var string = '123';      // [object String]
+var boolean = true;      // [object Boolean]
+var und = undefined;     // [object Undefined]
+var nul = null;          // [object Null]
+var obj = {a: 1}         // [object Object]
+var array = [1, 2, 3];   // [object Array]
+var date = new Date();   // [object Date]
+var error = new Error(); // [object Error]
+var reg = /a/g;          // [object RegExp]
+var func = function a(){}; // [object Function]
+Math    //[object Math]
+JSON  //[object JSON]
+```
+
+(5)判断是不是DOM元素
+```js
+isElement = function(obj) {
+    return !!(obj && obj.nodeType === 1);
+};
+```
+
+(6)判断空对象
+
+for循环一旦执行，就说明有属性
+```js
+function isEmptyObject( obj ) {
+        var name;
+        for ( name in obj ) { return false; }
+        return true;
+}
+```
+
+(7)判断window对象
+
+有一个window属性指向自身
+```js
+function isWindow(obj) {
+    return !!(window && obj === window)
+}
+```
+
+###### 5、数组方法
+(1)不改变原数组
++ concat() 连接两个或者多个数组
++ join() 把数组中所有元素放到字符串中
++ slice() 开始到结束（不包括）浅拷贝到新数组
++ map() 创建新数组并返回
++ every() 对数组中每一个元素执行回调,直到返回false
++ some() 对数组中每一个元素执行回调,直到返回true
++ filter() 创建新数组，过滤
+
+(2)改变原数组
++ forEach() 循环，会改变元素组
++ pop() 删除数组最后一个元素
++ push() 数组末尾添加元素
++ reverse() 颠倒数组中元素位置
++ shift() 删除数组中的第一个元素
++ unshift() 向数组开头添加元素
++ sort() 对数组进行排序
++ splice() 向数组添加/删除元素
+```js
+var a  = [1,2,3,4,5];
+a.splice(0,1);     //删除从0位置开始的1个   返回[1]   a为[2,3,4,5] 
+a.splice(1,0,99)   //在1的位置插入99   [2,99,3,4,5]
+a.splice(1,1,88)   //99替换为88  [2,88,3,4,5]
+```
++ for in 获取属性名，包括原型链
++ object.key() 获取属性名，不包括原型链
++ for of 获取属性值
++ object.values() 获取属性值，不包括原型链
+
+(3)ES6新数组方法
++ Array.from() 将set，map，array，字符串，类数组等转换为数组的功能。
++ Array.of() 数组的**推荐函数构造器**
++ Array.fill() 将数值填充到指定数组的开始位置和结束位置，改变原数组。
++ Array.inclues()  用来判断数组中是否含有某元素
++ Array.find()  只要找到一项内容就返回。
++ Array.findIndex()  findIndex返回的是元素在数组中的索引。
++ Array.copyWithin()  浅复制数组的一部分到同一个数组的其他位置，覆盖原来位置的值,返回新数组。
++ Array.entries()返回一个Array Iterator对象，包含所有数组中每个索引的键值对，类似[key1,value1,key2,value2,key3,value3.....]
++ Array..keys()返回一个Array Iterator对象，包含所有的键。
++ Array.values()返回一个Array Iterator对象，包含所有的值。
 
 ######  5、深浅拷贝
-浅拷贝方法：Object.assign()，展开语法Spread，Array.prototype.alice()，array.prototype.concat()。
+浅拷贝方法：Object.assign()，展开语法Spread，Array.prototype.slice()，array.prototype.concat()。
 
 深拷贝方法：JSON.parse(JSON.stringify(object))，对于undefined，symbol和函数的会直接忽略。
 ###### 5.1 浅拷贝实现
@@ -1192,7 +1341,7 @@ var p = Object.assign({},o)
 console.log(o === p) //false
 ```
 
-##### 二十四、js
+
 ###### 8、JS模块化Commonjs,AMD,CMD,UMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义。
 模块化的历史：原始开发方式-->commonjs-->AMD-->CMD-->UMD-->ES6Module
 
@@ -1473,7 +1622,7 @@ unique(array);
 ###### 3、数组中最大值和最小值
 思路：sort排序，
 
-###### 3、数组中最大差值
+###### 4、数组中最大差值
 思路：sort排序，
 ```js
 function getMaxVal(arr) {
@@ -1490,7 +1639,7 @@ function getMaxVal(arr) {
 }
 ```
 
-###### 4、斐波那契数列
+###### 5、斐波那契数列
 ```js
 function fib(n) {
   let fibArr = [];
@@ -1507,7 +1656,7 @@ function fib(n) {
 }
 ```
 
-###### 5、数组扁平化
+###### 6、数组扁平化
 + 递归调用
 + toString，数组内只能都是数字
 + reduce
@@ -1532,7 +1681,7 @@ function flatten(arr) {
 arr.flat(Infinity);
 ```
 
-###### 6、删除数组中所有的假值
+###### 7、删除数组中所有的假值
 js中的假值：false,null,0,"",undefined,NaN
 ```js
 function bouncer(arr) {
@@ -1546,7 +1695,77 @@ function bouncer(arr) {
 }
 ```
 
+###### 8、判断数组是否存在重复
+```js
+var containsDuplicate = function(nums) {
+    let hashMap = new Map();
+    for(let i = 0; i < nums.length; i++) {
+        if( hashMap.has(nums[i]) ) {
+           return true;
+        }
+        hashMap.set(nums[i], 1);
+    }
+    return false;
+};
+```
 
+
+###### 9、两个升序的数组合并成一个升序数组
+```js
+// 时间复杂度O(M+N)，空间复杂度O(M+N)
+function merge(left, right){
+    let result  = [],
+        il      = 0,
+        ir      = 0;
+    while (il < left.length && ir < right.length) {
+        result.push(left[il] < right[ir] ? left[il++] : right[ir++]);
+    }
+    return result.concat(left.slice(il)).concat(right.slice(ir));
+}
+```
+
+```js
+// 时间复杂度O(M+N)，空间复杂度O(1)
+function merge(left, m, right,  n) {
+    var i = m - 1, j = n - 1, writeIdx = m + n - 1;
+    while (i >= 0 && j >= 0)
+    left[writeIdx--] = left[i] > right[j]? left[i--] : right[j--];
+    while (j >= 0)
+    left[writeIdx--] = right[j--];
+    return left;
+}
+```
+
+###### 10、数组交集
+```js
+var intersect = function(nums1, nums2) {
+    var map1 = new Map();
+    var number = [];
+    for(var i = 0; i < nums1.length; i++) {
+        var map1Value = map1.get(nums1[i]);
+        map1.set( nums1[i], ( map1Value ? map1Value : 0 ) + 1 );
+    }
+    for(var i = 0; i < nums2.length; i++) {
+        if( map1.has(nums2[i]) && map1.get(nums2[i]) != 0 ) {
+            number.push(nums2[i]);
+            map1.set( nums2[i], map1.get(nums2[i]) - 1 );
+        }
+    }
+    return number;
+};
+```
+
+###### 11、找出一个数组中只出现一次的数字
+```js
+var singleNumber = function(nums) {
+    
+    let number = 0;
+    for(let i = 0; i < nums.length; i++) {
+        number ^= nums[i];
+    }
+    return number;
+};
+```
 
 ###### 算法题（字符串）
 ###### 1、统计字符串中出现最多的和次数
@@ -1619,6 +1838,7 @@ function titleCase() {
   return string;
 }
 ```
+
 
 
 ###### 算法题（数字）

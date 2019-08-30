@@ -1422,7 +1422,7 @@ arr.includes(21); // false
 这个与indexOf()方法的区别？
 
 + indexOf()如果存在返回的是数组的索引位置，如果不存在就返回-1。
-+ indeOf()使用严格匹配(===)判断
++ indexOf()使用严格匹配(===)判断
 
 ```js
 const arr = ['Some elements I like', NaN, 1337, true, false, 0017];
