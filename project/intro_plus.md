@@ -474,6 +474,32 @@ plugin在webpack的运行的生命周期中，监听事件，通过webpack提供
 （2）用法不同：loader在rule中配置，类型是数组，每一项是Object；
 plugin是单独配置，类型是数组，每一项都是plugin实例。
 
+9、webpack的如何实现按需加载？
+webpack提供了require.ensure()方法，
+```js
+require.ensure(dependencies:String[],callback:function(require),chunkName:String)
+```
+第一个参数为声明当前模块所以依赖的模块，它在回调函数加载前执行，第二个参数为所有模块加载完成后触发的回调函数，第三个为所声明的模块名
+
+webpack提供了2种拆分代码
++ import()语法，实现动态导入（import会调用内部用到promise）
++ webpack特定的require,ensure
+```js
+ {
+    path: '/home',
+    name: 'home',
+    component: resolve => require.ensure([], () => resolve(require('./views/home')), 'home')
+  },
+```
+
+
+实际开发中，使用第一种。
+
++ (1)webpack中output的设置并不决定是否拆分代码。
++ (2)拆分代码决定因素在import语法上。
++ (3)webpack在扫描到代码中有import语法，才决定执行拆分代码。
+
+
 9、webpack的plugin里的UglifyJsPlugin的作用？
 
 压缩js，减少体积，但是会拖慢webpack编译速度，开发的时候关闭，部署时候再打开。
