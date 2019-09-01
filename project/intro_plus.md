@@ -92,6 +92,64 @@ function PromiseA(fn){
 }
 ```
 
++ 实现简单promise.all
+promise.all接收的是一个数组为参数，当所有的Promise都为resolve的状态时，promise.all才会成功，若有一个事变，都会失败。
+```js
+var p1 = Promise.resolve('a');
+var p2 = Promise.resolve('b');
+var p3 = Promise.resolve('c');
+Promise.all([p1, p2, p3]).then(value => {
+    console.log(value);   // ['a', 'b', 'c']
+})
+```
+在看一题
+```js
+var p1 = new Promise((resolve, reject) => {
+    resolve('hello')
+}).then(result => result)
+.catch(e => e)
+
+var p2 = new Promise((resolve,reject) => {
+    throw new Error('出错了')
+}).then(result => result)
+.catch(e => e)
+
+Promise.all([p1,p2]).then(value => {
+    console.log(value); // ['hello', Error]
+}).catch(e => e)
+```
+上面因为p2自己可以捕获到错误，所以在Promise.all（）方法里p1，p2两个Promise都是resolve的状态，因此会调用then方法指定的回调函数。
+
+手动实现promise.all()
+```js
+function promiseAll(promiseArray) {
+  return new Promise(function(resolve, reject) {
+    if(!promiseArray instanceof Array){
+        throw new TypeError('PromiseArray must be a array')
+    }
+    var length = promiseArray.length;
+    var resolvedCount = 0;
+    var resolvedArray = new Array(length);
+    for(let i=0;i<length;i++){
+        (function(i) {
+          Promise.resolve(promiseArray[i]).then(value => {
+              resolvedCount ++;
+              resolvedArray[i] = value;
+              if(resolvedCount === length){
+                  return resolve(resolvedArray);
+              }
+          },(error) => {
+              return reject(error)
+          }).catch(error => {
+              console.log(error)
+          })
+        })(i)
+    }
+  })
+}
+```
+
+
 ###### 2、async和await
 js的异步的终极解决方案。
 + 基本原理：async的parrllel和waterfall实现
