@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grid布局 | saucxs | songEagle</title>
+    <style>
+        body{
+            background: #ccc;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 200px 1fr 200px;
+            grid-template-rows: 100px 500px 100px;
+            grid-template-areas:
+                    '. h .'
+                    'l m r'
+                    '. f .';
+            grid-gap: 4px 6px;
+        }
+        .header {
+            grid-area: h;
+        }
+        .left {
+            grid-area: l;
+        }
+        .right {
+            grid-area: r;
+        }
+        .main {
+            grid-area: m;
+        }
+        .footer {
+            grid-area: f;
+        }
+        .container > div{
+            font-size: 30px;
+            color: #fff;
+            text-align: center;
+            background: #666666;
+        }
+        .container > div:nth-child(2n){
+            background: #336666;
+        }
+        .container > div:nth-child(4n){
+            background: #f37e70;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">Header</div>
+    <div class="left">Left</div>
+    <div class="main">Main</div>
+    <div class="right">Right</div>
+    <div class="footer">Footer</div>
+</div>
+</body>
+</html>

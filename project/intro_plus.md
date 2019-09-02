@@ -166,7 +166,6 @@ async函数是Generator函数的语法糖，函数内部使用await表示异步�
 + 优势：在于处理then的调用链写一堆then也很烦。
 + 缺点：await将异步代码变成同步代码，会导致性能下降。
 
-
 ```js
 fn = () => {
   return new Promise((resolve, reject) => {
@@ -184,6 +183,29 @@ Fn()
 console.log(2)
 ```
 先输出2,2秒后输出1
+
+循环中使用await
+```js
+const nums = [1,2,3,4];
+const getNumIndex = index =>{
+    return new Promise(resolve => {
+        setTimeout(() => resolve(nums[index]), 1000)
+    })
+}
+```
+
+在for循环中await
+```js
+async function for_await() {
+  console.log('循环开始')
+  for(let i = 0;i<nums.length;i++){
+      var value = await getNumIndex(i);
+      console.log(value)
+  };
+  console.log('循环结束')
+}
+```
+
 
 ##### 十七、常用的定时器函数
 setTimeout、setInterval、requestAnimationFrame 各有什么特点？
@@ -491,8 +513,6 @@ webpack提供了2种拆分代码
     component: resolve => require.ensure([], () => resolve(require('./views/home')), 'home')
   },
 ```
-
-
 实际开发中，使用第一种。
 
 + (1)webpack中output的设置并不决定是否拆分代码。
@@ -500,23 +520,23 @@ webpack提供了2种拆分代码
 + (3)webpack在扫描到代码中有import语法，才决定执行拆分代码。
 
 
-9、webpack的plugin里的UglifyJsPlugin的作用？
+10、webpack的plugin里的UglifyJsPlugin的作用？
 
 压缩js，减少体积，但是会拖慢webpack编译速度，开发的时候关闭，部署时候再打开。
 
-10、webpack中的webpack-bundle-analyzer插件作用？
+11、webpack中的webpack-bundle-analyzer插件作用？
 
 查看项目打包后每一个包的体积，以及一些包里面的情况，然后从而找到需要优化的地方。
 
-11、webpack-merge插件作用？
+12、webpack-merge插件作用？
 
 当项目变大的时候，需要进行配置分离，webpack-merge是用来合并配置分离的部分，连接数组，合并对象。
 
-12、extract-text-webpack-plugin插件作用？
+13、extract-text-webpack-plugin插件作用？
 
 抽离css样式，防止样式打包在js中。
 
-13、optimize-css-assets-webpack-plugin插件作用？
+14、optimize-css-assets-webpack-plugin插件作用？
 
 用于压缩优化css资源。
 
