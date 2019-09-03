@@ -108,6 +108,7 @@ vue的slot插槽可以传递任何属性或者html元素，scope="它可以取�
 ### v-if和v-show区别
 相同点：都是判断dom节点是否需要显示。
 
+
 不同点：
 + 实现方式：v-if是从dom树上删除和重建节点；v-show是修改dom节点的display属性值。
 + 编译过程：v-if是局部编译和卸载，销毁和重建；v-show是简单css切换。
