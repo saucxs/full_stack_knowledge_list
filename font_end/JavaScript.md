@@ -350,6 +350,22 @@ console.log(square.area);   // 100
 
 
 ## 4、闭包
+闭包定义：函数A返回函数B，并且函数B使用函数A中的变量，函数B被称为闭包。
+```js
+function A(){
+    let a = 1;
+    function B(){
+        console.log(a)
+    }
+    return B;
+}
+```
+为什么函数A已经弹出调用栈，为什么函数B还可以引用函数A中的变量？
+
+因为函数A中的变量这时候存储在堆上的，JS引擎可以通过逃逸分析指导哪些变量存放在堆上，哪些需要存储在栈上。
+
+
+
 例题1
 ```
 function f1(){
@@ -452,6 +468,89 @@ function type(obj) {
 
 
 ## 7、模块化
+es6模块化
+```js
+// file a.js
+export function a(){}
+export function b() {}
+  
+// file b.js
+export default function() {}
+
+import {a,b} from './a.js'
+import XXX from './b.js'
+```
+
+commonjs
+
+commonjs是node独有的规范，浏览器需要使用browerify解析。
+
+```js
+// a.js
+module.exports = {
+    a: 1
+}
+// or
+export.a = 1
+
+
+// b.js
+var module = require('./a.js')
+module.a  // 1
+```
+其实module.exports和exports很容易混淆，内部实现：
+```js
+var module = require('./a.js');
+module.a
+
+// 这里其实包装了一个立即执行函数，这样不会污染全局变量，
+// 重要的是module这里，module是node独有的一个变量
+module.exports = {
+    a: 1
+}
+
+// 基本实现
+var module = {
+    exports: {}   //exports是个空对象
+}
+// 这个是为什么 exports 和 module.exports 用法相似的原因
+var exports = module.exports
+var load = function (module) {
+    // 导出的东西
+    var a = 1
+    module.exports = a
+    return module.exports
+};
+```
+再来说说 module.exports 和 exports，用法其实是相似的，但是不能对 exports 直接赋值，不会有任何效果。
+
+对于 CommonJS 和 ES6 中的模块化的两者区别是：
+
++ 前者支持动态导入，也就是 require(${path}/xx.js)，后者目前不支持，但是已有提案
+
++ 前者是同步导入，因为用于服务端，文件都在本地，同步导入即使卡住主线程影响也不大。而后者是异步导入，因为用于浏览器，需要下载文件，如果也采用同步导入会对渲染有很大影响
+
++ 前者在导出时都是值拷贝，就算导出的值变了，导入的值也不会改变，所以如果想更新值，必须重新导入一次。但是后者采用实时绑定的方式，导入导出的值都指向同一个内存地址，所以导入值会跟随导出值变化
+
++ 后者会编译成 require/exports 来执行
+
+AMD
+
+amd是requirejs提出的
+```js
+// AMD
+define(['./a', './b'], function(a, b) {
+    a.do()
+    b.do()
+})
+define(function(require, exports, module) {
+    var a = require('./a')
+    a.doSomething()
+    var b = require('./b')
+    b.doSomething()
+})
+```
+
 ```js
 //传统CommonJS写法
 module.export = {
