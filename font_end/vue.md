@@ -24,6 +24,89 @@ let app = new Vue({
 ```
 上面代码中el: '#app'牵着View，data:{}牵着Model，而methods充当controller，可以修改Model的值。
 
+### vue的style下scope
+scoped实现样式私有化原理：vue通过DOM结构以及css样式上加唯一不重复标记，以保证唯一，达到样式私有化模块目的。
+
+scope返回值是slot标签上返回的所有属性。
+
++ html的dom节点加了一个不重复**data属性**表示唯一性。
++ 每句css选择器的末尾加一个当前组件的**data属性选择器**来私有化样式。
++ 如果当前组件内部包含其他组件，只会给其他组件的最外层标签加上当前组件的data属性。
+
+样式的权重加重了，理论上我们修改这个样式，需要更高权重去覆盖样式
+
+### vue的插槽slot
+vue的slot插槽可以传递任何属性或者html元素，scope="它可以取任意字符串"
+
+插槽，也就是slot，组件的一块html模板，这块模板的显示不显示，由父组件决定。
+最核心东西：显示和怎么显示。
+
+模板分类：非插槽模板，插槽模板。
+
++ 单个插槽，一个组件中只能有一个该类插槽，
++ 具名插槽，一个组件内可以有多个，只要名字不同就可以。
+
+**上面两种插槽不绑定数据，父组件提供模板包括样式和内容。**
+
+父组件
+```
+<template>
+  <div class="father">
+    <h3>这里是父组件</h3>
+    <child>
+      <div class="tmpl" slot="up">
+        <span>菜单1</span>
+        <span>菜单2</span>
+        <span>菜单3</span>
+        <span>菜单4</span>
+        <span>菜单5</span>
+        <span>菜单6</span>
+      </div>
+      <div class="tmpl">
+        <span>菜单->1</span>
+        <span>菜单->2</span>
+        <span>菜单->3</span>
+        <span>菜单->4</span>
+        <span>菜单->5</span>
+        <span>菜单->6</span>
+      </div>
+    </child>
+  </div>
+</template>
+```
+
+子组件
+```
+<template>
+  <div class="child">
+   <h3>这里是子组件</h3>
+   
+    // 具名插槽
+    <slot name="up"></slot>
+    
+    // 匿名插槽
+    <slot></slot>
+  </div>
+</template>
+```
+
+
+插槽语法
+```
+匿名插槽
+<slot></slot>
+具名插槽
+<slot name="up"></slot>
+```
+
+父组件通过html模板上的slot属性关联具名插槽。没有slot属性的html模板默认关联匿名插槽
+
++ 作用域插槽
+**样式父组件说的算，内容由子组件插槽绑定的。**
+
+
+
+
 ### 22.1 全局API
 #### 1、Vue.extend 扩展实例的构造器
 Vue.extend(对象)返回的是一个**扩展实例的构造器**。作用：服务于Vue.component，用来生成组件。
