@@ -600,6 +600,7 @@ babel默认只转新的js语法，不转新API。比如：Iterator，Generator�
 + html属性（onclick方法）
 + dom元素属性（onclick方法）DOM level 0
 + DOM level 2，比如addEventListener和jq的on，jq的click
++ DOM level 3，DOM2的基础上添加更多事件类型
 
 ###### 2、DOM事件中target和currentTarget的区别
 + event.target返回触发事件的元素

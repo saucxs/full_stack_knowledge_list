@@ -199,6 +199,7 @@ fr表示自由空间中分配的一个单位，和flex的属性flex属性:flex-g
 首先修改html
 ```html
 <div class="container">
+  <div class="header">Header</div>
   <div class="left">Left</div>
   <div class="main">Main</div>
   <div class="right">Right</div>
@@ -233,6 +234,8 @@ fr表示自由空间中分配的一个单位，和flex的属性flex属性:flex-g
         }
 ```
 现在网格线来布局，横向布局4条网格线，纵向4条网格线，默认网格会为编号，从1开始，也可以自己命名网格线，
+
+![grid布局](../../image/font-end-image/grid布局_8.png)
 
 **同样可以使用横向向网格线。**
 
@@ -279,5 +282,46 @@ fr表示自由空间中分配的一个单位，和flex的属性flex属性:flex-g
 通过这种方式，我们也可以实现上面的需求。在grid-template-areas中的'.'代表这个位置空着。
 
 
+#### 七、repeat进阶
+上面有使用repeat方法，创建网格时重复指定的次数，有时候我不想指定次数，希望自动填充。
 
+我们考虑使用auto-fill和auto-fit。
 
+我们先使用repeat把格子搭建起来：
+
+```css
+.container{
+    display: grid;
+    grid-tempalte-columns: repeat(9, 1fr);
+    grid-template-rows: 50px;
+    grid-gap: 4px 6px;
+}
+```
+![grid布局](../../image/font-end-image/grid布局_9.png)
+
+这样我们就建立了9列的网格系统，随着视窗不断变小，流式布局有点像，
+**如果我们不希望每一个变得非常窄**，怎么处理？
+
+grid中有一个minmax函数，一个最大值，一个最小值，保证元素在这个范围内改变。
+
+```css
+.container{
+    display: grid;
+    grid-tempalte-columns: repeat(9, minmax(250px, 1fr));
+    grid-template-rows: 50px;
+    grid-gap: 4px 6px;
+}
+```
+每一列的宽度都会在 250px 到 1fr 之间，但是我们会发现，
+他装不下这些格子，但是它也没有换行，因为你告诉它有 9 列，于是出现了滚动条。
+```css
+.container {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+```
+就会让浏览器去处理列宽和换行的问题，如果你给的容器宽度不够，它就会换行。
+
+那auto-fill和auto-fit的区别？
+
++ auto-fill倾向于容纳更多的列。
++ auto-fit倾向于使用最小的列占满当前行空间。
