@@ -560,10 +560,10 @@ console.log(square.area);   // 100
     + (7)预加载：比如有的资源不需要马上用，但是需要尽早获取，预加载其实是声明式的fetch，强制浏览器请求资源，并且不会阻塞onload事件。在link标签中使用rel属性preload。
     + (8)预渲染：将下载的文件预先在后台渲染，提高页面的加载速度。    
 + 2、渲染优化：
-    + (1)减少DOM操作次数。比如vue和react的虚拟DOM，内存总进行diff算法比较，做到最小化操作真实DOM。
-    + (2)减少重绘重排，比如img标签设置宽高
-    + (3)懒执行：将某些逻辑延迟到使用时再计算。首屏优化，把耗时的逻辑不在首屏中使用，使用懒执行，一般通过定时器或者事件调用唤醒。
-    + (4)懒加载：将不关键的资源延后加载。原理就是只加载自定义区域内需要加载的东西，比如常见图片懒加载和视频懒加载
+    > + (1)减少DOM操作次数。比如vue和react的虚拟DOM，内存总进行diff算法比较，做到最小化操作真实DOM。
+    > + (2)减少重绘重排，比如img标签设置宽高
+    > + (3)懒执行：将某些逻辑延迟到使用时再计算。首屏优化，把耗时的逻辑不在首屏中使用，使用懒执行，一般通过定时器或者事件调用唤醒。
+    > + (4)懒加载：将不关键的资源延后加载。原理就是只加载自定义区域内需要加载的东西，比如常见图片懒加载和视频懒加载
 + 3、文件优化：
     + (1)图片大小优化：减少像素点和减少像素点能够显示的颜色
     + (2)图片加载优化：1、不用修饰类图片，使用css去代替。2、移动端图片，不用原图，用cdn加载，计算适配宽度，请求相应裁剪好的图片。3、小图使用base64格式。4、多个图标文件合并到一张图中。
@@ -591,7 +591,6 @@ console.log(square.area);   // 100
 
 ##### 十五、为啥换工作
 + 知道职业发展重要性，寻找更好更大的平台，将自己的能力发挥出来。
-
 
 
 ##### 十六、异步编程
@@ -688,6 +687,64 @@ function PromiseA(fn){
 }
 ```
 
++ 实现简单promise.all
+promise.all接收的是一个数组为参数，当所有的Promise都为resolve的状态时，promise.all才会成功，若有一个事变，都会失败。
+```js
+var p1 = Promise.resolve('a');
+var p2 = Promise.resolve('b');
+var p3 = Promise.resolve('c');
+Promise.all([p1, p2, p3]).then(value => {
+    console.log(value);   // ['a', 'b', 'c']
+})
+```
+在看一题
+```js
+var p1 = new Promise((resolve, reject) => {
+    resolve('hello')
+}).then(result => result)
+.catch(e => e)
+
+var p2 = new Promise((resolve,reject) => {
+    throw new Error('出错了')
+}).then(result => result)
+.catch(e => e)
+
+Promise.all([p1,p2]).then(value => {
+    console.log(value); // ['hello', Error]
+}).catch(e => e)
+```
+上面因为p2自己可以捕获到错误，所以在Promise.all（）方法里p1，p2两个Promise都是resolve的状态，因此会调用then方法指定的回调函数。
+
+手动实现promise.all()
+```js
+function promiseAll(promiseArray) {
+  return new Promise(function(resolve, reject) {
+    if(!promiseArray instanceof Array){
+        throw new TypeError('PromiseArray must be a array')
+    }
+    var length = promiseArray.length;
+    var resolvedCount = 0;
+    var resolvedArray = new Array(length);
+    for(let i=0;i<length;i++){
+        (function(i) {
+          Promise.resolve(promiseArray[i]).then(value => {
+              resolvedCount ++;
+              resolvedArray[i] = value;
+              if(resolvedCount === length){
+                  return resolve(resolvedArray);
+              }
+          },(error) => {
+              return reject(error)
+          }).catch(error => {
+              console.log(error)
+          })
+        })(i)
+    }
+  })
+}
+```
+
+
 ###### 2、async和await
 js的异步的终极解决方案。
 + 基本原理：async的parrllel和waterfall实现
@@ -703,7 +760,6 @@ async函数是Generator函数的语法糖，函数内部使用await表示异步�
 对比async和Promise？
 + 优势：在于处理then的调用链写一堆then也很烦。
 + 缺点：await将异步代码变成同步代码，会导致性能下降。
-
 
 ```js
 fn = () => {
@@ -722,6 +778,29 @@ Fn()
 console.log(2)
 ```
 先输出2,2秒后输出1
+
+循环中使用await
+```js
+const nums = [1,2,3,4];
+const getNumIndex = index =>{
+    return new Promise(resolve => {
+        setTimeout(() => resolve(nums[index]), 1000)
+    })
+}
+```
+
+在for循环中await
+```js
+async function for_await() {
+  console.log('循环开始')
+  for(let i = 0;i<nums.length;i++){
+      var value = await getNumIndex(i);
+      console.log(value)
+  };
+  console.log('循环结束')
+}
+```
+
 
 ##### 十七、常用的定时器函数
 setTimeout、setInterval、requestAnimationFrame 各有什么特点？
@@ -1012,23 +1091,47 @@ plugin在webpack的运行的生命周期中，监听事件，通过webpack提供
 （2）用法不同：loader在rule中配置，类型是数组，每一项是Object；
 plugin是单独配置，类型是数组，每一项都是plugin实例。
 
-9、webpack的plugin里的UglifyJsPlugin的作用？
+9、webpack的如何实现按需加载？
+webpack提供了require.ensure()方法，
+```js
+require.ensure(dependencies:String[],callback:function(require),chunkName:String)
+```
+第一个参数为声明当前模块所以依赖的模块，它在回调函数加载前执行，第二个参数为所有模块加载完成后触发的回调函数，第三个为所声明的模块名
+
+webpack提供了2种拆分代码
++ import()语法，实现动态导入（import会调用内部用到promise）
++ webpack特定的require,ensure
+```js
+ {
+    path: '/home',
+    name: 'home',
+    component: resolve => require.ensure([], () => resolve(require('./views/home')), 'home')
+  },
+```
+实际开发中，使用第一种。
+
++ (1)webpack中output的设置并不决定是否拆分代码。
++ (2)拆分代码决定因素在import语法上。
++ (3)webpack在扫描到代码中有import语法，才决定执行拆分代码。
+
+
+10、webpack的plugin里的UglifyJsPlugin的作用？
 
 压缩js，减少体积，但是会拖慢webpack编译速度，开发的时候关闭，部署时候再打开。
 
-10、webpack中的webpack-bundle-analyzer插件作用？
+11、webpack中的webpack-bundle-analyzer插件作用？
 
 查看项目打包后每一个包的体积，以及一些包里面的情况，然后从而找到需要优化的地方。
 
-11、webpack-merge插件作用？
+12、webpack-merge插件作用？
 
 当项目变大的时候，需要进行配置分离，webpack-merge是用来合并配置分离的部分，连接数组，合并对象。
 
-12、extract-text-webpack-plugin插件作用？
+13、extract-text-webpack-plugin插件作用？
 
 抽离css样式，防止样式打包在js中。
 
-13、optimize-css-assets-webpack-plugin插件作用？
+14、optimize-css-assets-webpack-plugin插件作用？
 
 用于压缩优化css资源。
 
@@ -1092,6 +1195,7 @@ babel默认只转新的js语法，不转新API。比如：Iterator，Generator�
 + html属性（onclick方法）
 + dom元素属性（onclick方法）DOM level 0
 + DOM level 2，比如addEventListener和jq的on，jq的click
++ DOM level 3，DOM2的基础上添加更多事件类型
 
 ###### 2、DOM事件中target和currentTarget的区别
 + event.target返回触发事件的元素
@@ -1343,7 +1447,7 @@ var p = Object.assign({},o)
 console.log(o === p) //false
 ```
 
-
+##### 二十四、js
 ###### 8、JS模块化Commonjs,AMD,CMD,UMD规范的了解，以及ES6的模块化跟其他几种的区别，以及出现的意义。
 模块化的历史：原始开发方式-->commonjs-->AMD-->CMD-->UMD-->ES6Module
 
@@ -1516,341 +1620,3 @@ react优势：
 
 
 
-###### 算法题（数组）
-###### 1、数组去重
-+ 双重循环
-+ indexOf简化内层循环
-```js
-// 方法二：indexOf简化内层循环
-var array = [1,1,'1','2','1',1,2]
-function unique(arr){
-    // res 存结果
-    var res = [];
-    for(var i = 0, length = arr.length; i < length; i++){
-       var current = arr[i];
-       if(res.indexOf(current) === -1){
-           res.push(current);
-       }
-    }
-    return res;
-}
-unique(array);   //[1, "1", "2", 2]
-```
-+ filter简化外层循环
-```js
-// 方法三：filter + indexOf
-var array = [1,1,'1','2','1',1,2]
-function unique(arr){
-    // res 存结果
-    var res = arr.filter(function(item, index, arr){
-        return arr.indexOf(item) === index;
-    })
-    return res;
-}
-unique(array);   //[1, "1", "2", 2]
-```
-+ Object键值对
-思路：利用一个空的Object对象，把数组的值存成Object的key，比如就是Object[value] = true;循环判断的时候，如果Object[value]存在，说明这个值重复了。
-事件复杂度降到O(n)
-Object键值对，实质是hasOwnProperty的hash表。
-```js
-function unique(arr){
-    // obj 存对象
-    var obj= {};
-    var res = arr.filter(function(item, index, arr){
-        if(obj.hasOwnProperty(typeof item + item)) return false;
-        else {
-            return obj[typeof item + item] = true;
-        }
-    })
-    return res;
-}
-unique(array);   //[1, "1", "2", 2]
-```
-+ reduce高阶函数
-存在问题：对象数组不能使用includes方法来检测
-```js
-var array = [1,1,'1','2','1',1,2]
-function unique(arr){
-    let newArr = arr.reduce((pre,cur)=>{
-        if(!pre.includes(cur)){
-            return pre.concat(cur)
-        }else{
-            return pre
-        }
-    },[]);
-    return newArr;
-}
-console.log(unique(array));// [1, "1", "2", 2]
-```
-+ ES6的set数据结构
-```js
-var array = [1,1,'1','2','1',1,2]
-const unique = arr => [...new Set(arr)];
-unique(array);   //[1, "1", "2", 2]
-```
-目前时间复杂度到O(n)的方法：
-
-（1）Object键值对，实质是hasOwnProperty的hash表。
-
-（2）ES6的set，map的数据结构
-
-（3）reduce高阶函数
-
-
-###### 2、数组中查找重复元素
-
-```js
-var array = [1,2,4,4,3,3,1,5,3]
-function unique(arr){
-    // res 存去重结果   returnres 存重复的结果然后再去重。
-   let res = []; 
-   let returnres = [];
-   for(let i=0;i<arr.length;i++){
-       let current = arr[i];
-       console.log(current, '00000000')
-       if(res.indexOf(current) === -1){
-           res.push(current)
-       }else{
-           returnres.push(current)
-       }
-   }
-   console.log(returnres, '-==-=')
-   return [...new Set(returnres)]
-}
-unique(array);   
-```
-
-###### 3、数组中最大值和最小值
-思路：sort排序，
-
-###### 4、数组中最大差值
-思路：sort排序，
-```js
-function getMaxVal(arr) {
-  let minPrice = arr[0];
-  let maxPrice = arr[0];
-  let maxVal = 0;
-  for(let i = 0; i < arr.length; i++){
-      let current = arr[i];
-      minPrice = Math.min(minPrice, current);
-      maxPrice = Math.max(maxPrice, current);
-      maxVal = maxPrice - minPrice
-  }
-  return maxVal;
-}
-```
-
-###### 5、斐波那契数列
-```js
-function fib(n) {
-  let fibArr = [];
-  let i = 0;
-  while(i < n){
-      if(i === 0 || i === 1 || i === 2){
-          fibArr.push(i);
-      }else{
-          fibArr.push(fibArr[i - 1] + fibArr[i - 2])
-      };
-      i++;
-  }
-  return fibArr;
-}
-```
-
-###### 6、数组扁平化
-+ 递归调用
-+ toString，数组内只能都是数字
-+ reduce
-```js
-function flatten(arr) {
-    return arr.reduce(function(prev, next){
-        return prev.concat(Array.isArray(next) ? flatten(next) : next)
-    }, [])
-}
-```
-+ ES6的扩展运算符...
-```js
-function flatten(arr) {
-    while (arr.some(item => Array.isArray(item))) {
-        arr = [].concat(...arr);
-    }
-    return arr;
-}
-```
-+ ES6的flat方法
-```js
-arr.flat(Infinity);
-```
-
-###### 7、删除数组中所有的假值
-js中的假值：false,null,0,"",undefined,NaN
-```js
-function bouncer(arr) {
-  function isBigEnough(element) {
-    if(element!==false || element!==null || element!==0 || element!=="" || element!==undefined || element!==NaN){
-      return element;
-    }
-  }
-  var filtered =arr.filter(isBigEnough);
-  return filtered;
-}
-```
-
-###### 8、判断数组是否存在重复
-```js
-var containsDuplicate = function(nums) {
-    let hashMap = new Map();
-    for(let i = 0; i < nums.length; i++) {
-        if( hashMap.has(nums[i]) ) {
-           return true;
-        }
-        hashMap.set(nums[i], 1);
-    }
-    return false;
-};
-```
-
-
-###### 9、两个升序的数组合并成一个升序数组
-```js
-// 时间复杂度O(M+N)，空间复杂度O(M+N)
-function merge(left, right){
-    let result  = [],
-        il      = 0,
-        ir      = 0;
-    while (il < left.length && ir < right.length) {
-        result.push(left[il] < right[ir] ? left[il++] : right[ir++]);
-    }
-    return result.concat(left.slice(il)).concat(right.slice(ir));
-}
-```
-
-```js
-// 时间复杂度O(M+N)，空间复杂度O(1)
-function merge(left, m, right,  n) {
-    var i = m - 1, j = n - 1, writeIdx = m + n - 1;
-    while (i >= 0 && j >= 0)
-    left[writeIdx--] = left[i] > right[j]? left[i--] : right[j--];
-    while (j >= 0)
-    left[writeIdx--] = right[j--];
-    return left;
-}
-```
-
-###### 10、数组交集
-```js
-var intersect = function(nums1, nums2) {
-    var map1 = new Map();
-    var number = [];
-    for(var i = 0; i < nums1.length; i++) {
-        var map1Value = map1.get(nums1[i]);
-        map1.set( nums1[i], ( map1Value ? map1Value : 0 ) + 1 );
-    }
-    for(var i = 0; i < nums2.length; i++) {
-        if( map1.has(nums2[i]) && map1.get(nums2[i]) != 0 ) {
-            number.push(nums2[i]);
-            map1.set( nums2[i], map1.get(nums2[i]) - 1 );
-        }
-    }
-    return number;
-};
-```
-
-###### 11、找出一个数组中只出现一次的数字
-```js
-var singleNumber = function(nums) {
-    
-    let number = 0;
-    for(let i = 0; i < nums.length; i++) {
-        number ^= nums[i];
-    }
-    return number;
-};
-```
-
-###### 算法题（字符串）
-###### 1、统计字符串中出现最多的和次数
-```js
-function repeated(str) {
-  let obj = {};
-  for(let i = 0, length = str.length; i < length; i++){
-      if(obj[str.charAt(i)]){
-          obj[str.charAt(i)]++
-      }else{
-          obj[str.charAt(i)] = 1;
-      }
-  }
-  let iMax = 0;
-  let iIndex;
-  console.log(obj, '0000000000000000')
-  for(let j in obj){
-      if(obj[j] > iMax){
-          iMax = obj[j];
-          iIndex = j;
-      }
-  }
-  return {str: iIndex, num: iMax}
-}
-repeated('aaaaa33455aaaasfdfdsfdgdf')
-```
-
-###### 2、反转字符串
-先把字符串转为数组，使用数组reverse翻转，然后数组转为字符
-```js
-function reverseString(str) {
-  return str.split('').reverse().join('');
-}
-```
-
-###### 3、回文字符串判断
-如果字符串，忽略标点，大小写，空格，正读和反复一样，这样字符串就是回文字符串。
-```js
-function palind(str) {
-  var astr = str.replace(/[^0-9a-zA-Z]/g, '').toLowerCase();
-  var bstr = astr.split('').reverse().join('');
-  if(astr === bstr){
-      return true
-  }else{
-      return false
-  }
-}
-```
-
-###### 4、英文句子中最长的单词，并计算长度
-```js
-function findLongestWord(str) {
-  var astr = str.split('');
-  var bstr = astr.sort(function(a, b) {
-    return b.length - a.length
-  })
-  var lenMax = bstr[0].length;
-  return lenMax;
-}
-```
-
-###### 5、字符串中每个单词首字母大写，其他字母小写
-```js
-function titleCase() {
-  var astr = str.toLOwerCase().split("");
-  for(let i = 0; i < astr.length;i++){
-      astr[i] = astr[i][0].toUpperCase() + astr[i].substring(1, astr[i].length);
-  }
-  var string = astr.join("");
-  return string;
-}
-```
-
-
-
-###### 算法题（数字）
-###### 1、整数的阶乘
-```js
-function fac(num) {
-  if(num < 0) return -1;
-  else if(num === 0 || num === 1) return 1;
-  else if(num > 1){
-      return num * fac(num - 1);
-  }
-}
-```
