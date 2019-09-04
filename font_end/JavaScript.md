@@ -437,6 +437,7 @@ var shallowCopy = function(obj) {
 
 ### 5.2 深拷贝实现
 思想：拷贝的时候判断一下属性值的类型，如果是对象，递归调用深拷贝函数。
+第一版：拷贝深拷贝和拷贝对象是数组
 ```
 var deepCopy = function(obj) {
     if (typeof obj !== 'object') return;
@@ -449,6 +450,38 @@ var deepCopy = function(obj) {
     return newObj;
 }
 ```
+第二版 ；考虑到循环引用的
+```js
+var target = {
+    field1: 1,
+    field2: undefined,
+    field3: {
+        child: 'child'
+    },
+    field4: [2, 4, 8]
+};
+target.target = target;
+```
+需要我们额外开辟一个存储空间，用来存储当前对象和拷贝对象的对应关系
+```js
+function deepCopy(obj, map = new Map()) {
+  if(typeof obj !== 'object') return;
+  var newObj = obj instanceof Array?[]:{};
+  if(map.get(obj)){
+      return map.get(obj)
+  }
+  map.set(obj, newObj);
+  for(var key in obj){
+      if(obj.hasOwnProperty(key)){
+          newObj[key] = typeof obj[key] === 'object'? deepCopy(obj[key], map):obj[key]
+      }
+  }
+  return newObj;
+}
+```
+继续优化，可以使用weakMap代替map。
+
+性能优化，可以使用其他循环for，while，来代替for in
 
 
 ## 6、类型判断
@@ -491,7 +524,7 @@ module.exports = {
     a: 1
 }
 // or
-export.a = 1
+exports.a = 1
 
 
 // b.js
