@@ -1,4 +1,5 @@
-你好，我叫程新松，目前就职于东方财富南京研发中心，曾就职于苏宁数据云，百分点等公司。自己是一个喜欢折腾的工程师，致力于全栈开发。
+你好，我叫程新松，目前就职于东方财富南京研发中心，曾就职于苏宁数据云，百分点等公司。
+自己是一个喜欢折腾的工程师，致力于全栈开发。
 目前技术栈：vue+vuex+ssr+jq+koa+thinkjs+nginx+redis+websocket+mysql+小程序等。
 
 在东方财富南京研发中心，主要负责公司内部系统的前端研发，东方贷外围系统开发，前端框架技术选型，项目结构搭建，
@@ -6,14 +7,14 @@
 **逐渐理解**web应用的结构和数据传递流程，形成web开发性能优化和可维护组件高复用的意识。
 以及根据模块功能特性对前端页面分块管理和优化。
 
-在苏宁数据云，主要负责苏宁云商城系统前端开发，理解业务并采用合适的前端技术，根据设计图进行重构和页面美化，支持业务快速迭代，
+在苏宁数据云，主要负责苏宁云商城，品加商城，大数据平台，实时计算平台等系统前端开发，理解业务并采用合适的前端技术，根据设计图进行重构和页面美化，支持业务快速迭代，
 优化渲染和制程node中间层开发。
 **学会**Node框架thinkjs的使用，对客户端请求的分发，转发，过滤以及数据包装，可以最大化实现并发请求，
 
 在百分点，主要负责根据设计图实现UI界面，分类整理系统UI组件并封装高复用UI组件，根据数据接口实现界面状态管理。
 **学习**并掌握了UI组件的封装复用技巧，样式重构理念，形成编写可维护性代码的意识。
 
-大学期间，以第一作者发表一篇国际会议5GWN论文，获得最佳论文奖。并且获得发明专利一项，已授权。
+并且，以第一作者发表一篇国际会议5GWN论文，获得最佳论文奖。并且获得发明专利一项《机器学习的汽车发动机预警方法》，已授权。
 
 -- **自我介绍到这儿** --
 
@@ -97,9 +98,17 @@ PNN概率神经网络：主要用来做映射，将不同种类的故障映射�
 
 页面访问量，影响因素：内容，入口，页面位置，主页面深度。采集页面加载from，to获取用户的访问路径。
 
-比如vue的单页面的时候，可以使用Router.beforeEach方法，也可以使用beforeRouterEnter和beforeRouterLeave。
+比如vue的单页面的时候，
+方案一：使用Router.beforeEach方法，
 
-如果是vue的多页面，封装公用的逻辑
+方案二：全局注册混入beforeRouterEnter和beforeRouterLeave。
+
+需要考虑的问题：
++ 应用关闭时候触发beforeRouterLeave方法。
++ 每一个页面都有这两个方法，如何合并
++ 涉及到子路由的页面，会调用2次，pv会翻倍。
+
+如果是vue的多页面，封装公用的逻辑。免去重复构造entry成本。
 
 如果是ssr应用，直接统计调用模板的次数就知道PV（人次）
 
@@ -121,102 +130,8 @@ PNN概率神经网络：主要用来做映射，将不同种类的故障映射�
 + 服务器端实时保存已上传文件大小，以便下次上传前准确切割
 
 
-##### 六、vue的生命周期
-**简单的说：**
-- 如果你说：beforCreate，created，beforeMount，mounted，beforeUpdate，updated，beforeDestroy，destroyed，
-这8个生命周期的钩子函数。创建->挂载->更新->摧毁。
-
-###### 1、init各种初始化
-首先，我们需要创建一个实例，也就是new Vue()的对象的过程中，首先执行init（init是vue组件中默认去执行的）
-
-+ （1）首先生命周期（init lifeCycle）：初始化vm实例上的一些参数
-+ （2）事件监听的初始化（init Events）
-+ （3）模板解析变量的初始化（initRender）
-+ （4）执行beforeCreate方法
-+ （5）父组件初始化注入（initInjections）：数据初始化之前
-+ （6）初始化数据（initState） vm上的prop/data/computed/method/watch状态在初始化。初始化initData方法
-+ （7）子组件初始化注入（initProvide）：数据初始化之后
-+ （8）执行created方法
-
-- 不要在beforeCreate中去修改data，因为数据还没有初始化，所以最早也要在created中修改data。
-
-- vue1.0使用documentFragment进行模板解析， vue2.0使用的是HTML Parser将模板解析成都直接执行的render函数，模板预编译是服务端SSR前提。
-
-###### 2、beforeMount和mounted
-
-+ （1）判断是否有el的option选项
-
-created完成之后，会去判断实例（instance）是否包含el的option选项，
-如果没有，就会调用**vm.$mount(el)**这个方法挂载模板，然后执行下一步，
-如果有，直接执行下一步。
-
-+ （2）判断是否有template选项
-
-判断玩el的options选项之后，会去判断是否含有实例内部template选项
-如果有，将实例内部template解析成一个render function（渲染函数），是template编译过程，结果是解析成render函数的字符串形式。
-如果没有，将调用外部html。
-
-+ （3）beforeMount钩子函数：将已经完成的html挂载到对应的虚拟DOM上，$el还只是我们html里面写的节点。
-
-+ （4）虚拟DOM替换真实DOM：也就是将编译好的html替换el属性指向的DOM。编译过程是render function（渲染函数）
-
-+ （5）mounted钩子函数：完成真实DOM的挂载，做一些异步请求数据，mounted在实例中只执行一次。
-
-我们在写.vue开发中，写template模板，经过vue-loader处理之后，变成render function（渲染函数），
-最终放到vue-loader解析过的文件里。为啥要这样做，因为解析template变成render function过程，
-非常耗时，vue-loader帮我们提前做了，这样页面执行vue代码，效率会变得更好。
-
-mounted挂载完毕，这个实例算走完流程了。
-
-**疑问**：
-+ 1、为什么el属性判断在判断template之前？因为el属性是一个选择器，vue实例需要用这个选择器el去template中寻找对应的。
-+ 2、vue实例中有一种render选项
-+ 3、渲染优先级：render函数 > template属性 > 外部html
-+ 4、vue的编译过程：将template编译成render函数过程
-+ beforeMount到mounted过程：vue实例的$el去代替渲染函数中html内的el属性
-
-###### 3、数据变化，更新DOM
-这个更新过程：数据变化-->导致虚拟DOM改变-->调用这个两个钩子改变视图
-
-+ （1）监听数据变化
-+ （2）beforeUpdate钩子函数：数据更新之前
-+ （3）渲染新的虚拟DOM，拿新的虚拟DOM与之前虚拟DOM比较，使用diff算法，然后更新视图
-+ （4）updated钩子函数：更新视图之后
-
-**关键**：Object.defineProperty。一个普通的js对象传给vue实例的data，
-vue将遍历此对象的所有属性，并且使用Object.defineProperty把这些属性全部
-转换为getter/setter。
-
-**vue的响应式原理设计三个重要对象：Observer，Watcher，Dep。**
-+ Observer对象：vue中的数据对象在初始化过程中转换为Observer对象。
-+ Watcher对象：将模板和Observer对象结合在一起生成Watcher实例，Watcher是订阅者中的订阅者。
-+ Dep对象：Watcher对象和Observer对象之间纽带，每一个Observer都有一个Dep实例，用来存储订阅者Watcher。
-
-###### 4、实例销毁
-+ （1）beforeDestroy钩子函数：实例销毁之前
-+ （2）拆除数据监听，子组件，事件监听
-+ （3）destroyed钩子函数：实例销毁完成后
-
-###### 5、不常用的生命周期钩子
-+ activated：当组件激活的时候调用
-+ deactivated：组件停用的时候调用
-+ errorCaptured：vue2.5之后出现，捕获子孙组件错误被调用
 
 
-##### 七、vue的响应式设计
-**总结响应式原理**
-
-![vue的数据更新](../image/font-end-image/vue_data_intro.png)
-
-+ 在生命周期的initState方法中将data，prop，method，computed，watch中的数据劫持，
-通过observe方法与Object.defineProperty方法将相关对象转为换Observer对象。
-+ 然后在initRender方法中解析模板，通过Watcher对象，Dep对象与观察者模式将模板中的
-指令与对象的数据建立依赖关系，使用全局对象Dep.target实现依赖收集。
-+ 当数据变化时，setter被调用，触发Object.defineProperty方法中的dep.notify方法，
-遍历该数据依赖列表，执行器update方法通知Watcher进行视图更新。
-+ vue是无法检测到对象属性的添加和删除，但是可以使用全局Vue.set方法（或vm.$set实例方法）。
-+ vue无法检测利用索引设置数组，但是可以使用全局Vue.set方法（或vm.$set实例方法）。
-+ 无法检测直接修改数组长度，但是可以使用splice
 
 ##### 八、为啥vue3.0之后要用proxy？
 肯定是vue2.x里的检测机制不全，因为Object.defineProperty最大局限是只能针对单例属性做监听，
@@ -560,10 +475,10 @@ console.log(square.area);   // 100
     + (7)预加载：比如有的资源不需要马上用，但是需要尽早获取，预加载其实是声明式的fetch，强制浏览器请求资源，并且不会阻塞onload事件。在link标签中使用rel属性preload。
     + (8)预渲染：将下载的文件预先在后台渲染，提高页面的加载速度。    
 + 2、渲染优化：
-    > + (1)减少DOM操作次数。比如vue和react的虚拟DOM，内存总进行diff算法比较，做到最小化操作真实DOM。
-    > + (2)减少重绘重排，比如img标签设置宽高
-    > + (3)懒执行：将某些逻辑延迟到使用时再计算。首屏优化，把耗时的逻辑不在首屏中使用，使用懒执行，一般通过定时器或者事件调用唤醒。
-    > + (4)懒加载：将不关键的资源延后加载。原理就是只加载自定义区域内需要加载的东西，比如常见图片懒加载和视频懒加载
+    + (1)减少DOM操作次数。比如vue和react的虚拟DOM，内存总进行diff算法比较，做到最小化操作真实DOM。
+    + (2)减少重绘重排，比如img标签设置宽高
+    + (3)懒执行：将某些逻辑延迟到使用时再计算。首屏优化，把耗时的逻辑不在首屏中使用，使用懒执行，一般通过定时器或者事件调用唤醒。
+    + (4)懒加载：将不关键的资源延后加载。原理就是只加载自定义区域内需要加载的东西，比如常见图片懒加载和视频懒加载
 + 3、文件优化：
     + (1)图片大小优化：减少像素点和减少像素点能够显示的颜色
     + (2)图片加载优化：1、不用修饰类图片，使用css去代替。2、移动端图片，不用原图，用cdn加载，计算适配宽度，请求相应裁剪好的图片。3、小图使用base64格式。4、多个图标文件合并到一张图中。
