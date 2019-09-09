@@ -841,7 +841,50 @@ webpack运行流程是一个串行过程。
 + vue的异步组件：resolve => require(['../components/PromiseDemo'], resolve)
 + ES6提案的import()，实现动态导入：const Foo = () => import(/* webpackChunkName: "group-foo" */ './Foo.vue')
 
-###### 8、聊聊webpack4.0
+###### 8、webpack的loader的原理，plugin的原理？对比分析一下？
++ loader原理：
+**是一个模块转换器**，其实是一个nodejs的模块，导出一个函数，主要是使用正则进行转换。
+
+功能：传入内容，转换内容，返回内容。webpack还提供了一些API给loader调用。
+
+loader只能处理一个个单独的文件而不能处理代码块
+```js
+const sass = require('node-sass');
+module.exports = function(source) {
+  // source 为 compiler 传递给 Loader 的一个文件的原内容
+  return sass(source);
+};
+```
++ plugin原理：
+**plugin在webpack的运行的生命周期中，监听事件，扩展逻辑，改变构建结果，通过webpack提供API改变输出结果。**
+
+涉及到两个方法：
++ compiler存放webpack的配置。
++ compilation：webpack监听文件变化自动编译机制。
+
++ 两种不同：
+（1）作用不同
+（2）用法不同：loader在rule中配置，类型是数组，每一项是Object；
+plugin是单独配置，类型是数组，每一项都是plugin实例。
+
+###### 9、webpack的相关css的Loader顺序和作用？
+css最基本的编译依赖于这两个加载器：
++ 1、style-loader：主要将所有css模块依赖解析完后，将css插入到页面的style标签
++ 2、css-loader：主要是解析@import，url等引用资源进行处理
++ 3、postcss-loader：postcss的autoprefixer为了解决不同浏览器的前缀问题
++ 4、预处理器sass-loader：以最终生成css为终点的编程语言，比如sass-loader将sass文件编译成css。
+
+css预处理器： less,scss,sass,stylus
+
+css后处理器：postcss的autoprefixer
+
+###### 10、webpack相关的plugin：静态资源处理器extract-text-webpack-plugin？
+webpack打包的时候，会把所有模块，最红打包到一个文件中。
+
++ extrac-text-webpack-plugin：将css资源和js资源进行分割。
+
+
+###### 11、聊聊webpack4.0
 webpack4.0废弃commonChunkPlugin插件，使用optimization.splitChunks和optimization.runtimeChunk来代替。
 
 新特点：
@@ -905,3 +948,263 @@ babel默认只转新的js语法，不转新API。比如：Iterator，Generator�
 全局对象和比如Object.assign等全局方法都不会转译。如果想用，可以使用babel-polyfill。
 
 
+##### 二十九、类型判断
+基本类型（**存储在栈中，按值访问**）：String、Number、Boolean、Symbol、Undefined、Null 
+
+引用类型（**存储在堆中，按址访问**）：Object，还包括 Function 、Array、RegExp、Date 
+
+###### (1)typeof
+```js
+typeof('saucxs')    //'string'
+typeof 'saucxs'   //'string'
+typeof function(){console.log('saucxs')}   //'function'
+typeof ['saucxs','songEagle',1,2,'a']    //'object'
+typeof {name: 'saucxs'}    //'object'
+typeof 1   //'number'
+typeof undefined     //'undefined'
+typeof null    //'object'
+typeof /^\d/   //'object'
+typeof Symbol   // 'function'
+typeof new Date()  // 'object'
+typeof new Error()  // 'object'
+```
+###### (2)instanceof检测原型
+
+用来检测对象类型。A instanceof B用来判断A是否为B的实例
+```js
+[] instanceof Array    //true
+[] instanceof Object    //true
+new Array([1,43,6]) instanceof Array    // true
+new Array([1,43,6]) instanceof Object   // true
+
+{} instanceof Object   // 原型上没有定义  Uncaught SyntaxError: Unexpected token instanceof
+({})  instanceof Object;   //true
+Object.create({'name': 'saucxs'}) instanceof  Object   //true
+Object.create(null) instanceof  Object    //false  一种创建对象的方法，这种方法创建的对象不是Object的一个实例
+
+new Date() instanceof Date   //true
+new Date() instanceof Object   //true
+
+'saucxs' instanceof Object   //false
+'saucxs' instanceof String  //false
+new String("saucxs") instanceof Object  //true
+new String("saucxs") instanceof String  //true
+
+1 instanceof Object   //false
+1 instanceof Number   //false
+new Number(1) instanceof Object  //true
+new Number(1) instanceof Number  //true
+
+true instanceof Object   //false
+true instanceof Boolean   //false
+new Boolean(true) instanceof Object  //true
+new Boolean(true) instanceof Boolean   //true
+
+null instanceof Object    //false
+undefined instanceof Object  //false
+Symbol() instanceof Symbol   //false
+```
+###### (3)数组检测
+
+ES5 提供了 Array.isArray() 方法
+
+###### (4)Object.prototype.toString
+
+至少识别11种类型
+```js
+var number = 1;          // [object Number]
+var string = '123';      // [object String]
+var boolean = true;      // [object Boolean]
+var und = undefined;     // [object Undefined]
+var nul = null;          // [object Null]
+var obj = {a: 1}         // [object Object]
+var array = [1, 2, 3];   // [object Array]
+var date = new Date();   // [object Date]
+var error = new Error(); // [object Error]
+var reg = /a/g;          // [object RegExp]
+var func = function a(){}; // [object Function]
+Math    //[object Math]
+JSON  //[object JSON]
+```
+
+###### (5)判断是不是DOM元素
+```js
+isElement = function(obj) {
+    return !!(obj && obj.nodeType === 1);
+};
+```
+
+###### (6)判断空对象
+
+for循环一旦执行，就说明有属性
+```js
+function isEmptyObject( obj ) {
+        var name;
+        for ( name in obj ) { return false; }
+        return true;
+}
+```
+
+###### (7)判断window对象
+
+有一个window属性指向自身
+```js
+function isWindow(obj) {
+    return !!(window && obj === window)
+}
+```
+
+##### 三十、深浅拷贝
+浅拷贝方法：Object.assign()；展开语法Spread；slice()，concat()
+
+深拷贝：JSON.parse(JSON.stringify(object))，对于undefined，symbol，循环引用等不能正常。
+
+###### 1、浅拷贝
+遍历对象，将对象的key和value放到一个新的对象中。
+
+```js
+function shadowCopy(obj){
+    if(typeof obj !== 'object') return ;
+    var newObj = obj instanceof Array? []: {};
+    for(var key in obj){
+        if(obj.hasOwnProperty(key)){
+            newObj[key] = obj[key];
+        }
+    }
+    return newObj;
+}
+```
+
+###### 2、深拷贝
+遍历对象，如果对象的属性值还是对象的话，递归调用自己。
+
+第一版：
+```js
+function deepCopy(obj) {
+  if(typeof obj !== 'object') return ;
+  var newObj = obj instanceof Array?[]: {};
+  for(var key in obj){
+      if(obj.hasOwnProperty(key)){
+          newObj[key] = typeof obj[key] === 'object'?deepCopy(obj[key]):obj[key]
+      }
+  }
+  return newObj;
+}
+```
+
+第二版：解决循环引用的问题
+```js
+function deepCopy(obj, map = new Map()) {
+  if(typeof obj !== 'object') return ;
+  var newObj = obj instanceof Array?[]: {};
+  if(map.get(obj)){
+      return map.get(obj)
+  }
+  map.set(obj, newObj);
+  for(var key in obj){
+      if(obj.hasOwnProperty(key)){
+          newObj[key] = typeof obj[key] === 'object'?deepCopy(obj[key], map):obj[key]
+      }
+  }
+  return newObj;
+}
+```
+
+继续优化，可以使用weakMap代替map。
+
+性能优化，可以使用其他循环for，while，来代替for in
+
+
+##### 三十一、闭包
+定义：函数A中返回函数B，并且函数B中使用函数A中的变量，函数B就称为闭包。
+```js
+function A(){
+    let a = 1;
+    function B(){
+        console.log(a)
+    }
+    return B;
+}
+```
+为什么函数A已经弹出调用栈，为什么函数B还可以引用函数A中的变量？
+
+因为函数A中的变量这时候存储在堆上的，JS引擎可以通过逃逸分析指导哪些变量存放在堆上，哪些需要存储在栈上。
+
+##### 三十二、手动实现new
+理解new的详细过程：
+1、新生成一个对象obj；
+2、新建一个构造函数Con；
+3、这个新对象链接到新构造函数的原型上，obj.__proro__ = Con..prototype;
+4、绑定this，执行构造函数
+5、确保new出来的是个对象
+
+```js
+function createNew(){
+    /*1、创建一个空的对象*/
+    let obj = new Object();
+    /*2、新建构造函数*/
+    let Con = [].shift.call(arguments);
+    /*3、链接到原型*/
+    obj.__proro__ = Con.prototype;
+    /*4、绑定this，执行构造函数*/
+    let result = Con.apply(obj, arguments);
+    /*5、确保new返回出来的是对象*/
+    return typeof result === 'object' ? result : obj;
+}
+```
+我们来检测一下这个createNew方法。
+```js
+function Student(name, age){
+    this.name = name;
+    this.age = age;
+};
+Student.prototype.present = function(){
+  console.log('我是'+ this.name + '，今年' + this.age + '。');  
+};
+function createNew(){
+    /*1、创建一个空的对象*/
+    let obj = new Object();
+    /*2、新建构造函数*/
+    let Con = [].shift.call(arguments);
+    /*3、链接到原型*/
+    obj.__proro__ = Con.prototype;
+    /*4、绑定this，执行构造函数*/
+    let result = Con.apply(obj, arguments);
+    /*5、确保new返回出来的是对象*/
+    return typeof result === 'object' ? result : obj;
+}
+/*我们测试一下我们手动写的new操作：*/
+const saucxs = createNew(Student, 'saucxs', '18');
+saucxs.__proro__.present()
+```
+
+
+##### 三十三、手动实现一个instanceof
+正确判断对象的类型，内部机制：通过判断对象的原型链中是否可以找到构造函数的原型。
+```js
+instance.[__proto__] === instance.constructor.prototype
+```
+举个例子
+```js
+console.log(instance instanceof Object);
+```
+
+我们手动实现一个
+```js
+function instanceofSame(left, Right){
+    /*获取构造函数原型*/
+    let rightPrototype = Right.prototype;
+    /*对象的原型*/
+    left = left.__proto__;
+    while(true){
+        if(left === rightPrototype) return true;
+        if(left === null) return false;
+        left = left.__proto__;
+    }
+}
+```
+我们来检测一下
+```js
+let saucxs = {name: 'saucxs'};
+console.log(instanceofSame(saucxs, Object));   // true
+```
