@@ -312,7 +312,6 @@ vue不允许在已经创建实例上动态添加新的根级响应式属性。
 <!-- 在 `v-bind` 中 -->
 <div v-bind:id="rawId | formatId"></div>
 ```
-
 ###### 7、Vue.component 注册或获取全局组件
 注册全局组件，注册还会自动使用给定id设置组件的名称。
 **组件是可复用的Vue实例**
@@ -904,7 +903,10 @@ splitChunks思路是引入chunkGroup概念，3.x是父子关系。
 
 ###### 2、babel的工作原理：
 
-babel的转译过程分为三个阶段：parsing（解析），transforming（转译），generating（生成）。
+babel的转译过程分为三个阶段：
++ parsing（解析）:将代码转换为AST；
++ transforming（转译）：访问AST节点进行变化操作，生成新AST；
++ generating（生成）:以新的AST为基础生成代码。
 
 比如 ES6的转换为ES5：
 
@@ -1208,3 +1210,501 @@ function instanceofSame(left, Right){
 let saucxs = {name: 'saucxs'};
 console.log(instanceofSame(saucxs, Object));   // true
 ```
+
+##### 三十四、防抖和节流
+###### 1、防抖
+将多次高频操作优化为只执行一次，**任务触发间隔超过指定间隔才执行**。
+
+使用场景：输入框输入后校验，登陆按钮
+```js
+function debounce(fn, wait, immediate) {
+  let timer = null;
+  return function() {
+    let args = arguments;
+    let context = this;
+    if(immediate && !timer) {
+        fn.apply(context, args);
+    }
+    if(timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+        fn.apply(context, args)
+    }, wait)
+  }
+}
+```
+总结：
++ 对于按钮防抖来说：（1）如果函数是立即执行的，立即调用；（2）如果是延迟执行的，就缓存上下文，放到延迟执行函数中执行
++ 对于延迟执行函数：清除定时器，延迟调用函数。
+
+###### 2、节流
+每个一段时间后执行，将高频操作降低为低频操作。**指定时间间隔，间隔内只会执行一次任务。**
+
+业务场景：图片懒加载，滚动条事件，resize事件。
+
+```js
+function throttle(fn, wait, immediate) {
+  let timer = null;
+  let callNow = immediate;
+  return function() {
+    let context = this;
+    let args = arguments;
+    if(immediate){
+        fn.apply(context, args);
+        callNow = false;
+    }
+    if(!timer){
+        timer = setTimeout(() => {
+            fn.apply(context, args);
+            timer = null;
+        }, wait)
+    }
+  }
+}
+```
+
+##### 三十五、函数柯里化
+将一个低阶函数转换为高阶函数，通俗的说，在一个函数中，首先填充几个参数，然后返回一个新函数的技术，称为函数柯里化。
+
+不侵入函数的前提下，为函数预置通用参数，供多次重复调用。
+
+```js
+function add(x) {
+  return function(y) {
+    return x + y;
+  }
+}
+const addFirst = add(1);
+addFirst(2) === 3
+addFirst(20) === 21
+```
+
+##### 三十六、函数式编程
+函数式编程，是一种编程范式。更准确的说：使用函数作为重复使用的表达式，避免对状态进行修改，消除副作用，使用合成构建函数。
+
+js通过闭包，匿名函数实现函数式编程。比如react也是函数式编程应用，lodashJS，underscoreJS库使用函数式编程。
+
++ 纯函数：函数的输出不受外部影响，同时不影响外部环境，只关注逻辑运算和数学运算。比如slice，map，toUpperCase等
++ 非纯函数：函数输出受外部影响。比如：Math.random，Date.now,splice等
+
+**函数式编程应用：闭包，匿名函数，函数柯里化，高阶函数，函数组合等**
+
+函数组合：解决函数嵌套过深，洋葱代码h(f(g(x)))；让多个函数像拼积木一样。
+
+高阶函数：把函数作为参数，把传入函数做一个封装然后返回
+```js
+var add = function(a, b) {
+  return a + b;
+}
+function math(fn,arr) {
+  return fn(arr[0], arr[1])
+}
+math(add, [1,2])  // 3
+```
+
+##### 三十七、数组扁平化
+###### 1、es6的flat方法
+```js
+let arr = [1,2,[3,4],[5,[6,7,[8]]]];
+arr.flat(Infinity);   // [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+###### 2、parse+stringify+正则
+```js
+let arr = [1,2,[3,4],[5,[6,7,[8]]]];
+JSON.parse('[' + JSON.stringify(arr).replace(/\[|\]/g, '') + ']');   // [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+###### 3、toString()+split
+es6的flat实现原理
+```js
+Array.prototype.flat = function() {
+    return this.toString().split(',').map(item => +item )
+}
+```
+
+```js
+let arr = [1,2,[3,4],[5,[6,7,[8]]]];
+arr.toString().split(',').map(item => +item);  // [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+###### 4、concat+递归
+```js
+let arr = [1,2,[3,4],[5,[6,7,[8]]]];
+function flatten(arr1){
+    var res = [];
+    for(let i = 0; i < arr1.length; i++){
+        if(Array.isArray(arr1[i])){
+            res = res.concat(flatten(arr1[i]));
+        }else{
+            res.push(arr1[i]);
+        }
+    }
+    return res;
+}
+flatten(arr);    // [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+###### 5、concat+reduce+递归
+```js
+let arr = [1,2,[3,4],[5,[6,7,[8]]]];
+function flatten(arr1) {
+  return arr1.reduce((prev, cur) => prev.concat(Array.isArray(cur)?flatten(cur):cur),[])
+}
+flatten(arr);    // [1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+##### 三十八、数组去重
+###### 1、Object键值对
+利用一个空的对象，数组的值存为对象的key，如果object[value]存在，说明重复了。实质是hasOwnProperty的hash表
+```js
+function unique(arr) {
+  var obj = {};
+  var res = arr.filter(function(item, index, arr) {
+    if(obj.hasOwnProperty(item)) return false;
+    else{
+        return obj[item] = true;
+    }
+  })
+  return res;
+}
+```
+但是会把1和'1'不同，误判为相同，是因为**键值对中只能是字符串**，隐式转换。
+```js
+function unique(arr) {
+  var obj = {};
+  var res = arr.filter(function(item, index, arr) {
+    if(obj.hasOwnProperty(typeof item + item)) return false;
+    else {
+        return obj[typeof item + item] = true;
+    }
+  })
+  return res;
+}
+```
+###### 2、reduce高阶函数
+思路：使用includes方法来**判断一个数组是否包含一个指定的值。**
+```js
+function unique(arr) {
+  var newArr = arr.reduce((prev, cur) => {
+      if(!pre.includes(cur)){
+          return pre.concat(cur)
+      }else{
+          return pre
+      }
+  }, []);
+  return newArr;
+}
+```
+缺点：对象数组不能使用includes检测。
+
+###### 3、ES6的Set数据结构
+```js
+const unique = arr => [...new Set(arr)];
+```
+###### 4、ES6的Map数据结构
+主要是解决Object键值对中key只能是字符串的问题
+```js
+function unique(arr) {
+  var current = new Map();
+  var res = arr.filter(function(item, index, arr) {
+    if(current.has(item)){
+        return false;
+    }else{
+        return current.set(item, 1)
+    }
+  })
+  return res;
+}
+```
+
+##### 三十九、数组方法
+###### 1、不改变原数组
++ concat() 连接两个或者多个数组
++ join() 把数组中所有元素放到字符串中
++ slice() 开始到结束（不包括）浅拷贝到新数组
++ map() 创建新数组并返回
++ every() 对数组中每一个元素执行回调,直到返回false
++ some() 对数组中每一个元素执行回调,直到返回true
++ filter() 创建新数组，过滤
+
+###### 2、改变原数组
++ forEach() 循环，会改变元素组
++ pop() 删除数组最后一个元素
++ push() 数组末尾添加元素
++ reverse() 颠倒数组中元素位置
++ shift() 删除数组中的第一个元素
++ unshift() 向数组开头添加元素
++ sort() 对数组进行排序
++ splice() 向数组添加/删除元素
+```js
+var a  = [1,2,3,4,5];
+a.splice(0,1);     //删除从0位置开始的1个   返回[1]   a为[2,3,4,5] 
+a.splice(1,0,99)   //在1的位置插入99   [2,99,3,4,5]
+a.splice(1,1,88)   //99替换为88  [2,88,3,4,5]
+```
++ for in 获取属性名，包括原型链
++ object.key() 获取属性名，不包括原型链
++ for of 获取属性值
++ object.values() 获取属性值，不包括原型链
+
+###### 3、ES6新数组方法
++ Array.from() 将set，map，array，字符串，类数组等转换为数组的功能。
++ Array.of() 数组的**推荐函数构造器**
++ Array.fill() 将数值填充到指定数组的开始位置和结束位置，改变原数组。
++ Array.inclues()  用来判断数组中是否含有某元素
++ Array.find()  只要找到一项内容就返回。
++ Array.findIndex()  findIndex返回的是元素在数组中的索引。
++ Array.copyWithin()  浅复制数组的一部分到同一个数组的其他位置，覆盖原来位置的值,返回新数组。
++ Array.entries()返回一个Array Iterator对象，包含所有数组中每个索引的键值对，类似[key1,value1,key2,value2,key3,value3.....]
++ Array.keys()返回一个Array Iterator对象，包含所有的键。
++ Array.values()返回一个Array Iterator对象，包含所有的值。
+
+
+##### 四十、字符串方法
+所有字符串方法都会返回新字符串。它们不会修改原始字符串。
+###### 1、不改变字符串
++ length 字符串长度
++ indexOf() 查找字符串中首次出现的位置索引
++ search() 搜索指定值的字符串，返回位置
++ slice(index1, index2) 提取字符串的某部分，在新字符串中返回被提取部分
++ substring(index1, index2) 提取字符串的某部分，无法接受负的索引
++ substr(index, length) 提取字符串某部分，第二个参数是提取的长度
++ replace(str1, str2) 用另外值替换字符串中指定的值，只替换首个匹配；第一个参数如果是正则，不带引号，g表示全局
++ toUpperCase()  把字符串转换为大写
++ toLowerCase() 把字符串转换为小写
++ a.concat(" ", b) 连接两个或者多个字符串，等价于+运算符
++ trim() 删除字符串两端的空格
++ charAt() 返回指定位置的字符串，提取字符串字符的方法
++ charCodeAt() 返回字符中指定索引的字符unicode编码，提取字符串字符的方法
++ split() 通过split将字符串转换为数组
+
+###### 2、属性访问
+ECMAScript 5 允许字符串属性访问[]。
+
+##### 四十一、正则
+###### 1、邮箱
+```
+邮箱由英文字母，数字，英文句号，下划线，中划线组成，若干个
+邮件名称：[a-zA-Z0-9_-]+
+域名规则：【N级域名】【三级域名.】二级域名.顶级域名。等同于**.**.**.**
+邮箱规则：名称@域名
+最终 /^[\w+-]+@[\w+-]+(\.[\w+-]+)+$/
+
+如果允许汉字，汉字在正则：[\u4e00-\u9fa5]
+```
+
+###### 2、url解析
+```
+1、协议匹配(http://和https://): 
+^(https|https):\/\/
+2、主机名匹配(xxx.xxx.xxx 或 xxx.xxx 2种形式 由字母或数字组成。如：www.baidu.com  baidu.com  127.0.0.1)：
+([0-9a-zA-Z.]+)
+3、端口匹配（冒号开头+数值或者不显示，如：127.0.0.1:8080  127.0.0.0）：
+(:[0-9]+)?
+4、路径匹配（路径由字母，数字，斜杆，点，组成。但是首页是没有路径的。如：/xxx/xxxx/xxx.html 、 /xxx/xxx）：
+([/0-9a-zA-Z.]+)?
+5、查询字符串匹配（格式为：?xxx=1&ddd=2或者?xx=2）。这个不是必须项。
+(\?[0-9a-zA-Z&=]+)?
+6、信息片断匹配（信息片段由#，字母，数值组成，也不是必须项）
+(#[0-9a-zA-Z]+)?
+最终：/^(http|https):\/\/([0-9a-zA-Z.]+)(:[0-9]+)?([/0-9a-zA-Z.]+)?(\?[0-9a-zA-Z&=]+)?(#[0-9a-zA-Z]+)?/i
+```
+
+###### 3、千分号
+```
+1、最后一个逗号：(?=\d{3}$)
+2、多个逗号：(?=(\d{3})+$)
+3、匹配的位置不能是开头：(?!^)(?=(\d{3})+$)
+4、支持其他开头的，把^和结尾$，修改成\b：(?!\b)(?=(\d{3})+\b)
+最终：/(?!\b)(?=(\d{3})+\b)/g
+```
+
+### 4、字符串去重
+```
+/(.).*\1/g
+```
+```js
+var demo="ababbba";
+demo = demo.split(''); //把字符串转换为数组
+demo = demo.sort().join(''); //首先进行排序，这样结果会把相同的字符放在一起，然后再转换为字符串
+demo.replace(/(.).*\1/g,"$1")
+```
+
+##### 四十二、平时自己怎么解决跨域的？
++ 1、nginx的代理跨域：add_header 为Access-Control-Allow-Origin *。同源策略是浏览器安全策略，不是htttp协议。服务端使用http协议，不会执行js脚本。
++ 2、跨域资源共享CORS：服务端设置Access-Control-Allow-Origin，如果需要cookie请求，前后端都需要设置。
++ 3、node中间件代理跨域：原理和nginx的相同，启动一个代理服务器，实现数据的转发。
++ 4、jsonp跨域：核心是动态添加，利用js标签的src这个属性有跨域特性，只能用get请求，
++ 5、postMessage跨域：H5中新增的API，postMessage(data,origin)方法接受两个参数
++ 6、webSocket协议跨域：H5的新协议，实现浏览器和服务器双向通信，允许跨域通讯，
+websocket API使用不方便，使用socketio，很好封装webSocket，简单灵活的接口，提供了浏览器向下兼容。
++ 7、iframe跨域，可以document.domain，以及location.hash，以及window.name。
+
+
+##### 四十三、讲一下https和http2.0协议
+###### 1、http
+http是个无状态的协议，不会保存状态。
+###### http里的get请求和post请求
+get请求多用于无副作用的场景，post请求多用于有副作用的场景。
+区别：
++ get请求能缓存，post请求不能缓存
++ post请求比get请求安全，因为get请求都包含url里，会被浏览器保存历史记录，post不会。
++ post请求request body传输比get更多的数据，get没有
++ URL长度限制。是因为浏览器和服务器的限制，而不是http限制。比如谷歌浏览器的URL的8182个字符，
+IE浏览器URL最大限制是2083个字符，等等，所以URL长度不要超过IE规定的最大长度2083个字符。
+中文的utf8的最终编码的字符长度是9个字符。
++ post类型支持更多的编码类型且不对数据类型限制
+###### http首部
+###### 通用字段
++ Cache-Control：控制缓存行为
++ Connection：浏览器想要优先使用的连接类型，比如keep-alive，服务器配置和客户端支持
++ Data：创建报文时间
++ Pragma：报文指令
++ Via：代理服务器相关信息
++ Transfer-Encoding：传输编码方式
++ Upgrade：要求客户端升级协议
++ Warning：内容中可能存在错误
+
+###### 请求字段
++ Accept：能正确接收的媒体类型
++ Accept-Charset：能正确接收的字符集
++ Accept-Encoding：能正确接收的编码格式列表，比如gzip
++ Host：服务器域名
++ If-Match：两端资源标记比较
++ If-Modified-Since：本地资源未修改返回304（比较时间）
++ If-None-Match：本地资源未修改返回304（比较标记）
++ User-Agent：客户端信息
++ Referer：浏览器访问的前一个页面
+
+###### 响应字段
++ Age：资源在dialing缓存中存在的时间
++ Etag：资源标识
++ Server：服务器名字
+
+###### 实体字段
++ Allow：资源正确的请求方式
++ Content-Encoding：内容的编码格式
++ Content-Length：request body长度
++ Expires：内容的过期时间
++ Last-modified：内容最后的修改时间
+
+
+###### 2、https
+https还是通过http传输信息，但是信息是通过TLS协议进行加密。
+
+五层网络协议：
++ 1、应用层（DNS，HTTP）：DNS解析成IP，并发送http请求，
++ 2、传输层（TCP，UDP）：建立TCP连接，
++ 3、网络层（IP，ARP）：IP寻址，
++ 4、数据链路层（PPP）：封装成帧
++ 5、物理层：传输介质
+
+TLS协议位于应用层下，传输层上。
+
+TLS1.2首次进行TLS协议传输需要两个RTT，接下来通过缓存会减少一个RTT。
+TLS1.3首次建立只需要一个RTT，后面恢复连接不需要RTT。
+
+TLS中使用两种加密技术，分别为：对称加密和非对称加密。
+
+###### 3、http2.0
+http2.0位于应用层
+为啥引入http2.0原因：浏览器限制同一个域名下的请求数量，当页面有需要请求很多资源的时候，
+队头阻塞会导致达到最大请求数量，剩余资源要等到其他资源加载完毕后才能发起请求。
+
+http2.0核心：
++ 二进制传输：之前传输方式文本传输，http2.0新的编码机制，传输数据都被分隔，并采用二进制格式编码。
++ 多路复用：在一个TCP中可以存在多个流，就是多个请求公用同一个TCP连接，本质是：通过帧中的标识知道属于哪个请求，避免了队头阻塞问题，极大提高传输性能。
++ Header压缩：对传输的haeder进行压缩，两端维护索引表，记录出现的header，通过键名找到对应的值。
++ QUIC协议：基于UDP实现的传输层协议，替换TCP协议。
+
+##### 四十四、浏览器输入 url 到页面的展现，发生了哪些事情？
+主干流程：
++ （1）从浏览器接收url --> 开启网络请求线程（涉及到：浏览器机制，线程和进程关系等）
++ （2）开启网络请求线程 --> 发出一个完整的http请求（涉及到：DNS查询，TCP/IP请求。5层网络协议栈）
++ （3）服务器接收请求 --> 对应后台接收到请求（涉及到：均衡负载，安全拦截，后台内部处理）
++ （4）后台和前台交互（涉及到http头，响应码，报文结构，cookie等，cookie优化，编码解码如gzip压缩等）
++ （5）缓存问题：http缓存（涉及到http缓存头部，etag，expired，cache-control等）
++ （6）浏览器接收http数据包 --> 解析流程（涉及到：html词法分析，构建dom树，同时解析css生成css规则树，合成render树。然后布局layout，painting渲染，符合图层合成，GPU绘制，外链接处理，loaded等）
++ （7）css可视化格式模型（涉及到：元素渲染规则，比如：块，控制框，BFC等）
++ （8）js引擎执行过程（涉及到：js解释阶段，预处理阶段，执行阶段生成执行上下文，VO全局对象，作用域链，回收机制等）
++ （9）其他（扩展其他模块：跨域，web安全等） 
+
+细节的地方，参考这个：http://www.chengxinsong.cn/post/63
+
+##### 四十五、开发中性能优化的方案：
++ 1、网络性能优化：
+    + (1)DNS预解析，预先获取域名对应的IP
+    + (2)缓存：强缓存和协商缓存。
+    + (3)强缓存：表示缓存期间不需要请求，通过响应头设置Expires和cache-control。
+    + (4)协商缓存：如果缓存过期，我们需要使用协商缓存来解决问题，协商缓存需要请求，缓存有效返回304；协商缓存客户端和服务端共同实现；Etag和IF-None-Match，Etag类似
+    指纹，有变动就将新资源返回。
+    + (5)合适的缓存策略：大部分场景就可以使用强缓存配合协商缓存解决，还有特殊的缓存策略。比如不需要缓存的资源，使用cache-control：no-store。
+    对于频繁变动的资源，cache-control：np-cache配合Etag使用，表示资源被缓存，但是每次都会发请求询问资源是都更新。
+    + (6)使用htttp2.0：http1.1，每一个请求都需要建立和断开，消耗好几个RTT时间，并且由于TCP慢启动的原因，加载体积大的文件需要消耗更多时间。
+    http2.0引入多路复用，能够让多个请求使用同一个TCP链接，极大的加快了网页的加载速度，支持header压缩，减少请求数据大小。
+    + (7)预加载：比如有的资源不需要马上用，但是需要尽早获取，预加载其实是声明式的fetch，强制浏览器请求资源，并且不会阻塞onload事件。在link标签中使用rel属性preload。
+    + (8)预渲染：将下载的文件预先在后台渲染，提高页面的加载速度。    
++ 2、渲染优化：
+    + (1)减少DOM操作次数。比如vue和react的虚拟DOM，内存总进行diff算法比较，做到最小化操作真实DOM。
+    + (2)减少重绘重排，比如img标签设置宽高
+    + (3)懒执行：将某些逻辑延迟到使用时再计算。首屏优化，把耗时的逻辑不在首屏中使用，使用懒执行，一般通过定时器或者事件调用唤醒。
+    + (4)懒加载：将不关键的资源延后加载。原理就是只加载自定义区域内需要加载的东西，比如常见图片懒加载和视频懒加载
++ 3、文件优化：
+    + (1)图片大小优化：减少像素点和减少像素点能够显示的颜色
+    + (2)图片加载优化：1、不用修饰类图片，使用css去代替。2、移动端图片，不用原图，用cdn加载，计算适配宽度，请求相应裁剪好的图片。3、小图使用base64格式。4、多个图标文件合并到一张图中。
+    5、使用正确的图片格式，优先使用webp，小图使用png或者svg代替，照片使用jpg。
+    + (3)其他文件优化：1、css放在head中。2、服务端开启文件压缩功能。3、script放在body底部，js执行会阻止渲染，价格defer会并行下载，但是不会执行，等到html解析完成后顺序执行，没有任何依赖的可以加async，表示渲染和js下载和执行并行进行。
+    4、js代码过长会卡住渲染，可以考虑使用webworker,新开线程执行脚本不会影响渲染。    
+     + (4)CDN：静态资源尽量使用CDN加载
++ 4、使用webpack优化项目：
+    + webpack4，打包项目使用production模式，会自动开启代码压缩
+    + 使用ES6的模块开启tree shaking，移除没有使用的代码
+    + 优化图片，小图使用base64写入文件中
+    + 按照路由拆分代码，实现按需加载
+    + 给打包出来的文件名添加哈希，实现浏览器缓存文件
+
+
+##### 四十六、代码习惯
++ codeView：阅读别人代码，以别人代码为镜，更好提高自己，同时提醒自己如何写好代码让别人读。
++ 项目直觉：根据项目的需求这块，希望自己的东西得到认可，不是一味的去做，而是去思考，产品经理的这样设计的是否合理并且提出自己的解决方案。
++ 代码精致简单：过渡封装，黑盒子都是调试的杀手
++ 编码之前先设计一下思路再写
+
+
+##### 四十七、埋点的实现思路？
+根据不同的需求采用不同的埋点方案。
++ 页面访问量：PV（人次），UV（人数）
++ 功能点击量
+
+页面访问量，影响因素：内容，入口，页面位置，主页面深度。采集页面加载from，to获取用户的访问路径。
+
+比如vue的单页面的时候，
+方案一：使用Router.beforeEach方法，
+
+方案二：全局注册混入beforeRouterEnter和beforeRouterLeave。
+
+需要考虑的问题：
++ 应用关闭时候触发beforeRouterLeave方法。
++ 每一个页面都有这两个方法，如何合并
++ 涉及到子路由的页面，会调用2次，pv会翻倍。
+
+如果是vue的多页面，封装公用的逻辑。免去重复构造entry成本。
+
+如果是ssr应用，直接统计调用模板的次数就知道PV（人次）
+
+
+##### 四十八、文件上传断点，续传？
+上传大文件的时候，必须具备文件断点续传，不然用户体验会很差。
+
++ 传统的方法是使用formData文件整块的提交，服务端取到文件在转移，重命名。因此无法实时保存文件已上传的部分。
+
+原因是：http协议下，浏览器无法与服务端长连接，不能以文件流的形式来提交。
+
+方案：
++ 选择一个文件后，获取该文件在服务器上的大小，
++ 根据已上传文件大小切割文件，不断向服务器提交文件片，服务器不断追加文件内容。
++ 当上传文件大小达到文件总大小，上传结束。
+
++ 首先：文件分隔中，h5新增Blob数据类型，提供了分割数据方法slice，可以截取二进制文件的一部分。
++ 文件片保存和追加：后端使用node
++ 服务器端实时保存已上传文件大小，以便下次上传前准确切割

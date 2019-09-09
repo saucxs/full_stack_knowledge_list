@@ -761,7 +761,7 @@ a.splice(1,1,88)   //99替换为88  [2,88,3,4,5]
 + Array.findIndex()  findIndex返回的是元素在数组中的索引。
 + Array.copyWithin()  浅复制数组的一部分到同一个数组的其他位置，覆盖原来位置的值,返回新数组。
 + Array.entries()返回一个Array Iterator对象，包含所有数组中每个索引的键值对，类似[key1,value1,key2,value2,key3,value3.....]
-+ Array..keys()返回一个Array Iterator对象，包含所有的键。
++ Array.keys()返回一个Array Iterator对象，包含所有的键。
 + Array.values()返回一个Array Iterator对象，包含所有的值。
 
 ######  5、深浅拷贝
