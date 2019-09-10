@@ -955,6 +955,20 @@ babel默认只转新的js语法，不转新API。比如：Iterator，Generator�
 
 引用类型（**存储在堆中，按址访问**）：Object，还包括 Function 、Array、RegExp、Date 
 
++ 基本类型(null): 使用 String(null)
++ 基本类型(string / number / boolean / undefined) + function: 直接使用 typeof即可
++ 其余引用类型(Array / Date / RegExp Error): 调用toString后根据[object XXX]进行判断
+很稳的判断封装:
+```js
+
+function type(obj) {
+    let class2type = {};
+    'Array Date RegExp Object Error'.split(' ').forEach(e => class2type[ '[object ' + e + ']' ] = e.toLowerCase());
+    if (obj == null) return String(obj)
+    return typeof obj === 'object' ? class2type[ Object.prototype.toString.call(obj) ] || 'object' : typeof obj
+}
+```
+
 ###### (1)typeof
 ```js
 typeof('saucxs')    //'string'
@@ -1428,7 +1442,7 @@ function unique(arr) {
 + filter() 创建新数组，过滤
 
 ###### 2、改变原数组
-+ forEach() 循环，会改变元素组
++ forEach() 循环，会改变原数组
 + pop() 删除数组最后一个元素
 + push() 数组末尾添加元素
 + reverse() 颠倒数组中元素位置
@@ -1787,6 +1801,31 @@ var p = Object.assign({},o)
 console.log(o === p) //false
 ```
 
+##### 五十一、js的sort实现
+js的sort不稳定，各个浏览器js引擎不一致，导致sort实现不一致。
+
+比如：
++ V8的是**插入排序（稳定**和**快排(不稳定)**，做了很多优化，递归过深会爆栈。数组长度小于22，用插入排序，大于用快排。
++ 火狐内核，sort传入的自定义函数作为参数，使用**归并排序**，不然使用的是**桶排序**
++ IE内核：IE9+使用快排，IE6,7,8：稳定排序
+
+##### 五十二、js的精度问题
+Js数字按照IEEE 754标准，使用64位双精度浮点型表示。
+
+会出现的精度问题：
++ 浮点精度问题：0.1+0.2!==0.3
++ 大精度问题：9999 9999 9999 9999 == 1000 0000 0000 0000 1
++ toFixed四舍五入不准确： 1.335.toFixed(2) == 1.33
+
+浮点精度和toFixed四舍五入属于一类问题：**浮点数无法精确表示引起的**。
+
+大精度问题：**能精确表示的整数范围上限和下限**。
+
+解决方案：
++ 每次浮点数运算，对结果进行制定精度的四舍五入，.toFixed(12)
++ 将浮点数转为整数运算，再对结果做除法，比如0.1+0.2，可以转换为（1+2）/3
++ 浮点数转换为字符串，模拟实际运算结果。很多成熟的库使用的就是这种方法，big.js，bignumber.js
+
 ##### 五十一、算法题（数组）
 ###### 1、数组去重
 + 双重循环
@@ -1867,7 +1906,6 @@ unique(array);   //[1, "1", "2", 2]
 （2）ES6的set，map的数据结构
 
 （3）reduce高阶函数
-
 
 ###### 2、数组中查找重复元素
 
@@ -1982,8 +2020,7 @@ var containsDuplicate = function(nums) {
 };
 ```
 
-
-###### 9、两个升序的数组合并成一个升序数组
+###### 9、两个升序的数组合并成一个升序数组，不去重
 ```js
 // 时间复杂度O(M+N)，空间复杂度O(M+N)
 function merge(left, right){
@@ -2028,7 +2065,66 @@ var intersect = function(nums1, nums2) {
 };
 ```
 
-###### 11、找出一个数组中只出现一次的数字
+###### 11、数组转树状结构
+```js
+var list = [
+　　{id:1,parentId:0,name:'一级'},
+　　{id:2,parentId:1,name:'一级1'},
+　　{id:3,parentId:1,name:'一级2'},
+　　{id:4,parentId:2,name:'一级1-1'},
+    {id:5,parentId:0,name:'二级'},
+　　{id:6,parentId:5,name:'二级1'},
+　　{id:7,parentId:6,name:'二级1-1'},
+　　{id:8,parentId:7,name:'二级1-1-1'}
+]
+```
+递归调用
+```js
+function filterArray(data, parentId = 0) {
+  var tree = [];
+  var temp;
+  for(var i = 0,length = data.length;i < length;i++){
+      if(data[i].parentId == parentId){
+          temp = filterArray(data, data[i].id);
+          console.log(temp, '0000000000')
+          var obj = data[i];
+          if(temp.length > 0){
+              obj.children = temp;
+          }
+          tree.push(obj);
+      }
+  }
+  return tree;
+}
+```
+利用对象的key-value
+```js
+function filterArray(list = []) {
+  var data = JSON.parse(JSON.stringify(list));
+  var tree = [];
+  if(!Array.isArray(data)) return tree;
+  /*start*/
+  var obj = {};
+  data.forEach(item => {
+      obj[item.id] = item;
+  })
+  console.log(obj, '00000')
+  console.log(data, '11111')
+  data.forEach(item => {
+      var parent = obj[item.parentId]
+      console.log(parent, '222222')
+      if(parent){
+          (parent.children || (parent.children = [])).push(item)
+      }else{
+          tree.push(item)
+      }
+      console.log(tree, '333333')
+  })
+  return tree;
+}
+```
+
+###### 12、找出一个数组中只出现一次的数字
 ```js
 var singleNumber = function(nums) {
     
@@ -2040,7 +2136,193 @@ var singleNumber = function(nums) {
 };
 ```
 
-###### 算法题（字符串）
+###### 13、约瑟夫环的问题
+编号1-100，一百人围一个圈，以123123报数，数到3的自动退出圈子，剩下的继续报数，问最后剩下人的编号？
+
+设n为总人数，报出环数字为k，i为第i次出现环。
+当i = 1；f(n,k,i) = (n+k-1)%n
+当i!=1；f(n,k,i) = (f(n-1,k,i-1)+k)%n；意思是：这一轮 = （上一轮 + k）% n
+
+```js
+ function josephus(n,k,i) {
+    if(i==1){
+        return (n+k-1)%n;
+    }else{
+        return (josephus(n-1, k,i-1) + k)%n;
+    }    
+}
+```
+或者设置一个浮标k，123的循环，指到3直接移除
+```js
+function josephus2 (n,k){
+    var players = [];
+    for(var i=1;i<=n;i++){   // 组成数组
+        players.push(i);
+    }
+    var flag=0;
+    while(players.length>1){
+        var outNum = 0;  //本次循环已出局人数，便于定位元素位置
+        var len = players.length;
+        for(var i=0;i<len;i++){
+            flag++;
+            if(flag==k){
+                flag=0;
+                console.log("出局:"+players[i-outNum]+"本次循环已出局人数："+outNum);
+                 // i循环时受数组长度影响 每从头开始时i变为0； 但flag始终是123..k  123..k 固定循环，不受数组影响  ，
+                 players.splice(i-outNum,1);
+                 outNum++;
+             }
+        }
+    }
+    return players[0];
+}
+console.log(josephus2(100,3));
+```
+
+###### 14、冒泡排序(稳定)
+```js
+function bubbleSort(arr){
+    var low = 0;
+    var high = arr.length - 1;
+    var temp,j;
+    while(low < high){
+        for(j =low;j<high;++j){  //正向冒泡，找最大值
+            if(arr[j] > arr[j+1]){
+               temp = arr[j+1];arr[j+1] = arr[j]; arr[j] = temp; 
+            }
+        };
+        --high;
+        for(j =high;j>low;--j){
+            if(arr[j] < arr[j-1]){
+                temp = arr[j]; arr[j]=arr[j-1];arr[j-1]=temp;
+            }
+        };
+        ++ low;
+    }
+    return arr;
+}
+```
+最佳情况：O(n)（已经是正序的情况）
+
+最坏情况：O(n*2)（已经是倒叙的情况）
+
+平均情况：O(n*2)
+
+###### 15、选择排序(不稳定)
+```js
+function selectSort(arr) {
+  var length = arr.length;
+  var minIndex,temp;
+  for(var i = 0; i < length - 1; i++){
+      minIndex = i;
+      for(var j = i + 1; j < length; j++){
+          if(arr[j] < arr[minIndex]){
+              minIndex = j;
+          }
+      }
+      temp = arr[i];arr[i] = arr[minIndex];arr[minIndex] = temp;
+  }
+  return arr;
+}
+```
+最佳情况：O(n*2)
+
+最坏情况：O(n*2)
+
+平均情况：O(n*2)
+
+###### 16、插入排序(稳定)
+```js
+// 改进的 二分查找
+function insertSort(arr) {
+  var length = arr.length;
+  for(var i = 1; i < length; i++){
+      var current = arr[i];
+      var left = 0;
+      var right = i - 1;
+      while(left <= right){
+          var middle = parseInt((left+right)/2);
+          if(current < arr[middle]){
+              right = middle - 1;
+          }else{
+              left = middle + 1;
+          }
+      }
+      for(var j = i - 1;j >= left; j--){
+          arr[j+1] = arr[j]
+      }
+      arr[left] = current;
+  }
+  return arr;
+}
+```
+最佳情况：O(n)
+
+最坏情况：O(n*2)
+
+平均情况：O(n*2)
+
+###### 17、归并排序(稳定)
+```js
+function mergeSort(arr){
+    var length = arr.length;
+    if(length<2){
+        return arr;
+    }
+    var middle = Math.floor(length/2);
+    var left = arr.slice(0, middle);
+    var right = arr.slice(middle);
+    return merge(mergeSort(left), mergeSort(right));
+}
+function merge(left, right){
+    var result = [];
+    while(left.length && right.length){
+        if(left[0] <= right[0]){
+            result.push(left.shift());
+        }else{
+            result.push(right.shift());
+        }
+    }
+    while(left.length){
+        result.push(left.shift());
+    }
+    while(right.length){
+        result.push(right.shift());
+    }
+    return result;
+}
+```
+最佳情况：O(n)
+
+最坏情况：O(nlogn)
+
+平均情况：O(nlogn)
+
+###### 18、快速排序(不稳定)
+```js
+function quickSort2(arr){
+    if(arr.length <= 1){return arr}
+    var xIndex = Math.floor(arr.length/2);
+    var x = arr.splice(xIndex, 1)[0];
+    var left = [];
+    var right = [];
+    for(var i=0;i<arr.length;i++){
+        if(arr[i] < x){
+            left.push(arr[i]);
+        }else{
+            right.push(arr[i]);
+        }
+    }
+    return quickSort2(left).concat([x], quickSort2(right));
+}
+```
+最佳情况：O(nlogn)
+
+最坏情况：O(n*2)
+
+平均情况：O(nlogn)
+
+##### 五十二、算法题（字符串）
 ###### 1、统计字符串中出现最多的和次数
 ```js
 function repeated(str) {
@@ -2112,9 +2394,7 @@ function titleCase() {
 }
 ```
 
-
-
-###### 算法题（数字）
+##### 五十三、算法题（数字）
 ###### 1、整数的阶乘
 ```js
 function fac(num) {
