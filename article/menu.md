@@ -1,12 +1,14 @@
 ## 文章目录
 ### JavaScript系列
-22、[【异步编程系列】async/await在for循环里运行结果怎么样？](http://www.chengxinsong.cn/post/91)
+23、[【异步编程系列】async/await在for循环里运行结果怎么样？](http://www.chengxinsong.cn/post/91)
 
-21、[【Iterator系列】你需要知道的for in和for of 的区别和原理](http://www.chengxinsong.cn/post/90)
+22、[【Iterator系列】你需要知道的for in和for of 的区别和原理](http://www.chengxinsong.cn/post/90)
 
-20、[动态绑定事件方法：(1)jquery的on方法；(2)html元素绑定](http://www.chengxinsong.cn/post/81)
+21、[动态绑定事件方法：(1)jquery的on方法；(2)html元素绑定](http://www.chengxinsong.cn/post/81)
 
-19、[JavaScript系列--八种【数组去重】方法的总结](http://www.chengxinsong.cn/post/73)
+20、[JavaScript系列--八种【数组去重】方法的总结](http://www.chengxinsong.cn/post/73)
+
+19、[javascript系列--js图片懒加载及优化](http://www.chengxinsong.cn/post/71)
 
 18、[javascript系列--JavaScript数组reduce()方法详解及奇淫技巧](http://www.chengxinsong.cn/post/67)
 
@@ -45,6 +47,8 @@
 1、[javascript深入浅出图解作用域链和闭包](http://www.chengxinsong.cn/post/30)
 
 ### Vue
+7、[vue系列--Virtual DOM 真的比操作原生 DOM 快吗？](http://www.chengxinsong.cn/post/68)
+
 6、[【解决方案】数据埋点的一点思路与vue的SPA单页面实践](http://www.chengxinsong.cn/post/85)
 
 5、[vue项目中实现滚动条（具体视窗口的滚动条）操作：（1）置底，（2）置于上次停留的位置](http://www.chengxinsong.cn/post/75)
@@ -82,6 +86,8 @@
 
 
 ### 工具
+5、[webpack系列-webpack4.x入门配置基础（一）](http://www.chengxinsong.cn/post/72)
+
 4、[【npm系列】如何升级自己之前写的npm包，然后发布到npm官网上，然后其他项目怎么更新最新的包](http://www.chengxinsong.cn/post/82)
 
 3、[npm系列--手把手教你用npm发布第一个npm包的详细教程](http://www.chengxinsong.cn/post/44)
@@ -96,4 +102,7 @@
 
 
 ### 其他
+2、[webAssembly系列--webAssembly初探究竟](http://www.chengxinsong.cn/post/70)
+
 1、[【模块化系列】Nodejs模块化的原理](http://www.chengxinsong.cn/post/79)
+
