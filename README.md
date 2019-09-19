@@ -2,6 +2,8 @@
 
 ## 前端
 
+![介绍](http://static.chengxinsong.cn/image/author/intro.jpg?width=600)
+
 ### JavaScript系列
 23、[【异步编程系列】async/await在for循环里运行结果怎么样？](http://www.chengxinsong.cn/post/91)
 
