@@ -1,6 +1,11 @@
-# full_stack_knowledge_list
+# [full_stack_knowledge_list](https://github.com/saucxs/full_stack_knowledge_list)
+开发知识体系，主要是全栈开发知识体系。
++ 目的：每一个开发人员都应该形成自己的知识体系，做到提纲挈领。在设计代码，聊技术，面试，系统结构设计，架构设计等时候，能够游刃有余，充满自信。
++ 特点：
+    + 1、前端领域：Html和css基础，JavaScript，计算机基础，框架和类库，前端工程，项目构建，算法与数据结构等。
+    + 2、后端领域：欢迎补充。。。
 
-## 前端
+## 前端领域
 
 ![介绍](http://static.chengxinsong.cn/image/author/intro.jpg?width=600)
 
