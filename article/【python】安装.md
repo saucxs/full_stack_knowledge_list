@@ -59,3 +59,13 @@ python并不是万能的，比如写个操作系统，需要用C语言写，写�
 若显示出Python对应版本则表示安装成功
 
 ![安装6](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/安装6.png?raw=true)
+
+### python第一行代码
+在搜索路径搜python，选择IDLE
+![安装7](../image/python/安装7.png)
+
+依次按下 print('welcome,程新松，saucxs')，当你看到下界面就是安装完毕了。
+```python
+print('welcome,程新松，saucxs')
+```
+![安装8](../image/python/安装8.png)
