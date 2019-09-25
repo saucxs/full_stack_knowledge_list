@@ -50,7 +50,8 @@ python并不是万能的，比如写个操作系统，需要用C语言写，写�
 
 6、安装完毕，点击Close关闭
 
-  若方框位置出现管理员字样则点击授权再关闭
+若方框位置出现管理员字样则点击授权再关闭
+  
 ![安装5](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/安装5.png?raw=true)
 
 ### python安装验证
@@ -62,10 +63,11 @@ python并不是万能的，比如写个操作系统，需要用C语言写，写�
 
 ### python第一行代码
 在搜索路径搜python，选择IDLE
-![安装7](../image/python/安装7.png)
+
+![安装7](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/安装7.png?raw=true)
 
 依次按下 print('welcome,程新松，saucxs')，当你看到下界面就是安装完毕了。
 ```python
 print('welcome,程新松，saucxs')
 ```
-![安装8](../image/python/安装8.png)
+![安装8](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/安装8.png?raw=true)
