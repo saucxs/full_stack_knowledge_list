@@ -12,13 +12,13 @@ pycharm是非常好用的python的IDE，但是不想安装太多的开发工具�
 ### 具体配置
 点击File->Settings...->Plugins，在里面搜索python，如下图所示：
 
-![idea安装python](../../image/python/idea安装python1.png)
+![idea安装python](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/idea安装python1.png?raw=true)
 
 发现搜索并没有结果。我们点击search in repositories链接，
 查询结果很多，哪个是我们需要的呢？由于我们所需要的是对一个语言（python）的支持，
 于是就在搜索框旁边的category下拉栏中选择Languages一项，选择如下的插件安装：
 
-![idea安装python](../../image/python/idea安装python2.png)
+![idea安装python](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/idea安装python2.png?raw=true)
 
 点击旁边绿色的install，稍等片刻即可完成安装。
 安装完成后原本的install按钮变成了restart，说明需要重启Intellij Idea。点击按键即可重启。
@@ -28,7 +28,7 @@ pycharm是非常好用的python的IDE，但是不想安装太多的开发工具�
 ### 项目配置方法
 点击工具栏中的File->New->Project，可以看到左边的项目类型中多了一个python。点击它，如下图所示：
 
-![idea安装python](../../image/python/idea安装python3.png)
+![idea安装python](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/idea安装python3.png?raw=true)
 
 如果你的电脑中已经安装过了python的环境，它会自动检测SDK。如果没有安装，这里推荐使用Anaconda
 
@@ -36,13 +36,13 @@ pycharm是非常好用的python的IDE，但是不想安装太多的开发工具�
 python文件必须要有明确的程序入口才能执行，不像自己随便写的print一样，也就是说
 必须if __name__ == '__main__':才行。
 
-![运行python](../../image/python/运行python1.png)
+![运行python](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/运行python1.png?raw=true)
 
 在左边的行号栏就会出现运行符号，点击即可运行。
 
 如果没有使用new project方式，直接新建.py的文件运行，会报这样的问题：
 
-![运行python](../../image/python/运行python2.png)
+![运行python](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/运行python2.png?raw=true)
 
 
 ### 最后

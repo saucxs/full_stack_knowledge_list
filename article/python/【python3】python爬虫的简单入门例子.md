@@ -5,7 +5,7 @@
 ![介绍](http://static.chengxinsong.cn/image/author/intro.jpg?width=600)
 
 ### 目标分析
-我们提取一下豆瓣电影--正在声音电影名称，评分，图片的信息。
+我们提取一下豆瓣电影--电影名称，评分，图片的信息。
 
 提取的站点URL：https://movie.douban.com/cinema/nowplaying/nanjing/
 
@@ -20,7 +20,7 @@
 ```python
 pip3 install requests
 ```
-![安装requests](../../image/python/安装9.png)
+![安装requests](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/安装9.png?raw=true)
 
 
 ### 实际爬取分析
@@ -29,7 +29,7 @@ pip3 install requests
 
 页面显示的有效信息有影片名称，评分，图片等信息。我们就可以获取这个页面结果之后，再用正则表达式提取相应信息就可以。
 
-![豆瓣电影1](../../image/python/豆瓣电影1.png)
+![豆瓣电影1](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/豆瓣电影1.png?raw=true)
 
 接下来，我们实现爬取页面源代码过程：
 + 实现一个getPage方法，传入url作为参数，然后将爬取结果返回。
@@ -65,7 +65,7 @@ def main():
 
 我们看一下一个条目的源码div结构：
 
-![豆瓣电影2](../../image/python/豆瓣电影2.png)
+![豆瓣电影2](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/豆瓣电影2.png?raw=true)
 
 **分析**：我们发现一部电影信息对应源代码是一个li节点，我们使用正则表达式来提取这里的一些电影信息。
 首先我们提取电影名称，电影名称信息在class为list-item的节点后，
@@ -149,11 +149,11 @@ if __name__ == '__main__':
 
 ### 运行结果
 
-![豆瓣电影运行](../../image/python/运行python3.png)
+![豆瓣电影运行](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/运行python3.png?raw=true)
 
 再看下文本文件，结果如图所示：
 
-![豆瓣电影运行](../../image/python/运行python4.png)
+![豆瓣电影运行](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/运行python4.png?raw=true)
 
 ### 最后
 **作者简介**
