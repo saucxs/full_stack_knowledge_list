@@ -43,20 +43,16 @@ var len =str.split("#").length-1;   // 2
 ### 5、输入括号()、加号+、减号-、乘号*、除号/;计算公式可任意组合，仅支持一层括号的计算
 ```
 const validatorCalculate = (str) => {
-  const regExp = /[\+\-\*\/\(\)A-Z]/img;
-  const regExpSpecial = /[（），。；‘’\？！-、：“”【「】」《》=`￥~!@#$%^&_<>?:"{},.;'[\]]/img;
-  if (!regExp.test(str) || regExpSpecial.test(str)) {
-    return '不支持除了+-*/()以外的字符';
-  } else if (str.includes('(') && str.includes(')')) {
+  if (str.includes('(') && str.includes(')')) {
     // 1、有括号的计算
     if (str.split('(').length > 2 || str.split(')').length > 2) {
       return '只支持一层括号';
     }
-    const regExpkuo = /^\(([A-Z1-9]{1}[\+\-\*\/]{1})+[A-Z0-9]\)$/g;
+    const regExpkuo = /^(\({0,1}([A-Z]|[0-9]+)\){0,1}[\+\-\*\/]){0,20}([A-Z]|[0-9]+)\){0,1}$/gim;
     if (!regExpkuo.test(str)) return '不符合括号运算规则';
   } else if (!str.includes('(') && !str.includes(')')) {
     // 2、没有括号
-    const regExp = /^([A-Z1-9]{1}[\+\-\*\/]{1})+[A-Z0-9]$/g;
+    const regExp = /^(([A-Z]|[0-9]+)[\+\-\*\/]){0,20}([A-Z]|[0-9]+)$/gim;
     if (!regExp.test(str)) return '不符合运算规则';
   } else {
     return '括号没有闭合';
