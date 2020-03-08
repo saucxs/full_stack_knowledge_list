@@ -26,7 +26,7 @@ export PATH=`pwd`/flutter/bin:$PATH
 ```bash
 ./bin/flutter --v
 ```
-[检查flutter是否安装成功](../../image/font-end-image/flutter/flutter-1.jpg)
+[检查flutter是否安装成功](http://static.chengxinsong.cn/image/flutter/flutter-1.jpg)
 
 （4）个人觉得还是使用永久的将flutter添加到path中
 
@@ -45,7 +45,7 @@ source $HOME/.bash_profile
 ```bash
 flutter -v
 ```
-[检查flutter是否安装成功](../../image/font-end-image/flutter/flutter-2.jpg)
+[检查flutter是否安装成功](http://static.chengxinsong.cn/image/flutter/flutter-2.jpg)
 
 出现上述说明，安装成功。
 
@@ -54,7 +54,7 @@ flutter -v
 flutter doctor
 ```
 flutter会提示你那些东西是必须要的，需要执行什么命令进行安装，按照提示安装即可；
-[检查flutter的依赖性](../../image/font-end-image/flutter/flutter-3.jpg)
+[检查flutter的依赖性](http://static.chengxinsong.cn/image/flutter/flutter-3.jpg)
 
 
 #### 三、第一个Flutter App
@@ -67,19 +67,19 @@ VsCode需要安装两个扩展：Dart和Flutter。
 输入字符Flutter，在命令候选列表中选择Flutter: New Project，
 新建一个Flutter项目，随后让你填写项目名称和选择项目存放路径；
 
-![flutter](../../image/font-end-image/flutter/flutter-5.jpg)
+![flutter](http://static.chengxinsong.cn/image/flutter/flutter-5.jpg)
 
 设置好flutter的安装路径的根目录。
 
 项目创建好后，在VSCode右下角选择调试环境目标:
 
-![flutter](../../image/font-end-image/flutter/flutter-6.jpg)
+![flutter](http://static.chengxinsong.cn/image/flutter/flutter-6.jpg)
 
 怎么启动?vscode已经提示f5启动项目。启动有点慢，等着就好了。
 
-![flutter](../../image/font-end-image/flutter/flutter-7.jpg)
+![flutter](http://static.chengxinsong.cn/image/flutter/flutter-7.jpg)
 
 点击+号
 
-![flutter](../../image/font-end-image/flutter/flutter-8.jpg)
+![flutter](http://static.chengxinsong.cn/image/flutter/flutter-8.jpg)
 

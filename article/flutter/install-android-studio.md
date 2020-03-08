@@ -8,30 +8,30 @@
 
 访问Oracle的java的jdk下载 https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 
-![jre和jdk](../../image/font-end-image/java/jdk-and-jre-1.jpg)
+![jre和jdk](http://static.chengxinsong.cn/image/java/jdk-and-jre-1.jpg)
 
 我这下载的是jdk8。
 
 #### 二、安装jdk
 ##### 1、双击安装dmg
 
-![jre和jdk](../../image/font-end-image/java/jdk-and-jre-2.jpg)
+![jre和jdk](http://static.chengxinsong.cn/image/java/jdk-and-jre-2.jpg)
 
 接下来就是next
 
 安装成功提示
 
-![jre和jdk](../../image/font-end-image/java/jdk-and-jre-3.jpg)
+![jre和jdk](http://static.chengxinsong.cn/image/java/jdk-and-jre-3.jpg)
 
 ##### 2、在finder中找到安装路径
 可以在下图所示的路径中找到安装好的jdk 1.8.0_241.jdk:
 
-![jre和jdk](../../image/font-end-image/java/jdk-and-jre-4.jpg)
+![jre和jdk](http://static.chengxinsong.cn/image/java/jdk-and-jre-4.jpg)
 
 ##### 3、找到jdk的根目录
 其中Contents下的Home文件夹，是该JDK的根目录。
 
-![jre和jdk](../../image/font-end-image/java/jdk-and-jre-5.jpg)
+![jre和jdk](http://static.chengxinsong.cn/image/java/jdk-and-jre-5.jpg)
 
 其中：
 
@@ -55,21 +55,21 @@
 ```class
 java -version
 ```
-![检车是否安装正确](../../image/font-end-image/java/jdk-and-jre-6.jpg)
+![检车是否安装正确](http://static.chengxinsong.cn/image/java/jdk-and-jre-6.jpg)
 
 
 ##### 5、配置jdk环境变量
 输入 open -e .bash_profile命令
 
-![打开.bash_profile环境配置](../../image/font-end-image/java/jdk-and-jre-7.jpg)
+![打开.bash_profile环境配置](http://static.chengxinsong.cn/image/java/jdk-and-jre-7.jpg)
 
 就会打开.bash_profile这个文件（如果没有请新建）
 
-![新增jdk的环境配置](../../image/font-end-image/java/jdk-and-jre-8.jpg)
+![新增jdk的环境配置](http://static.chengxinsong.cn/image/java/jdk-and-jre-8.jpg)
 
 可以使用pwd显示当前的绝对路径
 
-![显示jdk的根目录](../../image/font-end-image/java/jdk-and-jre-11.jpg)
+![显示jdk的根目录](http://static.chengxinsong.cn/image/java/jdk-and-jre-11.jpg)
 
 
 新增jdk的环境配置
@@ -88,13 +88,13 @@ command + s 保存文件
 ```class
 source .bash_profile
 ```
-![jdk环境配置生效](../../image/font-end-image/java/jdk-and-jre-8.jpg)
+![jdk环境配置生效](http://static.chengxinsong.cn/image/java/jdk-and-jre-8.jpg)
 
 检验是否生效
 ```bash
 echo $JAVA_HOME
 ```
-![检查是否生效](../../image/font-end-image/java/jdk-and-jre-10.jpg)
+![检查是否生效](http://static.chengxinsong.cn/image/java/jdk-and-jre-10.jpg)
 
 
 #### 三、安装android studio
@@ -113,14 +113,14 @@ echo $JAVA_HOME
 （1）打开下载的dmg文件
 （2）拖Android Studio到Application中
 （3）选择标准模式安装
-![选择标准模式](../../image/font-end-image/android/android-1.jpg)
+![选择标准模式](http://static.chengxinsong.cn/image/android/android-1.jpg)
 
 （4）验证设置，开始下载sdk
-![验证设置](../../image/font-end-image/android/android-2.jpg)
+![验证设置](http://static.chengxinsong.cn/image/android/android-2.jpg)
 
-![下载sdk](../../image/font-end-image/android/android-3.jpg)
+![下载sdk](http://static.chengxinsong.cn/image/android/android-3.jpg)
 
-![sdk Manger](../../image/font-end-image/android/android-4.jpg)
+![sdk Manger](http://static.chengxinsong.cn/image/android/android-4.jpg)
 
 
 #### 四、下载安装SDK Manger
@@ -134,22 +134,22 @@ Android SDK手动下载配置
 
 ##### 2、将下载的zip文件解压到~/Library/Android/sdk目录下，目录结构如下图：
 
-![sdk Manger](../../image/font-end-image/android/android-5.jpg)
+![sdk Manger](http://static.chengxinsong.cn/image/android/android-5.jpg)
 
 ##### 3、运行sdk/tools/android启动Android SDK Manager
-![sdk Manger](../../image/font-end-image/android/android-6.jpg)
+![sdk Manger](http://static.chengxinsong.cn/image/android/android-6.jpg)
 国内Android SDK更新下载时经常会遇到Fitch fail URL 或 Nothing was installed错误。
 为了解决这类错误的出现并提高下载速度，可以设置http代理。
 按Cmd+,快捷键打开Setting界面或按下图的方法打开Setting界面。
 
-![设置代理](../../image/font-end-image/android/android-7.jpg)
+![设置代理](http://static.chengxinsong.cn/image/android/android-7.jpg)
 
 设置：
 + Http Proxy Server: mirrors.neusoft.edu.cn
 + Http Proxy Port: 80
 + 选中「Force https://... sources to be fetched usi。。。。
 
-![设置代理](../../image/font-end-image/android/android-8.png)
+![设置代理](http://static.chengxinsong.cn/image/android/android-8.png)
 
 
 ##### 4、下载必不可少的4个包
@@ -163,9 +163,9 @@ Android SDK手动下载配置
 
 启动
 
-![编译成功，启动](../../image/font-end-image/android/android-9.jpg)
+![编译成功，启动](http://static.chengxinsong.cn/image/android/android-9.jpg)
 
 我使用的是默认的模拟器，没有使用Genymontion模拟器。
 
-# ![启动成功模拟器展示](../../image/font-end-image/android/android-10.jpg)
+# ![启动成功模拟器展示](http://static.chengxinsong.cn/image/android/android-10.jpg)
 
