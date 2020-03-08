@@ -9,6 +9,13 @@
 
 ![介绍](http://static.chengxinsong.cn/image/author/intro.jpg?width=600)
 
+### flutter系利
+2、[mac安装flutter](http://www.chengxinsong.cn/post/93)
+
+1、[mac安装android studio](http://www.chengxinsong.cn/post/92)
+
+
+
 ### JavaScript系列
 23、[【异步编程系列】async/await在for循环里运行结果怎么样？](http://www.chengxinsong.cn/post/91)
 
@@ -134,3 +141,11 @@
 
 #### 6、项目构建
 ![前端知识体系](./output/png/项目构建.png)
+
+
+## 服务端领域
+### redis系列
+1、[linux使用yum安装redis，redis 解决启动失败的问题](http://www.chengxinsong.cn/post/94)
+
+### python系列
+1、[【python3】下载安装和配置教程](http://www.chengxinsong.cn/post/95)

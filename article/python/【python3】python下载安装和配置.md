@@ -32,42 +32,47 @@ python并不是万能的，比如写个操作系统，需要用C语言写，写�
      32位下载Windows x86 executable installer 版本
 ```
 打开链接如下图，版本会一直更新，选择任意一个适合自己电脑的版本就好
-![下载对应的版本](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/下载对应的版本.png?raw=true)
+
+![下载对应的版本](../../image/python/下载对应的版本.png)
 
 2、勾选add python to path 添加路径
 
 安装界面点击Customize installation 自定义安装
-![安装1](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/安装1.png?raw=true)
+
+![安装1](../../image/python/安装1.png)
 
 3、不改变默认进行Next下一步
-![安装2](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/安装2.png?raw=true)
+
+![安装2](../../image/python/安装2.png)
 
 4、选择一个自己喜欢的安装位置
-![安装3](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/安装3.png?raw=true)
+
+![安装3](../../image/python/安装3.png)
 
 5、等待进度条加载完毕
-![安装4](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/安装4.png?raw=true)
+
+![安装4](../../image/python/安装4.png)
 
 6、安装完毕，点击Close关闭
 
 若方框位置出现管理员字样则点击授权再关闭
   
-![安装5](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/安装5.png?raw=true)
+![安装5](../../image/python/安装5.png)
 
 ### python安装验证
 进入到自己的安装目录下和任何一个目录下，运行语句：python -V
 
 若显示出Python对应版本则表示安装成功
 
-![安装6](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/安装6.png?raw=true)
+![安装6](../../image/python/安装6.png)
 
 ### python第一行代码
 在搜索路径搜python，选择IDLE
 
-![安装7](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/安装7.png?raw=true)
+![安装7](../../image/python/安装7.png)
 
 依次按下 print('welcome,程新松，saucxs')，当你看到下界面就是安装完毕了。
 ```python
 print('welcome,程新松，saucxs')
 ```
-![安装8](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/python/安装8.png?raw=true)
+![安装8](../../image/python/安装8.png)
