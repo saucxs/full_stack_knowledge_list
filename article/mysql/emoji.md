@@ -38,4 +38,4 @@ Redirecting to /bin/systemctl restart mysqld.service
 
 然后就OK
 
-![mysql-emoji](./images/mysql-emoji.png)
+![mysql-emoji](https://github.com/saucxs/full_stack_knowledge_list/blob/master/article/mysql/images/mysql-emoji.png?raw=true)

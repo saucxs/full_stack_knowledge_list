@@ -153,4 +153,4 @@
 
 ## 数据库领域
 ### mysql系列
-1、[mysql如何设置支持emoji表情储存]()
+1、[mysql如何设置支持emoji表情储存](http://www.chengxinsong.cn/post/96)
