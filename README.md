@@ -149,3 +149,8 @@
 
 ### python系列
 1、[【python3】下载安装和配置教程](http://www.chengxinsong.cn/post/95)
+
+
+## 数据库领域
+### mysql系列
+1、[mysql如何设置支持emoji表情储存]()
