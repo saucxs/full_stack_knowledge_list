@@ -172,7 +172,155 @@ function Counter() {
 
 + 给定一个初始state，然后通过dispatch一个action，再经由reducer改变state，再返回新的state，触发组件重新渲染。
 
-知道了这些，useState的实验就一目了然了。
+知道了这些，useState的实现就一目了然了。
+
+```
+function useState(initialState) {
+  let state = initialState;
+  function dispatch = (newState, action) => {
+    state = newState;
+  }
+  return [state, dispatch];
+}
+```
+
+上面代码还是不能满足要求，Function Component在初始化、或者状态变更后都需要重新执行useState函数，并且要保障每一次useState被执行的时候state的状态时最新的。
+
+所以我们需要一个新的数据结构来保存上一次的state和这一次的state，以便可以在初始化流程调用useState和更新流程调用useState可以取到对应的正确值。这个数据结构可以做如下设计，我们假定这个数据结构叫Hook。
+
+```
+type Hook {
+  memoizedState: any,    // 上一次完整更新之后的最终状态值
+  queue: UpdateQueue<any, any> | null;    // 更新队列
+};
+```
+
+考虑到第一次组件mounting和后续的updating逻辑的差异，我们定义两个不同的useState函数的实现，分别叫做mountState和updateState。
+
+```
+function useState(initialState) {
+  if (isMounting) {
+    return mountState(initialState);
+  }
+  if (isUpdateing) {
+    return updateState(initialState);
+  }
+}
+
+// 第一次调用组件的 useState 时实际调用的方法
+function mountState(initialState) {
+  let hook = createNewHook();
+  hook.memoizedState = initialState;
+  return [hook.memorizedState, dispatchAction];
+}
+
+function dispatchAction (action) {
+  // 使用数据结构存储所有的更新行为，以便 rerender 流程中计算最新的状态值
+  storeUpdateActions(action);
+  // 执行 fiber 渲染
+  scheduleWork();
+}
+
+// 第一次执行之后，每一次执行 useState 时实际调用的方法
+function updateState(initialState) {
+  // 根据 dispatchAction 中存储的更新行为计算出新的状态值，并返回组件doReducerWork();
+  return [hook.memoizedState, dispatchAction];
+}
+function createNewHook() {
+  return {
+    memoizedState: null,
+    baseUpdate: null
+  }
+}
+```
+上面代码基本反映出我们的设计思路，但还是存在两个核心的问题需要解决：
++ 调用storeUpdateActions后将以什么方式把这次更新行为共享给doReducerWork进行最终状态的计算
++ 同一个 state ，在不同时间调用 mountState 和 updateState 时，如何实现hook对象的共享。
 
 
+#### 4、更新逻辑的共享
+更新逻辑是一个抽象的描述，我们首先需要根据实际的使用方式考虑清楚一次更新需要包含哪些必要的信息。实际上，在一次事件 handler 函数中，我们完全可以多次调用dispatchAction：
+```
+function Count() {
+  const [count, setCount] = useState(0);
+  const [countTime, setCountTime] = useState(null);
+  function clickHandler() {
+    // 多次调用 dispatchAction
+    setCount(1);
+    setCount(2);
+    setCount(3);
+    // ...
+    setCountTime(Date().now());
+  }
+  return (
+    <div>
+      <div>{count} in  {countTime}</div>
+      <button onClick={clickHandler}>Update Counter</button>
+    </div>
+  )
+}
+```
+在执行setCount的3次调用中，我们并不希望Count组件会因此被渲染3次，而是会按照调用顺序实现最后调用的状态生效。因此如果考虑上述使用场景的话，我们需要同步执行完clickHandler中所有的dispatchAction后，并将其更新逻辑顺序存储，然后再触发fiber和re-render合并渲染。name多次多次对同一个dispatchAction的调用，我们如何来存储这个逻辑呢？
 
+比较简单的方法是使用一个队列Queue来存储每一次更新逻辑Update的基本信息：
+```
+type Queue {
+  last: update,  // 最后一次更新逻辑
+  dispatch: any,
+  lastRenderdState: any   // 最后一次渲染组件时的状态
+}
+
+type Update {
+  action: any,   // 状态值
+  next: Update   // 下一次 Update
+}
+```
+
+这里使用的是单向链表结构来存储更新队列，有了这个数据结构之后，我们来改动一下代码：
+
+```
+function mountState(initialState) {
+  let hook = createNewHook();
+  hook.memoizedState = initialState;
+  // 新建一个队列
+  const queue = (hook.queue = {
+    last: null,
+    dispatch: null,
+    lastRenderedState: null
+  });
+  // 通过闭包方式，实现队列的在不同函数中共享，前提是每次用dispatch函数式同一个
+  const dispatch = dispatchAction.bind(null, queue);
+  return [hook.memorizedState, dispatch];
+}
+
+function dispatchAction(queue, action) {
+  // 使用数据结构存储所有的更新行为，以便 rerender 流程中计算最新的状态值
+  const update = {
+    action,
+    next: null
+  }
+  let last = queue.last;
+  if (last === null) {
+    update.next = update;
+  } else {
+    // ... 更新循环链表
+  }
+  // 执行 fiber 的渲染
+  scheduleWork();
+}
+
+function updateState(initialState) {
+  // 获取当前正在工作中的hook
+  const hook = updateWorkInProgressHook();
+  // 根据 dispatchAction 中存储的更新行为计算出新的状态值，并返回给组件
+  (function doReducerWork() {
+    let newState = null;
+    do {
+      // 循环链表，执行每一次更新
+    }while(...)
+    hook.memoizedState = newState;
+  })();
+  return [hook.memoizedState, hook.queue.dispatch];
+}
+```
+更新逻辑的共享，我们就已经解决了。
