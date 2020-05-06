@@ -209,5 +209,29 @@ void _pushSaved() {
 
 ![flutter](http://static.chengxinsong.cn/image/flutter/flutter_learning5.jpg)![flutter](http://static.chengxinsong.cn/image/flutter/flutter_learning6.jpg)
 
+### 四、使用主题更改UI
+主题可以控制您应用程序的外观和风格，可以使用默认主题，该主题取决于物理设备或模拟器，也可以自定义主题以适用您的品牌。
 
++ 第1步：配置ThemeData类轻松更改应用程序的主题
+我们将更改primary color颜色为白色。
 
+下面代码就是将程序的主题颜色改为白色：
+
+```
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    // final wordPair = new WordPair.random();
+    return new MaterialApp(
+      title: 'welcome to start name Flutter Demo',
+      theme: new ThemeData(
+        primaryColor: Colors.white,
+      ),
+      home: new RandomWords(),
+    );
+  }
+}
+```
+
++ 第2步：热重载
