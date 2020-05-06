@@ -235,3 +235,36 @@ class MyApp extends StatelessWidget {
 ```
 
 + 第2步：热重载
+整个背景将会变成为白色，包括应用栏。
+
+android的模拟器展示：
+
+![xcode](./images/flutter_1.jpg)
+
+ios的模拟器展示：
+
+![xcode](./images/flutter_1.jpg)
+
+PS: ios模拟器开发配置：[flutter的Ios的环境配置](https://github.com/saucxs/full_stack_knowledge_list/blob/master/article/flutter/flutter-ios-config.md)
+
+### 五、总结一下：
+配置系列：
++ [mac安装flutter](https://github.com/saucxs/full_stack_knowledge_list/blob/master/article/flutter/install-flutter-1.md)
++ [mac安装android studio](https://github.com/saucxs/full_stack_knowledge_list/blob/master/article/flutter/install-android-studio.md)
++ [flutter的ios的环境配置](https://github.com/saucxs/full_stack_knowledge_list/blob/master/article/flutter/flutter-ios-config.md)
+
+入门系列：
++ 第1篇文章：[【flutter】手把手写flutter入门的例子：无限滚动ListView](https://github.com/saucxs/full_stack_knowledge_list/blob/master/article/flutter/flutter-1-listView.md)
++ 第2篇文章：[【flutter】手把手写flutter入门的例子（二）：无限滚动ListView添加交互和导航到新页面](https://github.com/saucxs/full_stack_knowledge_list/blob/master/article/flutter/flutter-2-listView-jiaohu.md)
+
+我们学习了：
++ mac配置android和ios的环境
++ 从头开始创建一个flutter应用程序
++ 编写dart代码
++ 利用第三方库
++ 使用热重载加速开发周期
++ 实现一个有状态的widget，增加应用的交互
++ 用ListView和ListTiles创建一个延迟加载的无限滚动列表
++ 创建一个路由，并且添加在主路由和新路由之间跳转逻辑
++ 使用主题改变应用UI的外观
+
