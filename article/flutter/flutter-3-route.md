@@ -1,4 +1,4 @@
-## flutter的路由管理
+## 【手把手学习flutter】flutter的路由管理
 
 ### 一、前言
 VS Code创建一个新的Flutter工程，命名为"first_flutter_app"。创建好后，就会得到一个计数器应用的Demo。
@@ -278,3 +278,179 @@ I/flutter ( 5465): 路由返回值：返回值saucxs，B->A
 ```
 
 介绍的是非命名路由的传值方式，命名路由的传值方式会有所不同。
+
+#### 2.5 命名路由
+命名路由意思就是给每一个路由起一个名字，然后通过路由名字直接打开新的路由，这样和一些框架的路由配置项一样，直接简单方式管理路由。
+
+##### 1、路由表
+要想使用命名路由，必须注册一个路由表，这样使名字和路由组件相对应，其实注册路由表就是给路由起名字，路由表定义如下：
+
+```
+Map<String, WidgetBuilder> routes;
+```
+
+首先这是一个Map，key为路由名字，字符串；value为是builder回调函数，用于生成相应的路由widget。
+
+我们在通过路由名字打开新路由时，应用会根据路由在路由表中查找到对应的WidgetBuilder回调函数，然后调用该回调函数生成路由widget并返回。
+
+
+##### 2、注册路由表
+路由表的注册方式很简单，我们还是回到「计数器」的示例，然后在MyApp类的build方法中找到MaterialApp，添加routes属性，代码如下：
+
+```
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      title: 'Flutter Demo',
+      theme: new ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      // 注册路由表
+      routes: {
+        "new_page": (context) => NewRoutePage(),
+        //  其他路由信息
+      },
+      home: new MyHomePage(title: 'Fultter Demo',),
+    );
+  }
+}
+```
+这就完成了路由表注册，上面代码中的home路由并没有使用命名路由，我们可以将home注册为命名路由应该怎么做？show me code
+```
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new MaterialApp(
+      title: 'Flutter Demo',
+      theme: new ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      // 注册路由表
+      routes: {
+        "new_page": (context) => NewRoutePage(),
+        "/":(context) => MyHomePage(title: 'Fultter Demo'), //注册首页路由
+      },
+    );
+  }
+}
+```
+其实可以看到路由表中注册一下MyHomePage路由，然后将其名字作为MaterialApp的initialRoute属性值即可，该属性决定应用的初始路由是哪一个命名路由。
+
+##### 3、通过路由名打开新路由页
+通过路由名称打开新路由，可以使用Navigator的pushNamed方法：
+```
+Future pushNamed(BuildContext context, String routeName,{Object arguments})
+```
+Navigator 除了pushNamed方法，还有pushReplacementNamed等其他管理命名路由的方法。
+
+修改FlatButton的onPressed回调代码，改为：
+```
+FlatButton(
+  child: Text('打开新页面'),
+  textColor: Colors.blue,
+  onPressed: () {
+    Navigator.pushNamed(context, 'new_page');
+    // Navigator.push(context, MaterialPageRoute(builder: (context){
+    //   return NewRoutePage();
+    // }));
+  },
+),
+```
+然后热重载，点击「打开新页面」按钮，依然可以打开路由页。
+
+##### 4、命名路由参数传递
+在初始的版本中，命名路由是不能传递参数的，后来才支持了参数，下面是命名路由如何传递并获得路由参数。
+
+首先我们注册一个路由：
+```
+routes: {
+  'new_page': (context) => EchoRoute(),
+},
+```
+
+在路由页通过RouteSetting对象获取路由参数：
+
+```
+
+class EchoRoutePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+     //获取路由参数  
+    var args=ModalRoute.of(context).settings.arguments;
+    print('获取路由参数：$args');
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("一个新页面"),
+      ),
+      body: Center(
+        child: Text('命名路由参数传递'),
+      )
+    );
+  }
+}
+```
+
+控制行提示输出：
+```
+I/flutter ( 5465): 获取路由参数：saucxs
+```
+
+在打开路由时传递参数
+```
+FlatButton(
+  child: Text('打开新页面EchoPage'),
+  textColor: Colors.blue,
+  onPressed: () {
+    Navigator.of(context).pushNamed('echo_page', arguments: 'saucxs');
+  },
+),
+```
+
+![路由携带参数](http://static.chengxinsong.cn/image/flutter/flutter_new_route_5.jpg)
+
+![路由携带参数](http://static.chengxinsong.cn/image/flutter/flutter_new_route_6.jpg)
+
+
+##### 5、适配
+如果我们想上面路由传参示例中的RouterParamsTestB路由注册到路由表中，以便可以通过路由名来打开，但是，由于RouterParamsTestB接收一个params参数，我们如何在不改变RouterParamsTestB源码的前提下适配这种情况，很简单：
+```
+routes: {
+  "new_page": (context) => NewRoutePage(),
+  "echo_page": (context) => EchoRoutePage(),
+  "testB": (context) {
+    return RouterParamsTestB(params: ModalRoute.of(context).settings.arguments);
+  },
+  "/":(context) => RouterParamsTestA(), //注册首页路由
+},
+```
+
+
+### 三、路由生成钩子
+还有路由生成钩子，MaterialApp有一个onGenerateRoute属性，它在打开命名路由时可能会被调用，之所以说可能，是因为当调用Navigator.pushNamed(...)打开命名路由时，如果指定的路由名在路由表中已注册，则会调用路由表中的builder函数来生成路由组件；如果路由表中没有注册，才会调用onGenerateRoute来生成路由。onGenerateRoute回调签名如下：
+
+```
+Route<dynamic> Function(RouteSettings settings)
+```
+
+有了onGenerateRoute回调，要实现上面控制页面权限的功能就非常容易：我们放弃使用路由表，取而代之的是提供一个onGenerateRoute回调，然后在该回调中进行统一的权限控制。
+
+### 四、总结
+我们总结一下，学习了Flutter中路由管理，传参的方式，以及命名路由的内容。实际开发中到底哪一种「路由管理方式」。
+
+使用命名路由的管理方式，好处：
++ 语义化更明确
++ 代码更好维护，如果使用匿名路由，必须在调用Navigator.push的地方创建新路由页，这样不仅需要import新路由页的dart文件，而且这样的代码会比较分散。
++ 可以通过OnGenerateRoute做一些全局的路由跳转前置处理逻辑。
+
+还有一些关于路由管理的内容我们没有介绍，比如路由MaterialApp中还有navigatorObservers和onUnknownRoute两个回调属性，前者可以监听所有路由跳转动作，后者在打开一个不存在的命名路由时会被调用，由于这些功能并不常用，而且也比较简单。
+
+### 五、欢迎关注
+show me code：https://github.com/saucxs/flutter_learning/tree/master/hellotest
+
+后续会出更多相关的flutter学习和实战，欢迎关注本公众号
+
+![欢迎关注](http://static.chengxinsong.cn/image/author/intro.jpg?width=600)
+
+>微信公众号：**[松宝写代码]**
+songEagle开发知识体系构建，技术分享，项目实战，项目实验室，带你一起学习新技术，总结学习过程，让你进阶到高级资深工程师，学习项目管理，思考职业发展，生活感悟，充实中成长起来。问题或建议，请公众号留言。
