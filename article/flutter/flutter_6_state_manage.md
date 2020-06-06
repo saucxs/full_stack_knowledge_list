@@ -33,7 +33,7 @@ _StateMangementAState类：
 + 定义 _handleTap() : 该函数在点击盒子时更新 _active，并调用setState() 更新UI
 + 实现widget的所有的交互行为
 
-```
+```dart
 // StateManagementA 管理自身状态
 class StateMangementA extends StatefulWidget {
   StateMangementA({Key key}) : super(key: key);
@@ -92,7 +92,7 @@ StateMangementB类：
 + 继承 StatelessWidget 类，因为所有状态都是由父组件处理
 + 当检测到点击时，会回调触发父组件
 
-```
+```dart
 // 父widget 为 StateMangementB 管理状态
 class ParentWidget extends StatefulWidget {
   @override
@@ -157,7 +157,7 @@ class StateMangementB extends StatelessWidget {
 ```
 
 路由
-```
+```dart
  routes: {
   "state_management_A": (context) => StateMangementA(),
   "state_management_B": (context) {
@@ -183,8 +183,7 @@ _StateManagementCState 对象：
 + 当按下，抬起，或者取消点击时更新 _highlight 状态，调用setState() 更新UI。
 + 当点击时，将状态的改变传递给父组件。
 
-```
-
+```dart
 // 管理「混合」状态  StateManagementC
 class ParentWidgetC extends StatefulWidget {
   @override
@@ -302,3 +301,16 @@ class _StateManagementCState extends State<StateManagementC> {
 + 1、实验一个全局的事件总线，将语言状态改变对应为一个事件，然后在APP中依赖应用语言的组件的initState方法中订阅语言改变的事件。当用户在设置页切换语言后，我们发布语言改变事件，而订阅此事件的组件就会收到通知，收到通知后调用setState方法重新build自身。
 + 2、在一些专门用于状态管理的包，如Provider,redux等。后边再介绍全局事件总线。
 
+### 七、欢迎关注
+show me code：https://github.com/saucxs/flutter_learning/tree/master/hellotest
+
+后续会出更多知识体系构建，技术分享，项目实战，实验室等，欢迎关注本公众号:**[松宝写代码]**
+
+![欢迎关注](http://static.chengxinsong.cn/image/author/intro.jpg?width=600)
+
+>微信公众号：**[松宝写代码]**
+songEagle开发知识体系构建，技术分享，项目实战，实验室，带你一起学习新技术，总结学习过程，让你进阶到高级资深工程师，学习项目管理，思考职业发展，生活感悟，充实中成长起来。问题或建议，请公众号留言。
+
+>微信群：**【写代码】研发进阶群**
+一个成长交流的产研群，帮忙拉产研的同学们进群，聚聚人气😘😘。
+每一个开发同学都应该形成自己的[知识体系](https://github.com/saucxs/full_stack_knowledge_list)，做到提纲挈领🧐🧐🧐
