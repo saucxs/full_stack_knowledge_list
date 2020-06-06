@@ -165,7 +165,7 @@ class MyApp extends StatelessWidget {
 ```
 重新启动应用程序。跟之前的一样，每一次热重载，都会生成新的单词。
 
-### 4、创建一个无限滚动ListView
+### 5、创建一个无限滚动ListView
 上述中的RandomWordsState类，我们继承这个类，并生成显示单词对列表。当用户滚动时，ListView中显示的列表将无限的增长。ListView的build工厂构造函数允许按需建立一个懒加载的列表视图。
 
 + 第一步：向RandomWordsState类中添加一个_suggestions列表中保存建议的单词对。**对变量以下划线_开头的，Dart语言中使用下划线前缀的标识符，会强制变成私有的。**
@@ -262,3 +262,31 @@ class MyApp extends StatelessWidget {
 重启应用程序，你可以看到一个单词对列表。尽可能的向下滚动，将继续看到新的单词对。
 
 ![flutter](http://static.chengxinsong.cn/image/flutter/flutter_learning3.jpg)
+
+### 6、欢迎关注
+show me code：https://github.com/saucxs/flutter_learning/tree/master/hellotest
+
+后续会出更多知识体系构建，技术分享，项目实战，实验室等，欢迎关注本公众号:**[松宝写代码]**
+
+![欢迎关注](http://static.chengxinsong.cn/image/author/intro.jpg?width=600)
+
+>微信公众号：**[松宝写代码]**
+songEagle开发知识体系构建，技术分享，项目实战，实验室，带你一起学习新技术，总结学习过程，让你进阶到高级资深工程师，学习项目管理，思考职业发展，生活感悟，充实中成长起来。问题或建议，请公众号留言。
+
+>微信群：**【写代码】研发进阶群**
+一个成长交流的产研群，帮忙拉产研的同学们进群，聚聚人气😘😘。
+每一个开发同学都应该形成自己的[知识体系](https://github.com/saucxs/full_stack_knowledge_list)，做到提纲挈领🧐🧐🧐
+
+### 7、各种福利
+关注微信公众号：**[松宝写代码]**，有各种福利。
+
+**「字节跳动」内推福利：**
+
+#### 1、社招内推
+![社招内推](http://static.chengxinsong.cn/image/neitui/neitui_1.jpg)
+
+#### 2、实习生内推
+![实习生内推](http://static.chengxinsong.cn/image/neitui/shixisheng_neitui_1.jpg)
+
+#### 3、校招内推
+官网地址，投递时候填写内推码：8J5ZSB8

@@ -268,3 +268,30 @@ PS: ios模拟器开发配置：[flutter的Ios的环境配置](https://github.com
 + 创建一个路由，并且添加在主路由和新路由之间跳转逻辑
 + 使用主题改变应用UI的外观
 
+### 六、欢迎关注
+show me code：https://github.com/saucxs/flutter_learning/tree/master/hellotest
+
+后续会出更多知识体系构建，技术分享，项目实战，实验室等，欢迎关注本公众号:**[松宝写代码]**
+
+![欢迎关注](http://static.chengxinsong.cn/image/author/intro.jpg?width=600)
+
+>微信公众号：**[松宝写代码]**
+songEagle开发知识体系构建，技术分享，项目实战，实验室，带你一起学习新技术，总结学习过程，让你进阶到高级资深工程师，学习项目管理，思考职业发展，生活感悟，充实中成长起来。问题或建议，请公众号留言。
+
+>微信群：**【写代码】研发进阶群**
+一个成长交流的产研群，帮忙拉产研的同学们进群，聚聚人气😘😘。
+每一个开发同学都应该形成自己的[知识体系](https://github.com/saucxs/full_stack_knowledge_list)，做到提纲挈领🧐🧐🧐
+
+### 七、各种福利
+关注微信公众号：**[松宝写代码]**，有各种福利。
+
+**「字节跳动」内推福利：**
+
+#### 1、社招内推
+![社招内推](http://static.chengxinsong.cn/image/neitui/neitui_1.jpg)
+
+#### 2、实习生内推
+![实习生内推](http://static.chengxinsong.cn/image/neitui/shixisheng_neitui_1.jpg)
+
+#### 3、校招内推
+官网地址，投递时候填写内推码：8J5ZSB8

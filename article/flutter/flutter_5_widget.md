@@ -271,3 +271,17 @@ songEagle开发知识体系构建，技术分享，项目实战，实验室，�
 >微信群：**【写代码】研发进阶群**
 一个成长交流的产研群，帮忙拉产研的同学们进群，聚聚人气😘😘。
 每一个开发同学都应该形成自己的[知识体系](https://github.com/saucxs/full_stack_knowledge_list)，做到提纲挈领🧐🧐🧐
+
+### 五、各种福利
+关注微信公众号：**[松宝写代码]**，有各种福利。
+
+**「字节跳动」内推福利：**
+
+#### 1、社招内推
+![社招内推](http://static.chengxinsong.cn/image/neitui/neitui_1.jpg)
+
+#### 2、实习生内推
+![实习生内推](http://static.chengxinsong.cn/image/neitui/shixisheng_neitui_1.jpg)
+
+#### 3、校招内推
+官网地址，投递时候填写内推码：8J5ZSB8
