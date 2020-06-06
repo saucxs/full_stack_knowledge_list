@@ -1,17 +1,17 @@
-### mac安装flutter
+## mac安装flutter
 
-#### 一、下载flutter
-##### 1、第一种方式git repo方式
+### 一、下载flutter
+#### 1、第一种方式git repo方式
 执行下列命令下载最新的flutter代码（系统请先安装Git）
 ```git
 git clone -b beta https://github.com/flutter/flutter.git
 ```
 
-##### 2、第二种方式官方网站
+#### 2、第二种方式官方网站
 flutter官网下载其最新可用的安装包，转到[下载页](https://flutter.dev/docs/get-started/install)。
 
 
-#### 二、安装flutter，环境配置，依赖项检查
+### 二、安装flutter，环境配置，依赖项检查
 （1）目前接下来我的是使用官方网下载的zip压缩包。
 
 （2）解压
@@ -57,7 +57,7 @@ flutter会提示你那些东西是必须要的，需要执行什么命令进行�
 [检查flutter的依赖性](http://static.chengxinsong.cn/image/flutter/flutter-3.jpg)
 
 
-#### 三、第一个Flutter App
+### 三、第一个Flutter App
 打开VsCode
 
 VsCode需要安装两个扩展：Dart和Flutter。
@@ -83,3 +83,30 @@ VsCode需要安装两个扩展：Dart和Flutter。
 
 ![flutter](http://static.chengxinsong.cn/image/flutter/flutter-8.jpg)
 
+### 四、欢迎关注
+show me code：https://github.com/saucxs/flutter_learning/tree/master/hellotest
+
+后续会出更多知识体系构建，技术分享，项目实战，实验室等，欢迎关注本公众号:**[松宝写代码]**
+
+![欢迎关注](http://static.chengxinsong.cn/image/author/intro.jpg?width=600)
+
+>微信公众号：**[松宝写代码]**
+songEagle开发知识体系构建，技术分享，项目实战，实验室，带你一起学习新技术，总结学习过程，让你进阶到高级资深工程师，学习项目管理，思考职业发展，生活感悟，充实中成长起来。问题或建议，请公众号留言。
+
+>微信群：**【写代码】研发进阶群**
+一个成长交流的产研群，帮忙拉产研的同学们进群，聚聚人气😘😘。
+每一个开发同学都应该形成自己的[知识体系](https://github.com/saucxs/full_stack_knowledge_list)，做到提纲挈领🧐🧐🧐
+
+### 五、各种福利
+关注微信公众号：**[松宝写代码]**，有各种福利。
+
+**「字节跳动」内推福利：**
+
+#### 1、社招内推
+![社招内推](http://static.chengxinsong.cn/image/neitui/neitui_1.jpg)
+
+#### 2、实习生内推
+![实习生内推](http://static.chengxinsong.cn/image/neitui/shixisheng_neitui_1.jpg)
+
+#### 3、校招内推
+官网地址，投递时候填写内推码：8J5ZSB8

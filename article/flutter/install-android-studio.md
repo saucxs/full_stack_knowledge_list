@@ -1,6 +1,6 @@
-### mac安装android studio
+## mac安装android studio
 
-#### 一、android studio安装的系统要求
+### 一、android studio安装的系统要求
 
 1、Java Runtime Environment (JRE) 6或更高
 
@@ -12,7 +12,7 @@
 
 我这下载的是jdk8。
 
-#### 二、安装jdk
+### 二、安装jdk
 ##### 1、双击安装dmg
 
 ![jre和jdk](http://static.chengxinsong.cn/image/java/jdk-and-jre-2.jpg)
@@ -97,7 +97,7 @@ echo $JAVA_HOME
 ![检查是否生效](http://static.chengxinsong.cn/image/java/jdk-and-jre-10.jpg)
 
 
-#### 三、安装android studio
+### 三、安装android studio
 ##### 1、下载
 新手建议下载安装版，比较简单一路Next就可以安装成功了。对于想要尝鲜的同学也可以去下载绿色版。绿色版分为分Canary版，Dev版，Beta版。建议使用Canary版本相对稳定一些。
 
@@ -123,7 +123,7 @@ echo $JAVA_HOME
 ![sdk Manger](http://static.chengxinsong.cn/image/android/android-4.jpg)
 
 
-#### 四、下载安装SDK Manger
+### 四、下载安装SDK Manger
 Android SDK手动下载配置
 
 ##### 1、下载
@@ -156,7 +156,7 @@ Android SDK手动下载配置
 默认SDK Manager会自动帮我们选中需更新或它认为需要安装SDK，可以不用理会去除勾选。
 
 
-#### 五、建立android studio的一个demo
+### 五、建立android studio的一个demo
 打开android studio，选择一个模板，新建一个demo项目
 
 编译成功之后
@@ -167,5 +167,34 @@ Android SDK手动下载配置
 
 我使用的是默认的模拟器，没有使用Genymontion模拟器。
 
-# ![启动成功模拟器展示](http://static.chengxinsong.cn/image/android/android-10.jpg)
+![启动成功模拟器展示](http://static.chengxinsong.cn/image/android/android-10.jpg)
 
+
+
+### 六、欢迎关注
+show me code：https://github.com/saucxs/flutter_learning/tree/master/hellotest
+
+后续会出更多知识体系构建，技术分享，项目实战，实验室等，欢迎关注本公众号:**[松宝写代码]**
+
+![欢迎关注](http://static.chengxinsong.cn/image/author/intro.jpg?width=600)
+
+>微信公众号：**[松宝写代码]**
+songEagle开发知识体系构建，技术分享，项目实战，实验室，带你一起学习新技术，总结学习过程，让你进阶到高级资深工程师，学习项目管理，思考职业发展，生活感悟，充实中成长起来。问题或建议，请公众号留言。
+
+>微信群：**【写代码】研发进阶群**
+一个成长交流的产研群，帮忙拉产研的同学们进群，聚聚人气😘😘。
+每一个开发同学都应该形成自己的[知识体系](https://github.com/saucxs/full_stack_knowledge_list)，做到提纲挈领🧐🧐🧐
+
+### 七、各种福利
+关注微信公众号：**[松宝写代码]**，有各种福利。
+
+**「字节跳动」内推福利：**
+
+#### 1、社招内推
+![社招内推](http://static.chengxinsong.cn/image/neitui/neitui_1.jpg)
+
+#### 2、实习生内推
+![实习生内推](http://static.chengxinsong.cn/image/neitui/shixisheng_neitui_1.jpg)
+
+#### 3、校招内推
+官网地址，投递时候填写内推码：8J5ZSB8
