@@ -28,13 +28,16 @@
 
 ## 五、「字节跳动」内推福利
 ### 1、社招内推
-![社招内推](http://static.chengxinsong.cn/image/neitui/neitui_1.jpg)
+![社招内推](http://static.chengxinsong.cn/image/neitui/bytedance_social.jpg)
 
 ### 2、实习生内推
 ![实习生内推](http://static.chengxinsong.cn/image/neitui/shixisheng_neitui_1.jpg)
 
 ### 3、校招内推
-官网地址，投递时候填写内推码：8J5ZSB8
++ 官网地址，投递时候填写内推码：8J5ZSB8
++ 或者扫码直接投递：
+![校招内推](http://static.chengxinsong.cn/image/neitui/bytedance_campus.jpg)
+
 
 ## 六、欢迎关注
 show me code：https://github.com/saucxs
