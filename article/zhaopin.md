@@ -82,7 +82,7 @@ songEagle开发知识体系构建，技术分享，项目实战，实验室，�
 ![松宝写代码](http://static.chengxinsong.cn/image/neitui/weixingongzhonghao.png)
 
 关注后
-+ 回复「校招内推」获取内推码
-+ 回复「社招内推」获取内推
-+ 回复「实习生内推」获取内推
++ 回复「校招」获取内推码
++ 回复「社招」获取内推
++ 回复「实习生」获取内推
 + 后续会有更多福利
