@@ -5,7 +5,7 @@
 ## 一、背景
 在本地开发中，使用flutter run命令还是Android studio运行或者调试，flutter构建的是debug版本，也就是本地调试右上角出现debug标志。
 
-当本地调试OK后，准备release版本，比如哟啊发布到应用商城，或者交付用户使用。
+当本地调试OK后，准备release版本，比如发布到应用商城，或者交付用户使用。
 
 ## 二、前期检查工作
 ### 1、检查AndroidManifest配置
@@ -135,63 +135,7 @@ android {
 ```
 现在应用打包的release版本将自动进行签名。
 
-
-## 三、开启安卓混淆
-flutter默认是不会开启Android混淆。
-
-为什么需要开启Android混淆？
-
-当你使用了第三方java或者android库，要减少apk大小，或防止代码被逆向破解。
-
-### 1、配置混淆
-在<app dir>/android/app文件夹下新增 proguard-rules.pro 文件，添加如下规则：
-
-```
-#Flutter Wrapper
--keep class io.flutter.app.** { *; }
--keep class io.flutter.plugin.**  { *; }
--keep class io.flutter.util.**  { *; }
--keep class io.flutter.view.**  { *; }
--keep class io.flutter.**  { *; }
--keep class io.flutter.plugins.**  { *; }
-```
-
-上述配置只混淆了Flutter引擎库，任何其他库需要添加与之对应的规则。
-
-
-### 2、打开混淆开关
-在<app dir>/android/app/build.gradle文件，定位到buildTypes。
-
-在release配置中将minifyEnabled和useProguard设置为true，再将混淆文件指向上一步创建的文件。
-
-```
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.release
-            minifyEnabled true
-            useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-```
-
-对比了一下：
-
-未使用混淆的情况下：打包体积154.1MB
-
-使用混淆安卓情况下：打包体积147.0MB
-
-好像主要作用不是压缩包体积。
-
-![欢迎关注](http://static.chengxinsong.cn/image/author/intro.jpg?width=600)
-
->微信公众号：**[松宝写代码]**
-songEagle开发知识体系构建，技术分享，项目实战，实验室，带你一起学习新技术，总结学习过程，让你进阶到高级资深工程师，学习项目管理，思考职业发展，生活感悟，充实中成长起来。问题或建议，请公众号留言。
-
-
-## 四、打包命令
+## 三、打包命令
 
 然后打包命令，构建发布版（release）APK。如果您完成了前一节中的签名步骤，则会对APK进行签名。
 
@@ -199,10 +143,11 @@ songEagle开发知识体系构建，技术分享，项目实战，实验室，�
 ```
 cd <app dir> (<app dir> 为您的工程目录).
 运行flutter build apk (flutter build 默认会包含 --release选项).
-打包好的发布APK位于<app dir>/build/app/outputs/apk/app-release.apk。
 ```
+打包好的发布APK位于<app dir>/build/app/outputs/apk/app-release.apk。
 
-## 五、包体积优化方法
+
+## 四、包体积优化方法
 发现flutter打包之后体积是有点大，我们来分析一下这个APK包的构成，我们主要来看不混淆的情况下。
 
 ![bao](./images/flutter_apk_size_1.jpg)
@@ -366,7 +311,7 @@ flutter build apk --obfuscate --split-debug-info=splitMap --target-platform andr
 
 觉得差别不大。
 
-## 六、总结
+## 五、总结
 一旦打包的基础配置完事后，基本上不用怎么改，优化配置完事后，需要一个优化的打包命令。
 
 觉得这是一个比较有用的打包命令：
