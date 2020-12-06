@@ -1,4 +1,7 @@
-# 【手把手学习flutter】flutter打Android包基本配置和实践
+# 【手把手学习flutter】Flutter打Android包的基本配置和包体积优化策略
+> 关注「松宝写代码」，回复“加群”
+> 加入我们一起学习，天天向上
+
 ## 前言
 因为最近参加2020FEHackson，有个项目需要要快速上线，把打包过程和遇到的问题做个记录。
 
@@ -150,7 +153,7 @@ cd <app dir> (<app dir> 为您的工程目录).
 ## 四、包体积优化方法
 发现flutter打包之后体积是有点大，我们来分析一下这个APK包的构成，我们主要来看不混淆的情况下。
 
-![bao](./images/flutter_apk_size_1.jpg)
+![bao](http://static.chengxinsong.cn/image/flutter/flutter_apk_size_1.jpg)
 
 一般静态资源文件占有大量内存，我们发现图片在apk占比为 80% + 0% = 80%
 + Flutter引用资源（assets文件夹） 80%
@@ -229,7 +232,7 @@ buildTypes {
 
 PS：使用shrinkResource和proguard优化器，优化后，体积减少了0.1MB。
 
-![bao](./images/flutter_apk_size_2.jpg)
+![bao](http://static.chengxinsong.cn/image/flutter/flutter_apk_size_2.jpg)
 
 从147.0MB减少到146.9MB，减少的太少了。
 
@@ -255,13 +258,13 @@ flutter build apk --target-platform android-arm,android-arm64,android-x64 --spli
 + 后面 android-arm,andriod-arm64,andriod-x64 则表示生成制定的架构的release包。
 + 最后--split-per-abi 则表示按照不同架构分别打包，如果移除就包含所有CPU架构的apk包。
 
-![bao](./images/flutter_apk_size_4.jpg)
+![bao](http://static.chengxinsong.cn/image/flutter/flutter_apk_size_4.jpg)
 
 看看 app-armeabi-v7a-release.apk 包大小 126.2MB，爽啊，由 146.9 MB 直接减少到 126.2 MB。
 
 我们看下对应的 apk 内容：
 
-![bao](./images/flutter_apk_size_5.jpg)
+![bao](http://static.chengxinsong.cn/image/flutter/flutter_apk_size_5.jpg)
 
 lib 占比也从原来的 19.7%，28.7 MB 直接减少为 6.4%，8 MB。
 
@@ -285,13 +288,13 @@ flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory>
 flutter build apk --obfuscate --split-debug-info=splitMap
 ```
 
-![bao](./images/flutter_apk_size_6.jpg)
+![bao](http://static.chengxinsong.cn/image/flutter/flutter_apk_size_6.jpg)
 
 大小从 146.9MB 降到 145.9MB，减少了1MB。
 
 在项目根目录下生成了符号文件：
 
-![bao](./images/flutter_apk_size_7.jpg)
+![bao](http://static.chengxinsong.cn/image/flutter/flutter_apk_size_7.jpg)
 
 我们再试一下，直接针对不同 CPU 生成对应的 Apk 并添加混淆结果。
 
@@ -305,7 +308,7 @@ flutter build apk --obfuscate --split-debug-info=/<project-name>/<directory> --t
 flutter build apk --obfuscate --split-debug-info=splitMap --target-platform android-arm,android-arm64,android-x64 --split-per-abi
 ```
 
-![bao](./images/flutter_apk_size_8.jpg)
+![bao](http://static.chengxinsong.cn/image/flutter/flutter_apk_size_8.jpg)
 
 未混淆的 v7a 大小与开启混淆相比，126.2MB 减少到 125.9MB 。开启混淆减少了 0.3 MB。
 
@@ -332,3 +335,12 @@ flutter build apk --obfuscate --split-debug-info=splitMap --target-platform andr
 
 #### 3、校招内推
 官网地址，投递时候填写内推码：8J5ZSB8
+
+## The End
+如果你觉得这篇文章对你有帮助，有启发，我想请你帮我两个小忙：
+1、点个「在看」，让更多的人也能看到这篇文章内容
+2、关注公众号「松宝写代码」，公众号后台回复「加群」 加入我们一起学习。
+
+![关注公众号](http://static.chengxinsong.cn/image/wechat/songbao.png)
+
+![关注公众号](http://static.chengxinsong.cn/image/wechat/songbao_me.png)
