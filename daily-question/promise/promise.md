@@ -12,6 +12,8 @@
 
 2020.12.23日刚立的flag，每日一题，题目类型不限制，可以是：算法题，面试题，阐述题等等。
 
+![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/daily-question.png)
+
 往期「每日一题」：
 
 + 第2道[「[每日一题]ES6中为什么要使用Symbol？」(https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)](https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)
