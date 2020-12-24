@@ -1,3 +1,11 @@
+关注公众号「松宝写代码」，精选好文，每日面试题
+
+加入我们一起学习，day day up
+
+>作者：saucxs ｜ songEagle
+
+>来源：原创
+
 ## 一、前言
 
  有这么一道面试题，如下：
@@ -808,3 +816,26 @@ JS 脚本资源的处理有几个特点：
 3、https://book.douban.com/subject/26960678/
 
 4、https://github.com/kaola-fed/blog/issues/271
+
+## 其他
+![松宝写代码](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/dongtai.gif)
+
+songEagle开发知识体系构建，技术分享，项目实战，实验室，带你一起学习新技术，总结学习过程，让你进阶到高级资深工程师，学习项目管理，思考职业发展，生活感悟，充实中成长起来。问题或建议，请公众号留言。
+
+## 关注福利
+
+### 1、内推福利
+
+回复「校招」获取内推码
+
+回复「社招」获取内推
+
+回复「实习生」获取内推
+
+后续会有更多福利
+
+### 2、学习资料福利
+回复「算法」获取算法学习资料
+
+### 3、每日一题
+正在更新中

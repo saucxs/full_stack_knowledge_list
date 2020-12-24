@@ -1,4 +1,4 @@
-关注微信公众号「松宝写代码」，精选好文，每日面试题
+关注「松宝写代码」，精选好文，每日面试题
 
 加入我们一起学习，day day up
 
@@ -241,6 +241,6 @@ const shapeType = {
 
 2、关注「松宝写代码」，后台回复「加群」 加入我们一起学习。
 
-![松宝写代码](http://static.chengxinsong.cn/image/wechat/guanzhu.gif)
+![松宝写代码](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/dongtai.gif)
 
 songEagle开发知识体系构建，技术分享，项目实战，实验室，带你一起学习新技术，总结学习过程，让你进阶到高级资深工程师，学习项目管理，思考职业发展，生活感悟，充实中成长起来。问题或建议，请公众号留言。
