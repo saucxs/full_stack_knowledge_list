@@ -12,7 +12,7 @@
 
 2020.12.23日刚立的flag，每日一题，题目类型不限制，可以是：算法题，面试题，阐述题等等。
 
-![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/daily-question.png)
+![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/daily_question.png)
 
 往期「每日一题」：
 
