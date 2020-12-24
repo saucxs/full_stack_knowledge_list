@@ -46,21 +46,21 @@ Promise 本质上就是一个绑定了回调的对象，而不是将回调传回
 
 ### 1、Promise的简单使用
 
-![Promise的简单使用](./carbon.png)
+![Promise的简单使用](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/promise/carbon.png)
 
 我们通过这种使用构建Promise实现的最初版本
 
 ### 2、Promise的大致框架
 大致框架有了，但是Promise状态，resolve函数，reject函数，以及then等回调没有详细处理
 
-![Promise的大致框架](./carbon_1.png)
+![Promise的大致框架](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/promise/carbon_1.png)
 
 
 ### 3、Promise的链式存储
 
 我们先看一个例子：
 
-![Promise的链式存储](./carbon_2.png)
+![Promise的链式存储](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/promise/carbon_2.png)
 
 每间隔1秒打印一个数字，哈哈，这个不是真实的间隔1秒，汪汪，
 
@@ -75,13 +75,13 @@ Promise 本质上就是一个绑定了回调的对象，而不是将回调传回
 
 Promise一个常见的需求就是连续执行两个或者多个异步操作，这种情况下，每一个后来的操作都在前面的操作执行成功之后，带着上一步操作所返回的结果开始执行。这里用setTimeout来处理.
 
-![Promise的链式存储](./carbon_3.png)
+![Promise的链式存储](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/promise/carbon_3.png)
 
 
 ### 4、Promise的状态机制和执行顺序
 为了保证Promise的异步操作时的顺序执行，这里给Promise加上状态机制
 
-![Promise的状态机制和执行顺序](./carbon_4.png)
+![Promise的状态机制和执行顺序](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/promise/carbon_4.png)
 
 
 ### 5、Promise的递归执行
@@ -89,7 +89,7 @@ Promise一个常见的需求就是连续执行两个或者多个异步操作，�
 
 当父Promise 状态改变完毕,执行完相应的onresolved/onrejected的时候，拿到子promise,在等待这个子promise状态改变，在执行相应的onresolved/onrejected。依次循环直到当前promise没有子promise。
 
-![Promise的递归执行](./carbon_5.png)
+![Promise的递归执行](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/promise/carbon_5.png)
 
 
 ### 6、Promise的异常处理
@@ -97,7 +97,7 @@ Promise一个常见的需求就是连续执行两个或者多个异步操作，�
 
 当父Promise 状态改变完毕,执行完相应的onresolved/onrejected的时候，拿到子promise,在等待这个子promise状态改变，在执行相应的onresolved/onrejected。依次循环直到当前promise没有子promise。
 
-![Promise的异常处理](./carbon_6.png)
+![Promise的异常处理](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/promise/carbon_6.png)
 
 ### 7、Promise的then的实现
 then 方法是 Promise 的核心，这里做一下详细介绍。
@@ -152,22 +152,22 @@ promise2 = promise1.then(onFulfilled, onRejected);
 
 每个Promise对象都可以在其上多次调用then方法，而每次调用then返回的Promise的状态取决于那一次调用then时传入参数的返回值，所以then不能返回this，因为then每次返回的Promise的结果都有可能不同。
 
-![Promise的then的实现](./carbon_7.png)
+![Promise的then的实现](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/promise/carbon_7.png)
 
 
 ### 8、Promise的值穿透
 
-![Promise的then的实现](./carbon_8.png)
+![Promise的then的实现](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/promise/carbon_8.png)
 
 我们来看一下这个题的输出：
 
-![Promise的then的实现](./carbon_9.png)
+![Promise的then的实现](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/promise/carbon_9.png)
 
 最终打结果是1而不是2.
 
 我们再来看一下这个题的输出：
 
-![Promise的then的实现](./carbon_10.png)
+![Promise的then的实现](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/promise/carbon_10.png)
 
 
 ## 各种福利
