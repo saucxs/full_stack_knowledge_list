@@ -1,4 +1,4 @@
-# 
+# 「每日一题」面试官问你对Promise的理解？可能是需要你能手动实现各个特性
 关注公众号「松宝写代码」，精选好文，每日一题
 
 加入我们一起学习，day day up
@@ -16,9 +16,9 @@
 
 往期「每日一题」：
 
-+ 第2道[「[每日一题]ES6中为什么要使用Symbol？」(https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)](https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)
++ 第2道[「[每日一题]ES6中为什么要使用Symbol？」(https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)](https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)
 
-+ 第1道[「一道面试题是如何引发深层次的灵魂拷问？」(https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)](https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)
++ 第1道[「一道面试题是如何引发深层次的灵魂拷问？」(https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)](https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)
 
 接下来是第3道：谈谈你对 promise 的理解？
 
@@ -178,7 +178,7 @@ promise2 = promise1.then(onFulfilled, onRejected);
 「松宝写代码」公众号：开发知识体系构建，技术分享，项目实战，实验室，每日一题，带你一起学习新技术，总结学习过程，让你进阶到高级资深工程师，学习项目管理，思考职业发展，生活感悟，充实中成长起来。问题或建议，请公众号留言。
 
 
-### 1、内推福利
+### 1、字节内推福利
 
 回复「校招」获取内推码
 
@@ -195,9 +195,9 @@ promise2 = promise1.then(onFulfilled, onRejected);
 ### 3、每日一题
 + 3、本文就是第3道：谈谈你对 promise 的理解？
 
-+ 2、第2道[「[每日一题]ES6中为什么要使用Symbol？」(https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)](https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)
++ 第2道[「[每日一题]ES6中为什么要使用Symbol？」(https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)](https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)
 
-+ 1、第1道[「一道面试题是如何引发深层次的灵魂拷问？」(https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)](https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)
++ 第1道[「一道面试题是如何引发深层次的灵魂拷问？」(https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)](https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)
 
 
 ## The End
