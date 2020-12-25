@@ -61,7 +61,7 @@ public int getResult(int[] nums) {
 
 如果上面代码格式出现问题，可以查看下面代码图片
 
-![找出任意一个重复数字](./carbon_0.png)
+![找出任意一个重复数字](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/algorithm/carbon_0.png)
 
 遍历 n 次并且 Set 内容最多是 n 个字符，复杂度都是 O(n)
 
@@ -94,7 +94,7 @@ public boolean containsNearbyDuplicate(int[] nums, int k) {
 
 如果上面代码格式出现问题，可以查看下面代码图片
 
-![找出任意一个重复数字](./carbon_1.png)
+![找出任意一个重复数字](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/algorithm/carbon_1.png)
 
 遍历 n 次并且 k 最多 n 个字符，复杂度都是 O(n)
 
@@ -127,7 +127,7 @@ public int getResult(int[] nums) {
 
 如果上面代码格式出现问题，可以查看下面代码图片
 
-![找出任意一个重复数字](./carbon_2.png)
+![找出任意一个重复数字](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/algorithm/carbon_2.png)
 
 遍历 2n 次时间复杂的是 O(n)，只用了常量个字符，空间复杂度是 O(1)
 
@@ -153,7 +153,7 @@ public int getResult(int[] nums) {
 
 如果上面代码格式出现问题，可以查看下面代码图片
 
-![找出任意一个重复数字](./carbon_3.png)
+![找出任意一个重复数字](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/algorithm/carbon_3.png)
 
 遍历 n 次时间复杂的是 O(n)，只用了常量个字符，空间复杂度是 O(1)
 
@@ -193,7 +193,7 @@ public int[] singleNumber(int[] nums) {
 
 如果上面代码格式出现问题，可以查看下面代码图片
 
-![找出任意一个重复数字](./carbon_4.png)
+![找出任意一个重复数字](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/algorithm/carbon_4.png)
 
 遍历 2n 次时间复杂的是 O(n)，只用了常量个字符，空间复杂度是 O(1)
 
