@@ -27,15 +27,22 @@
 
 往期「每日一题」：
 
-+ 第 3 道[「「每日一题」面试官问你对 Promise 的理解？可能是需要你能手动实现各个特性」https://mp.weixin.qq.com/s/QuuPd2KCp50snN7F2o3oYg](https://mp.weixin.qq.com/s/QuuPd2KCp50snN7F2o3oYg)
++ 第 3 道[「「每日一题」面试官问你对 Promise 的理解？可能是需要你能手动实现各个特性」](https://mp.weixin.qq.com/s/QuuPd2KCp50snN7F2o3oYg)
 
-+ 第 2 道[「[每日一题]ES6 中为什么要使用 Symbol？」https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg](https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)
+https://mp.weixin.qq.com/s/QuuPd2KCp50snN7F2o3oYg
 
-+ 第 1 道[「一道面试题是如何引发深层次的灵魂拷问？」(https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)](https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)
++ 第 2 道[「[每日一题]ES6 中为什么要使用 Symbol？」](https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)
+
+https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg
+
++ 第 1 道[「一道面试题是如何引发深层次的灵魂拷问？」](https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)
+
+https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA
+
 
 ## 二、寻找重复元素
 
-1. **找出任意一个重复数字**
+### 1. **找出任意一个重复数字**
 
 给定一个长度为 n 的数组 nums，判断是否有重复值。
 
@@ -65,7 +72,7 @@ public int getResult(int[] nums) {
 
 遍历 n 次并且 Set 内容最多是 n 个字符，复杂度都是 O(n)
 
-2. **找出任意一个重复数字**
+### 2. **找出任意一个重复数字**
 
 给定一个长度为 n 的数组 nums，判断是否有重复值,并且两个重复值距离不超过 k。
 
@@ -98,7 +105,7 @@ public boolean containsNearbyDuplicate(int[] nums, int k) {
 
 遍历 n 次并且 k 最多 n 个字符，复杂度都是 O(n)
 
-3. **寻找重复数**
+### 3. **寻找重复数**
 
 给定一个包含 n + 1 个整数的数组 nums，其数字都在 1 到 n 之间（包括 1 和
 n），只有一个重复的整数，找出这个重复的数字。
@@ -131,7 +138,7 @@ public int getResult(int[] nums) {
 
 遍历 2n 次时间复杂的是 O(n)，只用了常量个字符，空间复杂度是 O(1)
 
-4. **只出现一次的数**
+### 4. **只出现一次的数**
 
 给定一个数组
 nums，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
@@ -157,7 +164,7 @@ public int getResult(int[] nums) {
 
 遍历 n 次时间复杂的是 O(n)，只用了常量个字符，空间复杂度是 O(1)
 
-5. **只出现一次的数**
+### 5. **只出现一次的数**
 
 给定一个数组
 nums，除了两个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
@@ -222,11 +229,17 @@ public int[] singleNumber(int[] nums) {
 
 + 本文就是第4道：「每日一题」与面试官手撕代码：如何科学高效的寻找重复元素？
 
-+ 第 3 道[「「每日一题」面试官问你对 Promise 的理解？可能是需要你能手动实现各个特性」https://mp.weixin.qq.com/s/QuuPd2KCp50snN7F2o3oYg](https://mp.weixin.qq.com/s/QuuPd2KCp50snN7F2o3oYg)
++ 第 3 道[「「每日一题」面试官问你对 Promise 的理解？可能是需要你能手动实现各个特性」](https://mp.weixin.qq.com/s/QuuPd2KCp50snN7F2o3oYg)
 
-+ 第 2 道[「[每日一题]ES6 中为什么要使用 Symbol？」https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg](https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)
+https://mp.weixin.qq.com/s/QuuPd2KCp50snN7F2o3oYg
 
-+ 第 1 道[「一道面试题是如何引发深层次的灵魂拷问？」(https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)](https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)
++ 第 2 道[「[每日一题]ES6 中为什么要使用 Symbol？」](https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)
+
+https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg
+
++ 第 1 道[「一道面试题是如何引发深层次的灵魂拷问？」](https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)
+
+https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA
 
 
 ## The End
