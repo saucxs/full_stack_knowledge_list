@@ -113,7 +113,7 @@ obj.a = 'saucxs'    //set val
 
 如果上面代码格式出现问题，可以查看下面代码图片
 
-![使用Object.defineProperty实现监听变量](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/vue/dataupgrade/carbon_0.png)
+![使用Object.defineProperty实现监听变量](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/vue/data_upgrade/carbon_0_1.png)
 
 ### 3、进阶回答
 
@@ -129,7 +129,7 @@ let p = new Proxy(target, handler);
 
 如果上面代码格式出现问题，可以查看下面代码图片
 
-![使用Object.defineProperty实现监听变量](./carbon_1.png)
+![使用Object.defineProperty实现监听变量](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/vue/data_upgrade/carbon_1.png)
 
 
 可以很方便的使用 Proxy 来实现一个数据绑定和监听.
@@ -162,7 +162,7 @@ p.saucxs // -> Get 'saucxs' = songEagle
 
 如果上面代码格式出现问题，可以查看下面代码图片
 
-![Proxy 来实现一个数据绑定和监听](./carbon_2.png)
+![Proxy 来实现一个数据绑定和监听](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/vue/data_upgrade/carbon_2.png)
 
 
 然后在对比vue2和vue3的区别是什么？
