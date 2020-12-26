@@ -113,7 +113,7 @@ obj.a = 'saucxs'    //set val
 
 如果上面代码格式出现问题，可以查看下面代码图片
 
-![使用Object.defineProperty实现监听变量](./carbon_0.png)
+![使用Object.defineProperty实现监听变量](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/vue/dataupgrade/carbon_0.png)
 
 ### 3、进阶回答
 
