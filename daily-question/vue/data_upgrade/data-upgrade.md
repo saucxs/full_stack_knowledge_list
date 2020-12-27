@@ -1,7 +1,9 @@
-# 「每日一题」上次在dy面试，面试官问我：vue数据绑定的实现原理。你说我该如何回答？
-关注公众号「松宝写代码」，精选好文，每日一题
+# 「每日一题」有人上次在dy面试，面试官问我：vue数据绑定的实现原理。你说我该如何回答？
+关注「松宝写代码」，精选好文，每日一题
 
-加入我们一起学习，day day up
+​时间永远是自己的
+
+每分每秒也都是为自己的将来铺垫和增值
 
 >作者：saucxs ｜ songEagle
 
@@ -12,25 +14,23 @@
 
 2020.12.23 日刚立的 flag，每日一题，题目类型不限制，可以是：算法题，面试题，阐述题等等。
 
-本文是「每日一题」第 5 题：上次在dy面试，面试官问我：vue数据绑定的实现原理。你说我该如何回答？
+本文是「每日一题」第 5 题：[「每日一题」到底该如何回答：vue数据绑定的实现原理？](https://mp.weixin.qq.com/s/8eo4frdB-zMA7nD_1wdnLw)
 
 ![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/daily_question.png)
 
 往期「每日一题」：
 
-+ 第 4 道[「「每日一题」面试官问你对 Promise 的理解？可能是需要你能手动实现各个特性」](https://mp.weixin.qq.com/s/jFZ_2f272LhBBPuuLaWnyg)
++ 第 4 道[「每日一题」与面试官手撕代码：如何科学高效的寻找重复元素？](https://mp.weixin.qq.com/s/jFZ_2f272LhBBPuuLaWnyg)
 
 + 第 3 道[「「每日一题」面试官问你对 Promise 的理解？可能是需要你能手动实现各个特性」](https://mp.weixin.qq.com/s/QuuPd2KCp50snN7F2o3oYg)
 
-https://mp.weixin.qq.com/s/QuuPd2KCp50snN7F2o3oYg
 
 + 第 2 道[「[每日一题]ES6 中为什么要使用 Symbol？」](https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)
 
-https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg
 
 + 第 1 道[「一道面试题是如何引发深层次的灵魂拷问？」](https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)
 
-## vue数据绑定的实现原理？
+## 二、vue数据绑定的实现原理？
 这个题目本身不是特别难，只能说是作为社招的基础面试题，但是如果想回答好这道题也不是很容易。
 
 不信接着往下看
@@ -206,17 +206,15 @@ vue为什么对数组对象的深层监听无法实现，因为组件每次渲�
 回复「算法」获取算法学习资料
 
 ### 3、每日一题
-+ 本文是「每日一题」第 5 题：上次在dy面试，面试官问我：vue数据绑定的实现原理。你说我该如何回答？
++ 本文是「每日一题」第 5 题：[「每日一题」到底该如何回答：vue数据绑定的实现原理？](https://mp.weixin.qq.com/s/8eo4frdB-zMA7nD_1wdnLw)
 
-+ 第 4 道[「「每日一题」面试官问你对 Promise 的理解？可能是需要你能手动实现各个特性」](https://mp.weixin.qq.com/s/jFZ_2f272LhBBPuuLaWnyg)
++ 第 4 道[「每日一题」与面试官手撕代码：如何科学高效的寻找重复元素？](https://mp.weixin.qq.com/s/jFZ_2f272LhBBPuuLaWnyg)
 
 + 第 3 道[「「每日一题」面试官问你对 Promise 的理解？可能是需要你能手动实现各个特性」](https://mp.weixin.qq.com/s/QuuPd2KCp50snN7F2o3oYg)
 
-https://mp.weixin.qq.com/s/QuuPd2KCp50snN7F2o3oYg
 
 + 第 2 道[「[每日一题]ES6 中为什么要使用 Symbol？」](https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)
 
-https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg
 
 + 第 1 道[「一道面试题是如何引发深层次的灵魂拷问？」](https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)
 

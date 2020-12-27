@@ -1,10 +1,13 @@
-关注公众号「松宝写代码」，精选好文，每日面试题
+关注「松宝写代码」，精选好文，每日一题
 
-加入我们一起学习，day day up
+​时间永远是自己的
+
+每分每秒也都是为自己的将来铺垫和增值
 
 >作者：saucxs ｜ songEagle
 
 >来源：原创
+
 
 ## 一、前言
 
@@ -820,11 +823,11 @@ JS 脚本资源的处理有几个特点：
 ## 其他
 ![松宝写代码](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/dongtai.gif)
 
-songEagle开发知识体系构建，技术分享，项目实战，实验室，带你一起学习新技术，总结学习过程，让你进阶到高级资深工程师，学习项目管理，思考职业发展，生活感悟，充实中成长起来。问题或建议，请公众号留言。
+「松宝写代码」：开发知识体系构建，技术分享，项目实战，实验室，每日一题，带你一起学习新技术，总结学习过程，让你进阶到高级资深工程师，学习项目管理，思考职业发展，生活感悟，充实中成长起来。问题或建议，请公众号留言。
 
 ## 关注福利
 
-### 1、内推福利
+### 1、字节内推福利
 
 回复「校招」获取内推码
 
@@ -838,4 +841,12 @@ songEagle开发知识体系构建，技术分享，项目实战，实验室，�
 回复「算法」获取算法学习资料
 
 ### 3、每日一题
-正在更新中
++ 第 4 道[「「每日一题」面试官问你对 Promise 的理解？可能是需要你能手动实现各个特性」](https://mp.weixin.qq.com/s/jFZ_2f272LhBBPuuLaWnyg)
+
++ 第 3 道[「「每日一题」面试官问你对 Promise 的理解？可能是需要你能手动实现各个特性」](https://mp.weixin.qq.com/s/QuuPd2KCp50snN7F2o3oYg)
+
+
++ 第 2 道[「[每日一题]ES6 中为什么要使用 Symbol？」](https://mp.weixin.qq.com/s/omeVJdtabo5MeN3DItDfWg)
+
+
++ 第 1 道[「一道面试题是如何引发深层次的灵魂拷问？」](https://mp.weixin.qq.com/s/O8j9gM5tD5rjLz1kdda3LA)
