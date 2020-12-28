@@ -147,7 +147,7 @@ async/await 是参照 Generator 封装的一套异步处理方案，可以理解
 
 单向链表：是链表中最简单的一种，它包含两个域，一个信息域和一个指针域。这个链接指向列表中的下一个节点，而最后一个节点则指向一个空值。
 
-![lianbiao](./lianbiao.png)
+![lianbiao](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/async-await/lianbiao.png)
 
 一个单向链表包含两个值: 当前节点的值和一个指向下一个节点的链接
 
@@ -180,6 +180,12 @@ Generator：生成器对象是生成器函数（GeneratorFunction）返回的，
 async/await 是 Generator 的语法糖，就是一个自执行的generate函数。利用generate函数的特性把异步的代码写成“同步”的形式。
 
 觉得这样是不是可以清晰点了。
+
+
+## Reference
++ https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Iteration_protocols#%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%8D%8F%E8%AE%AE
++ http://es6.ruanyifeng.com/#docs/iterator
++ http://es6.ruanyifeng.com/#docs/async
 
 
 ## 各种福利
