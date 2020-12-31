@@ -8,6 +8,7 @@
 
 >作者：saucxs ｜ songEagle
 
+![元旦快乐](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/title.png)
 
 2020，实「鼠」不易
 2021，「牛」转乾坤
@@ -21,7 +22,7 @@ hello，大家好，我是「松宝写代码」的作者songEagle，今天是元
 
 本文是「每日一题」第 10 题：[每日一题]面试官问：详细说一下JS数据类型
 
-![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/daily_question.png)
+![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/title.png)
 
 往期「每日一题」：
 
