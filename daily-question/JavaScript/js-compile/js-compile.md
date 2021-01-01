@@ -69,6 +69,7 @@ js是异步执行的，通过实践循环（event loop）方式实现的
 
 暂时我们不考虑事件循环（event loop），我们先来看这样一段代码，来确定我们是否理解js引擎的执行过程
 
+```
 console.log(person)
 
 console.log(personFun)
@@ -86,6 +87,8 @@ function personFun() {
 personFun()
 
 console.log(person)
+```
+
 可以自己直接使用浏览器看出输出结果
 
 首先我们来分析一下上面的代码，虽然很多开发人员基本上都能答出来，但是还是要啰嗦一下。
