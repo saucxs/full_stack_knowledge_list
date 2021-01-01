@@ -115,7 +115,7 @@ js的代码块加载完毕之后，会首先进入到语法分析阶段，该阶
 
 类似的语法报错的如下图所示：
 
-![error错误](./error.png)
+![error错误](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/js-compile/error.png)
 
 
 ## 四、预编译阶段
@@ -159,7 +159,7 @@ bar()
 
 上面代码块通过语法分析后，进入预编译阶段，如图所示:
 
-![stack栈调用](./stack.png)
+![stack栈调用](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/js-compile/stack.png)
 
 1、首先进入到全局环境，创建全局执行上下文（global Execution Context ），推入到stack中；
 
@@ -181,7 +181,7 @@ bar()
 
 执行上下文可以理解成当前的执行环境，与该运行环境相对应。创建执行上下文的过程中，主要是做了下面三件事，如图所示：
 
-![执行上下文](./ec.jpg)
+![执行上下文](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/js-compile/ec.jpg)
 
 1、创建变量对象（variable object）
 
@@ -195,7 +195,7 @@ bar()
 
 创建变量对象主要是经过以下过程，如图所示：
 
-![创建变量对象](./VO.jpg)
+![创建变量对象](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/js-compile/VO.jpg)
 
 1、创建arguments对象，检查当前上下文的参数，建立该对象的属性与属性值，仅在函数环境（非箭头函数）中进行的，全局环境没有此过程。
 
@@ -333,7 +333,7 @@ foo()
 
 因为对于闭包的有很多的不同理解，包括我看一些书籍（js高级程序设计），我这直接以浏览器解析，以浏览器的闭包为准来分析闭包，如图:
 
-![](./demo.png)
+![](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/js-compile/demo.png)
 
 如图所示，谷歌浏览器理解的闭包是foo，那么按照浏览器的标准是如何定义的闭包，自己总结为三点：
 
