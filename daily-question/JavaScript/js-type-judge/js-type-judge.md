@@ -16,7 +16,7 @@
 
 本文是「每日一题」第 15 题：【每日一题】面试官问：JS类型判断有哪几种方法？
 
-![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/daily_question.png)
+![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/js-type-judge/js-type-judge.jpg)
 
 往期「每日一题」：
 
@@ -173,6 +173,6 @@ Object.prototype.toString.call(obj) === '[object Object]'
 
 1、喜欢的话**可以「分享，点赞，在看」三连**哦。
 
-2、作者昵称：saucxs，songEagle，松宝写代码。「松宝写代码」公众号作者，每日一题，实验室等。一个爱好折腾，致力于全栈，正在努力成长的字节跳动工程师，星辰大海，未来可期。，**内推字节跳动各个部门各个岗位。**
+2、作者昵称：saucxs，songEagle，松宝写代码。「松宝写代码」公众号作者，每日一题，实验室等。一个爱好折腾，致力于全栈，正在努力成长的字节跳动工程师，星辰大海，未来可期。**内推字节跳动各个部门各个岗位。**
 
 3、长按下面图片，关注「松宝写代码」，是获取开发知识体系构建，精选文章，项目实战，实验室，**每日一道面试题**，进阶学习，思考职业发展，涉及到JavaScript，Node，Vue，React，浏览器，http等领域，希望可以帮助到你，我们一起成长～
