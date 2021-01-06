@@ -1,4 +1,4 @@
-# 【每日一题】面试官问：JS中如何进行客户端检测？
+# 【每日一题】面试官问：JS中如何全面进行客户端检测？
 
 关注「松宝写代码」，精选好文，每日一题
 
@@ -15,7 +15,9 @@
 
 2020.12.23 立的 flag，每日一题，题目类型不限制，涉及到JavaScript，Node，Vue，React，浏览器，http等领域。
 
-本文是「每日一题」第 15 题：【每日一题】面试官问：JS类型判断有哪几种方法？
+本文是「每日一题」第 15 题：【每日一题】面试官问：JS中如何全面进行客户端检测？
+
+![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/client-tool/client-tool.png)
 
 ## 二、客户端检测的方法
 客户端检测是一种补救措施，也是一种行之有效的开发策略。主要用来规避或者突破不同浏览器之间的差异。
