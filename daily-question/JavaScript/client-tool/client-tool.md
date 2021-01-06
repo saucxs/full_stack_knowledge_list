@@ -279,7 +279,7 @@ var client = function () {
 
 如果上面代码格式乱码，可以查看下面图片：
 
-![代码](./carbon.png)
+![代码](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/client-tool/carbon.png)
 
 
 ## 谢谢支持
