@@ -15,7 +15,7 @@
 
 2020.12.23 立的 flag，每日一题，题目类型不限制，涉及到JavaScript，Node，Vue，React，浏览器，http等领域。
 
-本文是「每日一题」第 15 题：【每日一题】面试官问：JS中如何全面进行客户端检测？
+本文是「每日一题」第 16 题：【每日一题】面试官问：JS中如何全面进行客户端检测？
 
 ![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/client-tool/client-tool.png)
 
