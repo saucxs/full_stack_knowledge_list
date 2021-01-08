@@ -42,7 +42,7 @@
 #### 事件冒泡流
 IE的事件流叫做事件冒泡(event bubbling)，即事件开始时由最具体的元素接收，然后逐级向上传播到较为不具体的节点。所有的现代浏览器都支持事件冒泡。
 #### 事件捕获流
-Netscape Communicator团队提出的事件流叫做事件冒泡(event capturing)，即事件开始时由不太具体的节点接收，而最具体的节点应该最后收到事件。
+Netscape Communicator团队提出的事件流叫做事件捕获(event capturing)，即事件开始时由不太具体的节点接收，而最具体的节点应该最后收到事件。
 #### DOM2级事件
 DOM2级事件规定事件流分为三个阶段：事件捕获阶段、处于目标阶段、事件冒泡阶段。
 
@@ -139,7 +139,6 @@ btn.detachEvent('onclick', fn)
 #### 跨浏览器实现事件处理程序
 - 创建一个EventUtil对象
 - 为EventUtil对象实现两个方法：addHandler()、removeHandler()
-- 主要是利用[能力检测](https://github.com/junruchen/junruchen.github.io/wiki/JS-%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%A3%80%E6%B5%8B)来实现
 - 以下示例的方法，还需要注意作用域的问题
 
 ```
@@ -148,7 +147,7 @@ let EventUtil = {
     if (el.addEventListener) {
        el.addEventListener(type, handler, false)
     } else if (el.attachEvent) {
-       el.addHandler('on' + type, handler)
+       el.attachEvent('on' + type, handler)
     } else {
        el['on' + type] = handler
     }
@@ -220,7 +219,7 @@ let EventUtil = {
     if (el.addEventListener) {
        el.addEventListener(type, handler, false)
     } else if (el.attachEvent) {
-       el.addHandler('on' + type, handler)
+       el.attachEvent('on' + type, handler)
     } else {
        el['on' + type] = handler
     }
