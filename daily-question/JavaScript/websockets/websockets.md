@@ -27,11 +27,11 @@ Web Sockets封装案例:
 
 这个是Event代码：
 
-![Web Sockets封装案例的Event](./carbon_1.png)
+![Web Sockets封装案例的Event](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/websockets/carbon_1.png)
 
 这个是实现代码：
 
-![Web Sockets封装案例的Index](./carbon.png)
+![Web Sockets封装案例的Index](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/websockets/carbon.png)
 
 Web Sockets的目标：在一个单独的持续连接上提供全双工、双向通信
 
