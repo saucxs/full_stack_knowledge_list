@@ -1,4 +1,4 @@
-# 【每日一题】(22题)面试官问：`var`与`const` `let`的主要区别是什么？
+# 【每日一题】(22题)面试官问：var与const,let的主要区别是什么？
 
 关注「松宝写代码」，精选好文，每日一题
 
@@ -93,6 +93,8 @@
 ## 往期「每日一题」
 
 ### 1、JavaScript && ES6
+
++ 第 21 题：[【每日一题】(21题)面试官问：谈谈JS中的 this 的绑定？](https://mp.weixin.qq.com/s/WvDIjv_FNfDsD9OmB6SirA)
 
 + 第 20 题：[【每日一题】(20题)面试官问：谈谈JS中的 webSockets 的理解？](https://mp.weixin.qq.com/s/GA-Wl03ZDLhnBCAG0wTi0w)
 
