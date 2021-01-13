@@ -21,7 +21,7 @@
 + Node事件循环
 + 一道输出值面试题
 
-![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/daily_question.png)
+![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/daily_question.png?raw=true)
 
 
 ## 二、浏览器的事件循环
@@ -302,7 +302,7 @@ node端运行需要分为两种情况：
 
 node端处理过程：
 
-![NODE端处理过程](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/font-end-image/node的事件循环过程.gif)
+![NODE端处理过程](https://github.com/saucxs/full_stack_knowledge_list/blob/master/image/font-end-image/node的事件循环过程.gif?raw=true)
 
 
 ## 五、一道输出值面试题
@@ -371,6 +371,14 @@ setTimeout(function() {
 
 微任务队列中：process.nextTick属于微任务，输出10；然后输出12。
 
+## Reference
+
+1、https://nodejs.org/zh-cn/docs/guides/event-loop-timers-and-nexttick
+
+2、https://developer.ibm.com/zh/languages/node-js/tutorials/learn-nodejs-the-event-loop/
+
+3、http://lynnelv.github.io/js-event-loop-browser
+
 ## 谢谢支持
 
 1、文章喜欢的话**可以「分享，点赞，在看」三连**哦。
@@ -379,7 +387,7 @@ setTimeout(function() {
 
 3、长按下面图片，关注「松宝写代码」，是获取开发知识体系构建，精选文章，项目实战，实验室，**每日一道面试题**，进阶学习，思考职业发展，涉及到JavaScript，Node，Vue，React，浏览器，http等领域，希望可以帮助到你，我们一起成长～
 
-![松宝写代码](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/dongtai.gif)
+![松宝写代码](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/dongtai.gif?raw=true)
 
 
 ## 字节内推福利
