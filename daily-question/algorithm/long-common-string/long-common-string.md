@@ -1,4 +1,4 @@
-# 【每日一题】(25题)算法题:堆数据结构-前 K 个高频元素？
+# 【每日一题】(26题)算法题:最长公共前缀？
 
 关注「松宝写代码」，精选好文，每日一题
 
@@ -14,7 +14,7 @@
 
 2020.12.23 立的 flag，每日一题，题目类型不限制，涉及到JavaScript，Node，Vue，React，浏览器，http，算法等领域。
 
-本文是：【每日一题】(25题)算法题:堆数据结构-前 K 个高频元素？
+本文是：【每日一题】(26题)算法题:最长公共前缀？
 
 
 ![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/daily_question.png?raw=true)
@@ -22,44 +22,66 @@
 ## 二、题目
 
 题目描述：
-给定一个非空的整数数组，返回其中出现频率前 **k** 高的元素。
+
+编写一个函数来查找字符串数组中的最长公共前缀。
+如果不存在公共前缀，返回空字符串 ""。
 
 示例：
 
 ```
-输入: (nums = [1, 1, 1, 2, 2, 3]), (k = 2);
-输出: [1, 2];
+示例 1:
+输入: ["flower","flow","flight"]
+输出: "fl"
+
+示例 2:
+输入: ["dog","racecar","car"]
+输出: ""
+解释: 输入不存在公共前缀。
+
+说明:所有输入只包含小写字母 a-z 
 ```
 
-解题思路：
+## 三、思路分析
+
+### 1、实现方法一：双层for循环
+逐位比较，比较全部通过时re增加当前字符，不通过时直接返回re。
+
+实现代码：
 
 ```
-var topKFrequent = function (nums, k) {
-  let i = 0;
-  let obj = {};
-  let arr = [];
-  while (i < nums.length) {
-    if (obj[nums[i]]) {
-      obj[nums[i]] = obj[nums[i]] + 1;
-    } else {
-      obj[nums[i]] = 1;
-      arr.push(nums[i]);
+var longestCommonPrefix = function(strs) {
+    var re = '';
+    if (!strs.length) return re;
+    for (var j=0;j<strs[0].length;j++){//第j位
+        for (var i=1;i<strs.length;i++){//第i个
+            if (strs[i][j]!=strs[0][j]) return re
+        }
+        re += strs[0][j];
     }
-    i++;
-  }
-  arr.sort((a, b) => {
-    return obj[b] - obj[a];
-  });
-  return arr.splice(0, k);
+    return re;
 };
 ```
 
-验证一下：
+
+### 2、实现方法二：for循环+正则
+re初始化为数组中第一个元素，逐个比较，当比较通过时返回re，否则削去末位直至比较通过。
+
+实现代码：
 
 ```
-topKFrequent([1, 1, 1, 2, 2, 3], 2)
-[1, 2]
+var longestCommonPrefix = function(strs) {
+    var re = strs[0] ? strs[0]:'';
+    for (var i=1;i<strs.length;i++){
+        var regex = new RegExp('^'+re);
+        while (!regex.test(strs[i])&&re.length){
+            re = re.slice(0,re.length-1);
+            regex = new RegExp('^'+re);
+        }
+    }
+    return re;
+};
 ```
+
 
 ## 谢谢支持
 
@@ -132,6 +154,8 @@ topKFrequent([1, 1, 1, 2, 2, 3], 2)
 + 第 5 道[「每日一题」到底该如何回答：vue数据绑定的实现原理？](https://mp.weixin.qq.com/s/8eo4frdB-zMA7nD_1wdnLw)
 
 ### 4、算法
+
++ 第 25 道[【每日一题】(25题)算法题:堆数据结构-前 K 个高频元素？](https://mp.weixin.qq.com/s/desqLK9Wst9v7XPcNyvwlQ)
 
 + 第 24 道[【每日一题】(24题)算法题:贪心算法-环游世界之如何加油？](https://mp.weixin.qq.com/s/ST6pf00iBZiDs4GpGK0eOw)
 
