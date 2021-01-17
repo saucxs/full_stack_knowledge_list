@@ -164,7 +164,7 @@ var dpBottomUpJumpLittle = function(numbers) {
 
 + 空间复杂度：O(n)
 
-![贪心](./dpBottomUpJumpLittle.jpg)
+![贪心](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/algorithm/tanxin/jump-little/greedyJumpLittle.jpg)
 
 ### 4、贪心算法
 一旦我们的代码处于自下而上的状态，我们就可以做最后一个重要的观察。从一个给定的位置，当我们试图看看是否能跳到一个好的位置时，我们只使用第一个。换句话说，最左边的一个。如果我们把这个最左边的好位置作为一个单独的变量来跟踪，我们可以避免在数组中搜索它。不仅如此，我们还可以完全停止使用数组。
@@ -188,7 +188,7 @@ var greedyJumpLittle = function(numbers) {
 
 我在leetcode上测试了一下，发现空间占用还是很大，运行时间76ms左右，内存消耗38MB左右。
 
-![贪心](./tanxin_jumplittle.jpg)
+![贪心](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/algorithm/tanxin/jump-little/tanxin_jumplittle.jpg)
 
 
 ## 谢谢支持
