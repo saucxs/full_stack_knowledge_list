@@ -1,6 +1,54 @@
 
+# 【每日一题】(37题)算法题：你对图论了解多少？(七)
 
-### 网络流
+关注「松宝写代码」，精选好文，每日一题
+
+前六期的图论已经介绍完了，今天我们介绍第七期。
+
+今天带来的是`Overstars`的图论总结，ACM打比赛，他的方向是思维数论图论。下文是他和他队友四年刷图论的总结。其实本身就是个笔记，以后方便打板子的。
+
+> 作者： Overstars
+> https://shuangxunian.gitee.io/2020/08/24/graphTheory/
+
+2020，实「鼠」不易
+
+2021，「牛」转乾坤
+
+风劲潮涌当扬帆，任重道远须奋蹄！
+
+***
+
+## 一、前言
+
+2020.12.23 立的 flag，每日一题，题目类型不限制，涉及到JavaScript，Node，Vue，React，浏览器，http，算法等领域。
+
+本文是：【每日一题】(37题)算法题：你对图论了解多少？(七)
+
+![每日一题](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/daily_question.png?raw=true)
+
+前5期：
+
+[【每日一题】(36题)面试官:你对图论了解多少？(六)](https://mp.weixin.qq.com/s/BReGF1JB05W5Ge2ZeaEEYw)
+
+[【每日一题】(35题)面试官:你对图论了解多少？(五)](https://mp.weixin.qq.com/s/_ICHDWO4ma_CbEbbemkxZw)
+
+[【每日一题】(34题)面试官:你对图论了解多少？(四)](https://mp.weixin.qq.com/s/EJ_72u5S7KD4950IEO_CQg)
+
+[【每日一题】(33题)面试官:你对图论了解多少？(三)](https://mp.weixin.qq.com/s/wRy1xAm4JzHCq1dRjMUuoA)
+
+[【每日一题】(32题)面试官:你对图论了解多少？(二)](https://mp.weixin.qq.com/s/_aSMIEpBc2jvTFXxBaK7nQ)
+
+[【每日一题】(31题)面试官:你对图论了解多少？(一)](https://mp.weixin.qq.com/s/E6dh8A9dVxxB9jaRGm3kbg)
+
+
+## 二、汇总
++ 网络流
+	+ 1、模板部分
+	+ 2、dijkstra费用流
+	+ 3、最大流
+	+ 4、费用流
+
+## 三、网络流
 
 注意反向思考，添加新节点进行限流。
 
@@ -491,3 +539,42 @@ mm.AddEdge(s,1,k,0);//s到1进行限流
 mm.MincostMaxflow(s,n,cost);//费用流
 cout<<cost<<endl;//扩容费用
 ```
+
+#### 更多阅读
++ [【每日一题】(36题)面试官:你对图论了解多少？(六)](https://mp.weixin.qq.com/s/BReGF1JB05W5Ge2ZeaEEYw)
+
++ [【每日一题】(35题)面试官:你对图论了解多少？(五)](https://mp.weixin.qq.com/s/_ICHDWO4ma_CbEbbemkxZw)
+
++ [【每日一题】(34题)面试官:你对图论了解多少？(四)](https://mp.weixin.qq.com/s/EJ_72u5S7KD4950IEO_CQg)
+
++ [【每日一题】(33题)面试官:你对图论了解多少？(三)](https://mp.weixin.qq.com/s/wRy1xAm4JzHCq1dRjMUuoA)
+
++ [【每日一题】(32题)面试官:你对图论了解多少？(二)](https://mp.weixin.qq.com/s/_aSMIEpBc2jvTFXxBaK7nQ)
+
++ [【每日一题】(31题)面试官:你对图论了解多少？(一)](https://mp.weixin.qq.com/s/E6dh8A9dVxxB9jaRGm3kbg)
+
+
+
+## 谢谢支持
+
+1、作者昵称：saucxs，songEagle，松宝写代码。「松宝写代码」公众号作者，每日一题，实验室等。一个爱好折腾，致力于全栈，正在努力成长的字节跳动工程师，星辰大海，未来可期。**内推字节跳动各个部门各个岗位。**
+
+2、长按下面图片，关注「松宝写代码」，是获取开发知识体系构建，精选文章，项目实战，实验室，**每日一道面试题**，进阶学习，思考职业发展，涉及到JavaScript，Node，Vue，React，浏览器，http，算法，端相关，小程序等领域，希望可以帮助到你，我们一起成长～
+
+![松宝写代码](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/dongtai.gif?raw=true)
+
+3、文章喜欢的话**可以「分享，点赞，在看」三连**哦。
+
+4、**红包🧧福利**
+
+掘金【2020创作者榜单】投票倒计时2天，冲刺阶段。
+
+简化流程，直接在手机上就可以投完18票。
+
+第1步：下载掘金APP，打开APP，首页顶部【2020创作者榜单】点击进入，搜索saucxs，投6票；
+
+第2步：点击帮他拉票按钮，分享给我或者群里，然后回到APP，就可以再投6票；
+
+第3步：回到微信，点击你刚才分享的链接，点击投票，跳转到登录，登录完事后，就可以再投6票。
+
+第4步：在「松宝写代码」后台回复我截图，然后我们抽奖发红包，有更多惊喜。
