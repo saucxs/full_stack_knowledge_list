@@ -80,7 +80,7 @@ module script以及其依赖所有文件（源文件中通过import声明导入�
 
 传统script和module script如何被下载执行可以用下图来概括：
 
-![script](./script.jpg)
+![script](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/JavaScript/javascript-label/script.jpg)
 
 ## 四、script标签的integrity属性
 
