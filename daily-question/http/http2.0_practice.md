@@ -33,7 +33,7 @@
 ./nginx -V
 ```
 
-![查看nginx是否支持ssl](./nginx.png)
+![查看nginx是否支持ssl](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/http/nginx.png)
 
 查看 configure arguments 信息中是否包含 -with-http_ssl_module 字样
 
@@ -46,7 +46,7 @@
 ./configure --with-http_ssl_module
 ```
 
-![配置ssl模块](./nginx_2.png)
+![配置ssl模块](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/http/nginx_2.png)
 
 
 ### 3、重新编译一下nginx
@@ -57,7 +57,7 @@
 ```
 make
 ```
-![重新编译一下nginx](./nginx_3.png)
+![重新编译一下nginx](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/http/nginx_3.png)
 
 ### 4、备份之前的nginx
 
@@ -67,7 +67,7 @@ make
 mv /usr/local/nginx/sbin/nginx /usr/local/nginx/sbin/nginx.old
 ```
 
-![4、备份之前的nginx](./nginx_4.png)
+![4、备份之前的nginx](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/http/nginx_4.png)
 
 
 ### 5、移动编译好的nginx到安装路径下
@@ -78,9 +78,9 @@ cd objs
 cp nginx /usr/local/nginx/sbin/
 ```
 
-![移动编译好的nginx到安装路径下](./nginx_5.png)
+![移动编译好的nginx到安装路径下](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/http/nginx_5.png)
 
-![移动编译好的nginx到安装路径下](./nginx_6.png)
+![移动编译好的nginx到安装路径下](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/http/nginx_6.png)
 
 ### 6、最后进行平滑升级
 
@@ -89,11 +89,11 @@ cd ..
 make upgrade
 ```
 
-![最后进行平滑升级](./nginx_7.png)
+![最后进行平滑升级](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/http/nginx_7.png)
 
 ### 7、再次检查nginx是否有https模块
 
-![再次检查nginx是否有https模块](./nginx_8.png)
+![再次检查nginx是否有https模块](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/daily-question/http/nginx_8.png)
 
 
 ## 二、直接从Http升级到Http2.0
