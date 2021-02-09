@@ -16,7 +16,7 @@
 所以我是比较推荐读者朋友们都写年度总结的，不一定要写给大家看。整理写给自己看也是一种审视。
 2020这一年真的很难忘，年底在湖北武汉疫情爆发，老家在黄冈，当时湖北第二个疫情严重城市，哇⊙ω⊙，好吓人，还好万幸的是自己一切安好，身边的人也是一切安好。
 
-![口罩](./kouzhao.png)
+![口罩](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/article/year-summary/kouzhao.png)
 
 # 二、疫情的影响
 
@@ -40,7 +40,7 @@
 
 接下来我们看看2020年初立的flag，其实已经忘了很多具体内容，但是还记得大致方向，要开始啪啪打脸节奏，哈哈(ಡωಡ)hiahiahia
 
-![2020的Flag](./zongjie.png)
+![2020的Flag](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/article/year-summary/zongjie.png)
 
 
 # 四、2020总结
@@ -48,7 +48,7 @@
 这一年，学习了很多，有端能力，新语言尝试，各种新工具尝试，重新启用了公众号 松宝写代码，然后立了Flag，推出每日一题，每天一道面试题，助力学习总结和自己知识体系构建，字节跳动内推，希望小伙伴可以联系我，内推你们加入我们，一起代码改变世界。
 我们通过一个脑图来看一下2020的总结
 
-![2020总结](./2020summary.jpg)
+![2020总结](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/article/year-summary/2020summary.jpg)
 
 ## 1、关键词
 
@@ -105,7 +105,7 @@
 + 1、Github：https://github.com/saucxs/full_stack_knowledge_list
 + 2、微信公众号「松宝写代码」
 
-![松宝写代码](./songbao.png)
+![松宝写代码](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/article/year-summary/songbao.png)
 
 ### 3.2 专利4篇
 
@@ -211,7 +211,7 @@ Editor是一款简洁的 Markdown 编辑器。自动将md转成微信公众号�
 
 2021年要开始立flag，2020打脸的flag继续放在2021，新增其他flag，或者说是OKR，OKR更科学更合理，仅仅是个人对外版本。
 
-![2021规划](./2021_plan.jpg)
+![2021规划](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/article/year-summary/2021_plan.jpg)
 
 + O1：技术提升
   + KR1：文章100+篇
@@ -257,7 +257,7 @@ Editor是一款简洁的 Markdown 编辑器。自动将md转成微信公众号�
 
 那么可能会出现一种情况就是为什么技术不错却又不能全局的驾驭系统。那么这个阶段就是提升整体系统把控的能力，可以写出更加容易扩展和更好的健壮性的代码。
 
-![](./we.gif)
+![](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/article/year-summary/we.gif)
 
 每一个阶段的成长都不太容易，需要一些项目给予也需要给自己一些加压。不只是对技术栈和业务的更深层的理解，也要从中吸取更多的营养。学会更加良好的抽象化和完整的建设系统的能力。
 
@@ -265,6 +265,6 @@ Editor是一款简洁的 Markdown 编辑器。自动将md转成微信公众号�
 
 这个需要在摸索中前进和总结，星辰大海，未来可期。
 
-![烟火](./yanhuo.jpg)
+![烟火](https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/article/year-summary/yanhuo.jpg)
 
 研发工程师就是一个不断学习，不断成长的职业，需要投入更多的经历去沉淀自己，如果对未来的恐慌也不过是一点点懒惰的积累，最终的一个点爆发了而已。
