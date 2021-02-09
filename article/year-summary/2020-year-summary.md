@@ -24,8 +24,8 @@
 
 一个很赞的《隔离的意义》的宣传
 
-<video id="video" controls="" preload="none" poster="./gelideyiyi_photo.jpg">
-      <source id="mp4" src="./gelideyiyi.mp4" type="video/mp4">
+<video id="video" controls="" preload="none" poster="https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/article/year-summary/gelideyiyi_photo.jpg">
+      <source id="mp4" src="https://raw.githubusercontent.com/saucxs/full_stack_knowledge_list/master/article/year-summary/gelideyiyi.mp4" type="video/mp4">
 </video>
 
 在家也想了很多，比如当时在大组里分享疫情下的老家那边情况，以及可视化的一些思考。
@@ -141,8 +141,9 @@
 
 ### 3.5 技术影响力建设
 
-1、《豆皮范儿》公众号运营和维护，从创建公众号2020.11.20这一天开始，直到2021.02.08，粉丝数量736，发文数量38篇，总阅读量6115+12000=18115次。
-2、《松宝写代码》之前不想弄，后来给自己立了一个Flag，才开始运营起来，持续输出，直到2021.02.08，粉丝数量404，发文数量72篇，总阅读量234+672+340+5161+2505=8912次。
++ 1、《豆皮范儿》公众号运营和维护，从创建公众号2020.11.20这一天开始，直到2021.02.08，粉丝数量736，发文数量38篇，总阅读量6115+12000=18115次。
+
++ 2、《松宝写代码》之前不想弄，后来给自己立了一个Flag，才开始运营起来，持续输出，直到2021.02.08，粉丝数量404，发文数量72篇，总阅读量234+672+340+5161+2505=8912次。
 
 ####
 
@@ -181,32 +182,7 @@ Editor是一款简洁的 Markdown 编辑器。自动将md转成微信公众号�
 
 ## 4、2020年OKR完成情况
 
-<!--br {mso-data-placement:same-cell;}--> td {white-space:pre-wrap;border:1px solid #dee0e3;}
-
-| Objectives | Key Result                   | Progress        | Score | Remark     |
-| ---------- | ---------------------------- | --------------- | ----- | ---------- |
-| O1：编程技术    | KR1：阅读4本技术相关书                | 1本《Flutter实战》   | 0.25  |            |
-|            | KR2：技术博客(公众号)总结100篇          | 技术文章70篇         | 0.7   |            |
-|            | KR3：公众号粉丝100+                | 404个            | 4     | 每日一题       |
-|            | KR4：Github上contribution 200+ | contribution 8个 | 0.04  |            |
-|            | KR5：python语言学习               | 输出1篇            | 0.5   |            |
-|            |                              |                 |       |            |
-| O2：运动      | KR1：公司健身打卡100次               | 20次             | 0.2   |            |
-|            | KR2：半程马拉松1次                  | 0次              | 0     | 跑步跑的少，没敢参加 |
-|            | KR3：运动跑量400km                | 50Km            | 0.08  |            |
-|            |                              |                 |       |            |
-| O3：其他书籍    | KR1：人人是产品经理                  | 未完成             | 0     | 没有找到时间看，借口 |
-|            |                              |                 |       |            |
-| O4：人生大事    | KR1：戒指，婚纱照，婚礼                | 戒指，婚纱照完成        | 0.66  |            |
-|            | KR2：Suv一辆                    | CRV             | 1     |            |
-|            | KR3：新房装修                     | 完成              | 1     |            |
-|            |                              |                 |       |            |
-| O5：旅游      | KR1：国内城市2次                   | 大西北（甘肃，青海）      | 1     |            |
-|            | KR2：国外1次                     | 疫情未出去           | 0     | 国外疫情严重     |
-|            |                              |                 |       |            |
-| O6：书籍及专利   | KR1：完成node基础书籍               | 完成50%           | 0.5   |            |
-|            | KR2：水印专利申请                   | 已完成             | 1     |            |
-
+![2020总结OKR完成](./2020_okr.jpg)
 # 五、2021规划
 
 2021年要开始立flag，2020打脸的flag继续放在2021，新增其他flag，或者说是OKR，OKR更科学更合理，仅仅是个人对外版本。
