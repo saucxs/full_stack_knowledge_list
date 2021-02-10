@@ -9,7 +9,7 @@
 
 有些小伙伴不知道我那3个昵称的含义：
 
-+ 昵称：songEagle（取自松树的song，Eagle中文意思鹰，雄鹰，寓意着新松可以像雄鹰一样翱翔）。
++ 昵称：songEagle（取自松树的song，Eagle中文意思鹰，雄鹰，寓意着可以像雄鹰一样翱翔）。
 
 + 昵称：saucxs（sau取自我大学时候的学校缩写Shenyang Aerospace University，cxs这个是我姓名的首字母，大学时候给自己取的昵称，对于别人来说不方便记忆）。
 
