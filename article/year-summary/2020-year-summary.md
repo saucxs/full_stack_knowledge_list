@@ -11,7 +11,7 @@
 
 + 昵称：songEagle（取自松树的song，Eagle中文意思鹰，雄鹰，寓意着新松可以像雄鹰一样翱翔）。
 
-+ 昵称：saucxs（sau取自我大学时候的学校缩写Shenyang aerospace university，cxs这个是我姓名的首字母，大学时候给自己取的昵称，对于别人来说不方便记忆）。
++ 昵称：saucxs（sau取自我大学时候的学校缩写Shenyang Aerospace University，cxs这个是我姓名的首字母，大学时候给自己取的昵称，对于别人来说不方便记忆）。
 
 + 昵称：松宝写代码（名字松树的松，谁还不是个宝宝，一个伪全栈工程师写代码改变世界，这个可能会用的更多，同时是公众号名字）。
 
