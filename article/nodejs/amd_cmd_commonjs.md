@@ -119,6 +119,24 @@ AMD与CMD、CommonJS的区别与优缺点：
 + [2020「松宝写代码」个人年终总结：未来可期](https://mp.weixin.qq.com/s/_ay6KfcC5DMoZu9XqS2NHA)
 
 
+#### 更多内推
++ [【字节急招】南京-广告算法工程师](https://mp.weixin.qq.com/s/aFCsLiFShaE2pE17NTrOUQ)
+
++ [【字节急招】深圳-后台开发工程师-Client Infra](https://mp.weixin.qq.com/s/t_WvJuuvwZ2efAiZjKSsdw)
+
++ [【提前批】「松宝写代码」内推字节跳动2022校招研发提前批](https://mp.weixin.qq.com/s/lKsgF_PlemOdW6TJrVF84w)
+
++ [【字节急招】多地-前端开发工程师-抖音（北京/深圳/上海/杭州）](https://mp.weixin.qq.com/s/KpWtFVQsUgind9jugevFtg)
+
++ [【字节急招】多地-前端研发工程师-Data](https://mp.weixin.qq.com/s/1yhT4aon2qXXlcXSK-rbuA)
+
++ [【字节急招】南京-前端开发工程师—数据可视化](https://mp.weixin.qq.com/s/DY1b53FvcIM5CzbAFpj_Fw)
+
++ [【汇总】值得关注的内推：字节内推「社招，校招及提前批，实习生」](https://mp.weixin.qq.com/s/J73JMIQpOtddnwEVNE8q3g)
+
++ 校招内推码：8J5ZSB8
+
+
 ## 感谢支持
 > 松宝，「松宝写代码」公众号作者，也用saucxs混迹于江湖，watermark-dom包700+ star，曾在ACM校队，在字节做AB实验，担任面试官，出校招编程题，爱好折腾，致力于全栈，喜欢挑战自己。公众号有精选文章，进阶学习，每日一题，实验室，AB实验，字节内推等模块，欢迎关注和咨询，和松宝一起写代码，冲冲冲！
 
