@@ -376,3 +376,82 @@ const parser = tokens => {
 
 ## 六、核心原理
 Babel 的核心代码是 babel-core 这个 package，Babel 开放了接口，让我们可以自定义 Visitor，在AST转换时被调用。所以 Babel 的仓库中还包括了很多插件，真正实现语法转换的其实是这些插件，而不是 babel-core 本身。
+
+## 优选文章
+### 1、技术文章
++ [babel背后到底执行了什么？](https://mp.weixin.qq.com/s/Jd7sX1yNYdXPgepwlq-XLw)
+
++ [npm的原理](https://mp.weixin.qq.com/s/PSlUfdX3KGqvXdkC0xQ97w)
+
++ [快速学习Gulp并接入到项目中（一）](https://mp.weixin.qq.com/s/QQWzNvrXcqq_w3QKKvJagA)
+
++ [diff算法深入一下？](https://mp.weixin.qq.com/s/HwowUwWA4pkSIQ1J4fwr9w)
+
+### 2、AB实验
+
++ [AB实验：MAB多臂老虎机智能调优的基本原理](https://mp.weixin.qq.com/s/7Sz0dSFkWOEo2iw5xrcCLA)
+
++ [AB实验基础-专有名词](https://mp.weixin.qq.com/s/TXzuf_98yMojVAFlDv0CCQ)
+
++ [AB实验基础-AB是什么？AB的价值？为什么使用AB实验？](https://mp.weixin.qq.com/s/UcwpNqRQ3we10S9z5cO53g)
+
+### 3、每日一题
+
++ [【每日一题】(58题)算法题：接雨水问题](https://mp.weixin.qq.com/s/OtCI6SjtLCI608LOQMFQ3A)
+
++ [【每日一题】(57题)数组扁平化的方法有哪些？](https://mp.weixin.qq.com/s/sXIJ6bQj97bZTaYHQgJTIw)
+
++ [【每日一题】(56题)介绍下深度优先遍历和广度优先遍历，如何实现？](https://mp.weixin.qq.com/s/KkqdB4mWlMgZMcHVhZVZXQ)
+
+
+### 4、总结
+
++ [2020「松宝写代码」个人年终总结：未来可期](https://mp.weixin.qq.com/s/_ay6KfcC5DMoZu9XqS2NHA)
+
+## 字节内推
+### 1、校招内推
++ 我的内推码👉 8J5ZSB8
++ 投递链接👉 https://jobs.toutiao.com/s/eohNYt3
+2022校招详情：https://mp.weixin.qq.com/s/AYkL1BA-QP4vdaMoAufElg
+
+### 2、社招/实习生内推
+在线岗位即为在招，内推链接进入投递即为内推，同样无笔试哦。
++ 投递链接：https://job.toutiao.com/s/eohRQ1L
+
+### 3、查询
+#### 自助查询
+
+在PC端打开，https://job.bytedance.com/society/position/application
+
+自助查进度可是说是很方便了，毕竟求职的心态「松宝写代码」也体会过，恨不得10分钟看一次进度。
+
++ 整体流程：简历投递=>简历筛选=>简历评估=>评估通过=>笔试中（非必要）=>面试中=>面试已完成=>待入职=>已入职
+
+当流程中任意一环节挂掉了之后，岗位状态会变成已结束
+
+简历的几种状态说明：
+
++ 简历筛选，代表HR初筛ing；
++ 简历评估，代表过了hr初筛，业务评估ing；
++ 评估通过，代表通过了业务评估，可等候通知笔试/面试；
++ 面试中，代表面试ing；
++ 如果出现已结束/已终止，则代表挂了
+
+#### 联系「松宝写代码」查询
+
+通过「松宝写代码」内推，且如果超1周没有进度更新，加文末「松宝写代码」微信发送【进度催查+名字+岗位】，松宝会帮你联系对应HR催查哦！还可拉入【写代码】研发进阶群，妈妈再也不担心求职字节遇到问题不知道问谁了。
+
+
+各个城市的急招可以看这个【各个城市字节急招靠谱招聘汇总】https://www.yuque.com/books/share/39617705-0356-4cc4-a58f-90520a5f2379
+
+其他详细可以：
+
++ [【2022秋招】内推？8000+Offer来袭](https://mp.weixin.qq.com/s/AYkL1BA-QP4vdaMoAufElg)
++ [字节内推Github](https://github.com/saucxs/job)
+
+## 个人微信
+
+![个人微信](https://cdn.nlark.com/yuque/0/2021/png/276016/1629471940324-1389ccfc-2eb1-4c2d-834c-4f02afbea9a9.png)
+## 感谢支持
+> 松宝，「松宝写代码」公众号作者，也用saucxs混迹于江湖，watermark-dom包700+ star，曾在ACM校队，在字节做AB实验，担任面试官，出校招编程题，爱好折腾，致力于全栈，喜欢挑战自己。公众号有精选文章，进阶学习，每日一题，实验室，AB实验，字节内推等模块，欢迎关注和咨询，和松宝一起写代码，冲冲冲！
+
