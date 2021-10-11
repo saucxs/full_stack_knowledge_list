@@ -115,7 +115,6 @@ if __name__ == "__main__":
   app.run()
 ```
 注意：
-+ 不要用;
 + 不要用===，用==
 
 ![python1](http://static.chengxinsong.cn/image/python3/python9.jpg)
