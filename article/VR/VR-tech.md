@@ -6,7 +6,7 @@ hello，大家好，我是「松宝写代码」。
 
 > VR发展史 - VR技术介绍 - VR行业数据 - VR未来发展路线 - 更全面了解VR
 
-今天我们带来的是**VR发展史**，欢迎关注，留言交流学习。
+今天我们带来的是**VR技术介绍**，欢迎关注，留言交流学习。
 
 ## VR技术介绍
 其实VR眼镜的概念很简单：**​把一个显示器罩在人的眼睛上，人向哪里看，就在显示器里显示对应方向的景物，从而让人感觉自己身处一个无限大的虚拟空间中。​**
@@ -140,3 +140,48 @@ hello，大家好，我是「松宝写代码」。
 
 就2021年的网络基础条件来说，具有良好体验的云VR，还很难实现。
 
+
+
+# 关于「松宝写代码」
+
+一句话简介：松宝写的不止是代码。
+
+标签：不止是代码 深度与视野 字节同学
+
+介绍：松宝写的不止是代码，saucxs昵称，watermark-dom水印开源900+Star的作者，曾ACM校队，现字节工程师，喜欢挑战自己，担任面试官和校招编程题。一个「有价值为你助力」的博主。
+
+个人Github地址：https://github.com/saucxs
+
+# 2022文章集锦
+## LowCode
++ [【研究】低代码_无代码的深入浅出研究](https://mp.weixin.qq.com/s/v9lYrT7Y9RB3howH5RA4HQ)
++ [【唠唠】低代码_无代码的界定](https://mp.weixin.qq.com/s/bVrE-ldjNmQgA2LORPWQCw)
+
+## AB实验
++ [观点 | 为什么在数据驱动的路上，AB实验值得信赖？（下）](https://mp.weixin.qq.com/s/4aTsDE3VEpMX4euitd7Opw)
++ [观点 | 为什么在数据驱动的路上，AB实验值得信赖？（上）](https://mp.weixin.qq.com/s/0203I2D1-exudGIhGOZgwg)
+
+
+## 总结
++ [2021年，内推字节1w+](https://mp.weixin.qq.com/s/5J9oDUXmkD5ShxkEvcrduA)
++ [松宝写代码2022年立的Flag](https://mp.weixin.qq.com/s/FLcjhDbtZ1vminrLsrcxRg)
++ [松宝写代码2021年总结：突破重围](https://mp.weixin.qq.com/s/ei8x0HlWXi7LOCh4unESlg)
+
+## VR
++ [看VR发展史，技术成熟度曲线的趋势是？](https://mp.weixin.qq.com/s/3AIaqi37tiaGSWvsSS9hOQ)
+
+## 活动
++ [集中隔离了，程序员该干点啥呢？](https://mp.weixin.qq.com/s/o-cIYCrKuxueVMOG5pv51g)
++ [松宝集中隔离日志](https://mp.weixin.qq.com/s/axgKk_MJbh6_z4Yns5upSg)
++ [开工第一天，年后再说的事情来袭～](https://mp.weixin.qq.com/s/Dn7CxvR3iH3KkvQJgVYq6g)
++ [萌虎打Call](https://mp.weixin.qq.com/s/TSEnLD55y4WGvMBl5vbvzw)
++ [预料之中，意料之外，字节跳动春节红包来了](https://mp.weixin.qq.com/s/mSBp5wqXUHMZBUb86_-2lg)
++ [「松宝写代码」红包封面来了](https://mp.weixin.qq.com/s/ajEKSqs9eOOmutsO831wsg)
+
+## 内推
++ [【兴趣电商】字节国际化电商在杭州招人啦！](https://mp.weixin.qq.com/s/l5wtA6xhodDbLP5Ke0wQ0A)
++ [【字节跳动】研发实习生闪电内推正式开启，无笔试可转正！](https://mp.weixin.qq.com/s/9jjyGSVEg1qf0913_5-3Uw)
+
+## 转载
++ [字节跳动CEO梁汝波：使命是我们前进的动力 | 10周年演讲全文](https://mp.weixin.qq.com/s/xUGksSu53vK30pIZ5bdtnw)
++ [照片变画像，现在已经有了最新的技术，文末有Demo试玩](https://mp.weixin.qq.com/s/XQquyukl4br1Uy3emvSjxQ)
